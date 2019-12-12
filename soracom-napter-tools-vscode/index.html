@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1"
+    />
+
+    <title>SORACOM Napter 用の Visual Studio Code 拡張を作りました &#x2F;&#x2F;&#x2F; ----- -..- -.... -...</title>
+
+    <link rel="alternate"
+    type="application/rss+xml" title="RSS" href="https:&#x2F;&#x2F;0x6b.github.io&#x2F;rss.xml">
+
+    <link
+      href="https://fonts.googleapis.com/css?family=Noto+Sans+JP|Source+Code+Pro&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="https:&#x2F;&#x2F;0x6b.github.io&#x2F;site.css">
+  </head>
+
+  <body>
+    <div class="container">
+      <div id="mobile-navbar" class="mobile-navbar">
+        <div class="mobile-header-logo">
+          <a href="/" class="logo">&#x2F;&#x2F;&#x2F; ----- -..- -.... -...</a>
+        </div>
+      </div>
+
+      <header id="header">
+        <div class="logo">
+          <a href="https:&#x2F;&#x2F;0x6b.github.io">&#x2F;&#x2F;&#x2F; ----- -..- -.... -...</a>
+        </div>
+        <div class="menu">
+          <ul>
+            <li>
+              <a href="https://github.com/0x6b">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path
+                    d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"
+                  ></path>
+                </svg>
+              </a>
+            </li>
+            <li>
+              <a href="https:&#x2F;&#x2F;0x6b.github.io&#x2F;rss.xml">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M4 11a9 9 0 0 1 9 9"></path>
+                  <path d="M4 4a16 16 0 0 1 16 16"></path>
+                  <circle cx="5" cy="19" r="1"></circle>
+                </svg>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </header>
+
+      <main>
+        <div class="content" id="mobile-panel">
+          
+
+
+<div class="post-toc" id="post-toc">
+    <div class="post-toc-content always-active">
+        <nav id="TableOfContents">
+            <ul>
+                
+                <li>
+                    <a href="https://0x6b.github.io/soracom-napter-tools-vscode/#hazimeni" class="toc-link">はじめに</a>
+                    
+                </li>
+                
+                <li>
+                    <a href="https://0x6b.github.io/soracom-napter-tools-vscode/#soracom-napter-toha" class="toc-link">SORACOM Napter とは</a>
+                    
+                </li>
+                
+                <li>
+                    <a href="https://0x6b.github.io/soracom-napter-tools-vscode/#soracom-napter-tools-for-visual-studio-code" class="toc-link">SORACOM Napter Tools for Visual Studio Code</a>
+                    
+                </li>
+                
+                <li>
+                    <a href="https://0x6b.github.io/soracom-napter-tools-vscode/#shi-qian-zhun-bei" class="toc-link">事前準備</a>
+                    
+                    
+                </li>
+                
+                <li>
+                    <a href="https://0x6b.github.io/soracom-napter-tools-vscode/#shi-ifang" class="toc-link">使い方</a>
+                    
+                </li>
+                
+                <li>
+                    <a href="https://0x6b.github.io/soracom-napter-tools-vscode/#matome" class="toc-link">まとめ</a>
+                    
+                </li>
+                
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+<article class="post">
+    
+<header class="post-header">
+  <h1 class="post-title">
+    <a href="https:&#x2F;&#x2F;0x6b.github.io&#x2F;soracom-napter-tools-vscode&#x2F;">SORACOM Napter 用の Visual Studio Code 拡張を作りました</a>
+  </h1>
+  <div class="post-meta">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="12"
+      height="12"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+      <line x1="16" y1="2" x2="16" y2="6"></line>
+      <line x1="8" y1="2" x2="8" y2="6"></line>
+      <line x1="3" y1="10" x2="21" y2="10"></line>
+    </svg>
+    <span class="post-time">2019-12-13</span>
+  </div>
+</header>
+
+    <div class="post-content">
+      <h2 id="hazimeni">はじめに</h2>
+<p><a href="https://qiita.com/advent-calendar/2019/soracom">SORACOM Advent Calendar 2019</a> 13 日目の記事です。</p>
+<p>昨日は @toolyee からの <a href="https://medium.com/@toolyee/iot%E3%81%AE%E4%B8%80%E7%95%AA%E7%B0%A1%E5%8D%98%E3%81%AA%E3%83%87%E3%83%A2-%E5%BD%93%E7%A4%BE%E6%AF%94-be76fd2c5184?">IoT の一番簡単なデモ！(当社比)</a> でした。@hayate_h さんの <a href="https://qiita.com/hayate_h/items/4b755e15ec9cd5a55e31">SORACOM LTE-M Button を使って、「モテモテスイッチ」を開発する。</a> から LTE-M ボタンの話題が続いたところで、今回は SORACOM Napter のお話です。</p>
+<h2 id="soracom-napter-toha">SORACOM Napter とは</h2>
+<p><a href="https://soracom.jp/services/napter/">SORACOM Napter</a> (以下 Napter) は、SORACOM の SIM を使用したデバイスへ簡単にセキュアにリモートアクセスできるサービスです。SORACOM IoT SIM のささっているデバイスであれば、グローバル IP アドレスを割り当てたり、踏み台サーバーを用意したり、エージェントなどをインストールしたりせず手軽にリモートからアクセスできます。</p>
+<p>同僚が <a href="https://nodered.org/">Node-RED</a> と組み合わせて <a href="https://blog.soracom.jp/blog/2019/09/10/napter-nodered/">ウキウキリモート開発</a> しており、なるほどなーと思っていたのですが、つい最近テスト用に使っていた Raspberry Pi の Wi-Fi が壊れたため私も多用するようになりました (必要なものはすぐに購入できる会社ですが、Raspberry Pi 4 リリースのため品薄ですぐに手に入らず)。</p>
+<p>Napter によるオンデマンドリモートアクセスは <a href="https://console.soracom.io/">SORACOM ユーザーコンソール</a> から有効にできます。以下のように本当に簡単に使えるので私もウキウキリモート開発していました。</p>
+<ol>
+<li>ユーザーコンソールへログインする</li>
+<li>自分の SIM を探す</li>
+<li>メニューから <strong>オンデマンドリモートアクセス</strong> を選択する</li>
+<li>OK を押す</li>
+<li>払い出された IP アドレスとポート番号をコピペしてターミナルから SSH を使ってアクセスする</li>
+<li>あれこれする</li>
+</ol>
+<p>そんな折りに別の同僚から Visual Studio Code (以下 vscode) の <a href="https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-ssh">Remote - SSH 拡張</a> を使うと Raspberry Pi での開発がえらく楽になるよと教えてもらいました。試してみるとなるほど便利で、普段使いしているエディタがそのまま使えるしターミナルも使えるしで Napter とあわせて多用するようになりました。</p>
+<p>で、日々ユーザーコンソールと vscode を行ったり来たりしていたのですが、ふと「SORACOM はほとんどの操作について <a href="https://dev.soracom.io/jp/docs/api/#/">API を公開している</a>し 、vscode も <a href="https://code.visualstudio.com/api/">拡張が作れる</a> し、この 2 つを合体させたらえらく便利なのでは？」と思いたち作ってみました。</p>
+<h2 id="soracom-napter-tools-for-visual-studio-code">SORACOM Napter Tools for Visual Studio Code</h2>
+<p><a href="https://marketplace.visualstudio.com/items?itemName=0x6b.soracom-napter-tools-vscode">SORACOM Napter Tools for Visual Studio Code</a> (以下 Napter Tools) という Napter と vscode を組み合わせて便利に使える拡張を作りました。</p>
+<center>
+  <video controls>
+    <source src="screencast.mp4" type="video/mp4" />
+    Your browser does not support the video tag.
+  </video>
+  <figcaption>SORACOM Napter Tools for Visual Studio Code</figcaption>
+</center>
+<p>動画を見ていただくと大体想像つくと思いますが、以下の操作が vscode の中で完結します(3G のため接続まで少し時間がかかっています)。</p>
+<ul>
+<li>新しいポートマッピング (Napter オンデマンドリモートアクセス)の作成</li>
+<li>既存のポートマッピングの情報表示
+<ul>
+<li>Napter から割り当てられたホスト名、IP アドレス、ポート番号</li>
+<li>有効期間</li>
+<li>TLS 有効の有無</li>
+<li>宛先ポート番号</li>
+<li>接続可能なソース IP アドレスのレンジ</li>
+<li>作成日時</li>
+<li>終了日時</li>
+</ul>
+</li>
+<li>既存のポートマッピングの削除</li>
+<li>Remote - SSH 拡張の接続ダイアログボックスのオープン</li>
+<li>オンラインの SIM カード一覧の表示</li>
+<li>SORACOM カバレッジ(グローバル / 日本) の切替</li>
+<li>SIM の情報表示
+<ul>
+<li>IMSI</li>
+<li>名前</li>
+<li>SIM グループ ID</li>
+<li>プラン (<a href="https://soracom.jp/services/air/cellular/price_iot_sim/#plan01s">plan01s</a> / <a href="https://soracom.jp/services/air/cellular/price_specific_area_sim/#plan-d">plan-D</a> など)</li>
+<li>モジュールタイプ (標準 / マイクロ / ナノなど)</li>
+<li>スピードクラス (<code>s1.fast</code> / <code>s1.slow</code> など)</li>
+<li>IMEI</li>
+<li>MSISDN</li>
+<li>セッション状態</li>
+<li>SIM そのものの IP アドレス</li>
+<li>SIM のセッション状態 (最新 10)</li>
+<li>Napter 監査ログ (最新 10) — 参照: <a href="https://blog.soracom.jp/blog/2019/10/09/starts-to-provide-audit-log-feature-on-soracom-napter/">【新機能】SORACOM Napter に監査ログ機能が導入されました – SORACOM エンジニアブログ</a></li>
+</ul>
+</li>
+<li>オペレーター ID とユーザー名の表示</li>
+<li>ユーザーコンソールのデフォルトブラウザでのオープン</li>
+</ul>
+<p>ここから事前準備と使い方を説明します。</p>
+<h2 id="shi-qian-zhun-bei">事前準備</h2>
+<p>一度だけの事前準備として以下の 4 ステップが必要です。公式ドキュメントを紹介しつつ、簡単に手順を説明します。SORACOM Advent Calendar ということでアカウントの作成などは省いていますが、まだの方はぜひ <a href="https://soracom.jp/start/">SORACOM Air for セルラーの利用方法: 今すぐ始めよう</a> から。</p>
+<ol>
+<li>(SORACOM ユーザーコンソールの作業) SAM ユーザーを作成し、認証キー ID と認証キーシークレットを生成する</li>
+<li>(vscode での作業) Remote - SSH / SORACOM Napter Tools 拡張をインストールする</li>
+<li>(vscode での作業) SORACOM Napter Tools for Visual Studio Code 拡張を設定する</li>
+<li>(アクセス先マシンでの作業) Raspberry Pi などに USB ドングル + SORACOM IoT SIM を装着する</li>
+</ol>
+<h3 id="sam-yuzawozuo-cheng-si-ren-zheng-ki-id-toren-zheng-kisikuretutowosheng-cheng-suru">SAM ユーザーを作成し、認証キー ID と認証キーシークレットを生成する</h3>
+<p>この拡張は SORACOM API を使用していますので、呼び出しのために認証キー ID と認証キーシークレットが必要です。まずはこれらをゲットしましょう。</p>
+<p>セキュリティの観点から Napter Tools 専用の SORACOM Access Managament (SAM) ユーザーを作成することをおすすめします。SAM は、管理ユーザー毎にアクセス権限を設定できるアクセス管理機能で、不要なアクセスや操作ミスを未然に防げます。</p>
+<ol>
+<li><a href="https://console.soracom.io/">SORACOM ユーザーコンソール</a> へログイン</li>
+<li>右上のユーザー名のボタンから <strong>セキュリティ</strong> をクリック</li>
+<li><strong>ユーザー作成</strong> ボタンをクリックし、適当な名前と説明を入力して <strong>作成</strong> ボタンをクリック</li>
+<li>作成したユーザー名をクリック</li>
+<li><strong>権限設定</strong> タブで以下の拡張の動作に必要な権限のみを許可する設定を入力し <strong>保存</strong> ボタンをクリック</li>
+</ol>
+<pre style="background-color:#0f1419;">
+<span style="color:#bfbab0;">{
+  </span><span style="color:#39bae6;">&quot;statements&quot;</span><span style="color:#bfbab0cc;">: </span><span style="color:#bfbab0;">[
+    {
+      </span><span style="color:#39bae6;">&quot;api&quot;</span><span style="color:#bfbab0cc;">: </span><span style="color:#bfbab0;">[
+        </span><span style="color:#c2d94c;">&quot;Subscriber:listSubscribers&quot;</span><span style="color:#bfbab0cc;">,
+        </span><span style="color:#c2d94c;">&quot;Subscriber:getSubscriber&quot;</span><span style="color:#bfbab0cc;">,
+        </span><span style="color:#c2d94c;">&quot;PortMapping:listPortMappings&quot;</span><span style="color:#bfbab0cc;">,
+        </span><span style="color:#c2d94c;">&quot;PortMapping:createPortMapping&quot;</span><span style="color:#bfbab0cc;">,
+        </span><span style="color:#c2d94c;">&quot;PortMapping:deletePortMapping&quot;</span><span style="color:#bfbab0cc;">,
+        </span><span style="color:#c2d94c;">&quot;Subscriber:listSessionEvents&quot;</span><span style="color:#bfbab0cc;">,
+        </span><span style="color:#c2d94c;">&quot;AuditLog:getNapterAuditLogs&quot;
+      </span><span style="color:#bfbab0;">]</span><span style="color:#bfbab0cc;">,
+      </span><span style="color:#39bae6;">&quot;effect&quot;</span><span style="color:#bfbab0cc;">: </span><span style="color:#c2d94c;">&quot;allow&quot;
+    </span><span style="color:#bfbab0;">}
+  ]
+}
+</span></pre>
+<ol start="6">
+<li><strong>認証設定</strong> タブの <strong>認証キーを生成</strong> ボタンをクリックし表示された <strong>認証キー ID</strong> と <strong>認証キーシークレット</strong> をコピー</li>
+</ol>
+<p>用語や詳細なガイドは <a href="https://dev.soracom.io/jp/docs/api_guide/">SORACOM API 利用ガイド</a> を、権限設定の詳細は <a href="https://dev.soracom.io/jp/start/sam/#sam01">SORACOM Access Management を使用して操作権限を管理する</a> も参照してみてください。(ここを書いているところで <code>PortMapping</code> に <code>listPortMappingsForSubscriber</code> というオペレーションがあることに気づきました。これを使うと API 呼び出しをもっと効率化できそうです。)</p>
+<h3 id="remote-ssh-soracom-napter-tools-kuo-zhang-woinsutorusuru">Remote - SSH / SORACOM Napter Tools 拡張をインストールする</h3>
+<p>Visual Studio Marketplace から以下の 2 つの拡張をインストールしてください。</p>
+<ul>
+<li><a href="https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-ssh">Remote - SSH</a></li>
+<li><a href="https://marketplace.visualstudio.com/items?itemName=0x6b.soracom-napter-tools-vscode">SORACOM Napter Tools</a></li>
+</ul>
+<h3 id="soracom-napter-tools-for-visual-studio-code-kuo-zhang-woshe-ding-suru">SORACOM Napter Tools for Visual Studio Code 拡張を設定する</h3>
+<p>vscode の設定画面を開き以下の設定を入力してください。</p>
+<ul>
+<li><strong>Soracom &gt; Auth &gt; Authkey:ID</strong>: <code>keyId-</code> ではじまる <strong>認証キー ID</strong></li>
+<li><strong>Soracom &gt; Auth &gt; Authkey:Secret</strong>: <code>secret-</code> ではじまる <strong>認証キーシークレット</strong></li>
+<li><strong>Soracom &gt; Napter &gt; Ssh: User</strong>: SSH ログインユーザー名</li>
+<li><strong>Soracom &gt; Napter: Port</strong>: SSH ポート番号</li>
+</ul>
+<figure>
+  <img alt="vscode 設定画面" src="settings.png" />
+  <figcaption>vscode 設定画面</figcaption>
+</figure>
+<p>その他の設定はデフォルトのままでたぶん大丈夫です。</p>
+<h3 id="raspberry-pi-nadoni-usb-donguru-soracom-iot-sim-wozhuang-zhao-suru">Raspberry Pi などに USB ドングル + SORACOM IoT SIM を装着する</h3>
+<p><a href="https://soracom.jp/products/module/ak-020/">3G 対応データ通信端末 AK-020</a> や <a href="https://soracom.jp/products/module/ms2372h_607/">LTE 対応データ通信端末 Huawei MS2372h-607</a> などに SORACOM の SIM をセットし Raspberry Pi に装着、 <a href="https://soracom-files.s3.amazonaws.com/setup_air.sh"><code>setup_air.sh</code></a> を実行してセルラー通信ができるようにしてください。詳細な手順は <a href="https://dev.soracom.io/jp/start/device_setting/">各種デバイスで SORACOM Air を使用する</a> にあります。</p>
+<h2 id="shi-ifang">使い方</h2>
+<p>さて、ここまで来たら Napter による SSH は簡単です(たぶん)。</p>
+<ol>
+<li>以下のいずれかの方法で <strong>Your SORACOM SIMs</strong> ビューを開きます
+<ul>
+<li>Activity Bar の Napter アイコンをクリックする</li>
+<li>コマンドパレット (<kbd>⇧⌘P</kbd>) で <strong>Show SORACOM Napter Tools</strong> とタイプする</li>
+<li>デフォルトのショートカットキー (<kbd>⌃⇧N</kbd>) を使う</li>
+</ul>
+</li>
+<li>オンラインの SIM が表示されますので Napter でアクセスしたい SIM を右クリック(または右端のアイコンをクリック)しポートマッピングを作成します</li>
+<li>インプットボックスが表示されますので <kbd>⌘V</kbd> でペーストしエンターを押します</li>
+<li>新しい vscode のウィンドウが開き接続します (初回接続時は Remote - SSH 拡張の設定のため多少時間がかかります)</li>
+<li>Enjoy!</li>
+</ol>
+<p>ステップ 3 でインプットボックスにペーストしなければならないのがややかっこ悪いのですが、Remote - SSH 拡張が API を公開していないため苦肉の策であります。以下の issue で要望を出しています。</p>
+<ul>
+<li><a href="https://github.com/microsoft/vscode-remote-release/issues/1888">allow other extensions to pass connection string · Issue #1888 · microsoft/vscode-remote-release</a></li>
+</ul>
+<p>そのほかの設定項目やアイコンの説明は <a href="https://github.com/0x6b/soracom-napter-tools-vscode">README</a> やソースコードをご覧ください。たとえば <a href="https://github.com/soracom/soracom-cli/">soracom-cli</a> を使っている場合はその設定ファイルを使えます。また、よく使う操作は vscode のコマンドパレットに登録していますので、慣れるとキーボードだけで操作を完結できます。</p>
+<p>バグ報告はご質問は <a href="https://github.com/0x6b/soracom-napter-tools-vscode/issues">GitHub Issue</a> までどうぞ。</p>
+<h2 id="matome">まとめ</h2>
+<p>この拡張は公開されている情報のみを利用して実装しました。API っていいですね。</p>
+
+    </div>
+
+    
+    
+
+    <div class="post-footer">
+        
+            
+                <div class="post-tags">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg>
+                    
+                        <a href="https:&#x2F;&#x2F;0x6b.github.io&#x2F;tags&#x2F;soracom&#x2F;">#soracom</a>
+                    
+                        <a href="https:&#x2F;&#x2F;0x6b.github.io&#x2F;tags&#x2F;napter&#x2F;">#napter</a>
+                    
+                        <a href="https:&#x2F;&#x2F;0x6b.github.io&#x2F;tags&#x2F;vscode&#x2F;">#vscode</a>
+                    
+                        <a href="https:&#x2F;&#x2F;0x6b.github.io&#x2F;tags&#x2F;extension&#x2F;">#extension</a>
+                    
+                </div>
+            
+            
+        
+
+    </div>
+
+    
+    
+</article>
+
+
+        </div>
+      </main>
+
+      <footer id="footer">
+        &copy; <a href="https://github.com/0x6b">0x6b</a> 2019. Opinion here is
+        mine, not employer's.
+      </footer>
+    </div>
+  </body>
+</html>
