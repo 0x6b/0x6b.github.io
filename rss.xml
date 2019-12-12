@@ -40,7 +40,7 @@
   &lt;&#x2F;video&gt;
   &lt;figcaption&gt;SORACOM Napter Tools for Visual Studio Code&lt;&#x2F;figcaption&gt;
 &lt;&#x2F;center&gt;
-&lt;p&gt;動画を見ていただくと大体想像つくと思いますが、以下の操作が vscode の中で完結します(3G のため接続まで少し時間がかかっています)。&lt;&#x2F;p&gt;
+&lt;p&gt;動画を見ていただくと大体想像つくと思いますが、以下の操作が vscode の中で完結します(動画では 3G 使っているため SSH 接続まで少し時間がかかっています)。&lt;&#x2F;p&gt;
 &lt;ul&gt;
 &lt;li&gt;新しいポートマッピング (Napter オンデマンドリモートアクセス)の作成&lt;&#x2F;li&gt;
 &lt;li&gt;既存のポートマッピングの情報表示
@@ -159,7 +159,7 @@
 &lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;microsoft&#x2F;vscode-remote-release&#x2F;issues&#x2F;1888&quot;&gt;allow other extensions to pass connection string · Issue #1888 · microsoft&#x2F;vscode-remote-release&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
 &lt;&#x2F;ul&gt;
 &lt;p&gt;そのほかの設定項目やアイコンの説明は &lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;0x6b&#x2F;soracom-napter-tools-vscode&quot;&gt;README&lt;&#x2F;a&gt; やソースコードをご覧ください。たとえば &lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;soracom&#x2F;soracom-cli&#x2F;&quot;&gt;soracom-cli&lt;&#x2F;a&gt; を使っている場合はその設定ファイルを使えます。また、よく使う操作は vscode のコマンドパレットに登録していますので、慣れるとキーボードだけで操作を完結できます。&lt;&#x2F;p&gt;
-&lt;p&gt;バグ報告はご質問は &lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;0x6b&#x2F;soracom-napter-tools-vscode&#x2F;issues&quot;&gt;GitHub Issue&lt;&#x2F;a&gt; までどうぞ。&lt;&#x2F;p&gt;
+&lt;p&gt;バグ報告やご質問は &lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;0x6b&#x2F;soracom-napter-tools-vscode&#x2F;issues&quot;&gt;GitHub Issue&lt;&#x2F;a&gt; までどうぞ。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;matome&quot;&gt;まとめ&lt;&#x2F;h2&gt;
 &lt;p&gt;この拡張は公開されている情報のみを利用して実装しました。API っていいですね。&lt;&#x2F;p&gt;
 </description>
