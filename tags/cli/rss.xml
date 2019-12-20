@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>&#x2F;&#x2F;&#x2F; ----- -..- -.... -...</title>
+        <link>https://0x6b.github.io</link>
+        <description></description>
+        <generator>Zola</generator>
+        <language>en</language>
+        <atom:link href="https://0x6b.github.io/tags/cli/rss.xml" rel="self" type="application/rss+xml"/>
+        <lastBuildDate>Sat, 21 Dec 2019 00:00:00 +0000</lastBuildDate>
+        
+            <item>
+                <title>SORACOM CLI をもっと便利に使えるツール sorashell を作りました</title>
+                <pubDate>Sat, 21 Dec 2019 00:00:00 +0000</pubDate>
+                <link>https://0x6b.github.io/super-charge-your-soracom-command-line-experience-with-sorashell/</link>
+                <guid>https://0x6b.github.io/super-charge-your-soracom-command-line-experience-with-sorashell/</guid>
+                <description>&lt;h2 id=&quot;hazimeni&quot;&gt;はじめに&lt;&#x2F;h2&gt;
+&lt;p&gt;&lt;a href=&quot;https:&#x2F;&#x2F;qiita.com&#x2F;advent-calendar&#x2F;2019&#x2F;soracom2&quot;&gt;SORACOM Advent Calendar 2019 ふたつめ&lt;&#x2F;a&gt; 20 日目の記事です。&lt;&#x2F;p&gt;
+&lt;p&gt;昨日は @kazntree の &lt;a href=&quot;https:&#x2F;&#x2F;qiita.com&#x2F;kazntree&#x2F;items&#x2F;b2bc92508b789a47506f&quot;&gt;やさしさあふれる AT コマンド入門&lt;&#x2F;a&gt; でした。かるた作者の moznion による &lt;a href=&quot;https:&#x2F;&#x2F;moznion.hatenadiary.com&#x2F;entry&#x2F;2019&#x2F;09&#x2F;20&#x2F;172026&quot;&gt;頒布のお知らせ&lt;&#x2F;a&gt; と比べるとそのやさしさが際立っていますね。&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;USB モデムに対して「ショートメッセージ（SMS）送って」とか「USB モデムのメーカーを教えて」などの命令を伝えるためのコマンドが &lt;code&gt;ATコマンド&lt;&#x2F;code&gt; なのです。
+— &lt;a href=&quot;https:&#x2F;&#x2F;qiita.com&#x2F;kazntree&#x2F;items&#x2F;b2bc92508b789a47506f&quot;&gt;やさしさあふれる AT コマンド入門 - Qiita&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;ホラ，皆さん生きていると &lt;code&gt;AT+COPS&lt;&#x2F;code&gt; とか &lt;code&gt;AT+CGDCONT&lt;&#x2F;code&gt; とかよく見たり喋ったりするじゃないですか？
+— &lt;a href=&quot;https:&#x2F;&#x2F;moznion.hatenadiary.com&#x2F;entry&#x2F;2019&#x2F;09&#x2F;20&#x2F;172026&quot;&gt;技術書典 7 (く 39D) にて「AT コマンドかるた」を頒布します！！！ - その手の平は尻もつかめるさ&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;どちらもとても尊敬しているエンジニアなのですが、表現に個性が垣間見えて面白いです。&lt;&#x2F;p&gt;
+&lt;p&gt;さて、今回は SORACOM API をコマンドラインから使える &lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;soracom&#x2F;soracom-cli&#x2F;&quot;&gt;soracom-cli&lt;&#x2F;a&gt; をさらに便利にする &lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;0x6b&#x2F;sorashell&#x2F;&quot;&gt;sorashell&lt;&#x2F;a&gt; というツールを作ってみたので紹介です。&lt;a href=&quot;https:&#x2F;&#x2F;docs.aws.amazon.com&#x2F;cli&#x2F;&quot;&gt;aws-cli&lt;&#x2F;a&gt; に対する &lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;awslabs&#x2F;aws-shell&#x2F;&quot;&gt;aws-shell&lt;&#x2F;a&gt; のような位置付けです。&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;sorashell&quot;&gt;sorashell&lt;&#x2F;h2&gt;
+&lt;p&gt;SORACOM CLI とは前述の通り SORACOM の API をコマンドラインから簡単に呼び出すツールです。&lt;a href=&quot;https:&#x2F;&#x2F;stedolan.github.io&#x2F;jq&#x2F;&quot;&gt;jq&lt;&#x2F;a&gt; など他のコマンドと組み合わせることで日々の操作を効率化しやすく、管理する SIM やデバイスが多くなるほど便利になっていきます。 &lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;soracom&#x2F;soracom-cli&#x2F;blob&#x2F;master&#x2F;README_ja.md&quot;&gt;README_ja.md&lt;&#x2F;a&gt; から特徴を抜粋します。&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;API 定義ファイルから自動生成されるので新しい API がリリースされた場合も迅速に対応&lt;&#x2F;li&gt;
+&lt;li&gt;Go でクロスコンパイルされたバイナリファイルをターゲットの環境にコピーするだけ&lt;&#x2F;li&gt;
+&lt;li&gt;指定された引数を元にリクエストを組み立て、SORACOM API を呼び出し、レスポンス (JSON) をそのまま標準出力へ出力&lt;&#x2F;li&gt;
+&lt;li&gt;bash&#x2F;zsh completion (引数補完) に対応&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;もうこれだけで充分に素敵ツールなのですが、たとえば以下のような悩みがありました。&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;--speed-class-filter&lt;&#x2F;code&gt; や &lt;code&gt;--tag-value-match-mode&lt;&#x2F;code&gt; オプションに指定する値が分からず &lt;a href=&quot;https:&#x2F;&#x2F;www.google.com&#x2F;search?client=firefox-b-d&amp;amp;q=%E3%82%BD%E3%83%A9%E3%82%B3%E3%83%A0+SIM+%E3%82%B9%E3%83%94%E3%83%BC%E3%83%89%E3%82%AF%E3%83%A9%E3%82%B9&quot;&gt;&lt;code&gt;ソラコム SIM スピードクラス&lt;&#x2F;code&gt;&lt;&#x2F;a&gt; などで検索したり、コマンドを一旦キャンセルしてヘルプを見てしまう&lt;&#x2F;li&gt;
+&lt;li&gt;SIM の IMSI や &lt;a href=&quot;https:&#x2F;&#x2F;soracom.jp&#x2F;services&#x2F;inventory&#x2F;&quot;&gt;SORACOM Inventory&lt;&#x2F;a&gt; のデバイス ID を結局 &lt;a href=&quot;https:&#x2F;&#x2F;console.soracom.io&quot;&gt;SORACOM ユーザーコンソール&lt;&#x2F;a&gt; からコピペでもってきてしまう&lt;&#x2F;li&gt;
+&lt;li&gt;SIM や Sigfox デバイスの名前で &lt;code&gt;subscribers get&lt;&#x2F;code&gt; や &lt;code&gt;sigfox-devices get&lt;&#x2F;code&gt; できるともっと便利なのに&lt;&#x2F;li&gt;
+&lt;li&gt;必須オプション覚えられない&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;そんなときに aws-shell を試してみて、これは便利だなと思い Go の勉強を兼ね作ってみました。&lt;&#x2F;p&gt;
+&lt;center&gt;
+  &lt;video controls&gt;
+    &lt;source src=&quot;screencast.mp4&quot; type=&quot;video&#x2F;mp4&quot; &#x2F;&gt;
+    Your browser does not support the video tag.
+  &lt;&#x2F;video&gt;
+  &lt;figcaption&gt;sorashell&lt;&#x2F;figcaption&gt;
+&lt;&#x2F;center&gt;
+&lt;p&gt;補完機能と Fuzzy マッチがとても便利で日々使っています。自分用のはじめての Go プログラムということで荒削りな部分だらけで現時点では macOS のみ対応です。コマンドのパース部分をもっとちゃんと書きたい感じです。&lt;&#x2F;p&gt;
+&lt;p&gt;補完を含むターミナル UI は &lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;c-bata&#x2F;go-prompt&#x2F;&quot;&gt;c-bata&#x2F;go-prompt&lt;&#x2F;a&gt; という素晴らしいライブラリを利用しました。&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;shi-qian-zhun-bei&quot;&gt;事前準備&lt;&#x2F;h2&gt;
+&lt;p&gt;&lt;code&gt;soracom&lt;&#x2F;code&gt; コマンドを &lt;code&gt;os&#x2F;exec&lt;&#x2F;code&gt; 使って呼び出しているだけですので、使うためには SORACOM CLI のセットアップが必要です。 &lt;a href=&quot;https:&#x2F;&#x2F;dev.soracom.io&#x2F;jp&#x2F;docs&#x2F;cli_guide&#x2F;&quot;&gt;SORACOM CLI 利用ガイド&lt;&#x2F;a&gt; にステップバイステップで記載されています。&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;insutoru&quot;&gt;インストール&lt;&#x2F;h2&gt;
+&lt;p&gt;今のところは Go のインストールとリポジトリのクローン、ビルドが必要です。GitHub Actions などでビルドとリリースを自動化しようと思っていますが、アドベントカレンダーに間に合いませんでした (リポジトリには試行錯誤の残骸あり)。&lt;&#x2F;p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;golang.org&#x2F;dl&#x2F;&quot;&gt;Go&lt;&#x2F;a&gt; の導入&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;rakyll&#x2F;static&lt;&#x2F;code&gt; の導入&lt;pre style=&quot;background-color:#0f1419;&quot;&gt;
+&lt;span style=&quot;color:#bfbab0;&quot;&gt;$ go get github.com&#x2F;rakyll&#x2F;statik # install rakyll&#x2F;statik, asset embedder
+&lt;&#x2F;span&gt;&lt;&#x2F;pre&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;リポジトリのクローン&lt;pre style=&quot;background-color:#0f1419;&quot;&gt;
+&lt;span style=&quot;color:#bfbab0;&quot;&gt;$ git clone https:&#x2F;&#x2F;github.com&#x2F;0x6b&#x2F;sorashell
+&lt;&#x2F;span&gt;&lt;&#x2F;pre&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;ビルド&lt;pre style=&quot;background-color:#0f1419;&quot;&gt;
+&lt;span style=&quot;color:#bfbab0;&quot;&gt;$ cd sorashell
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0;&quot;&gt;$ make
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0;&quot;&gt;$ cp .&#x2F;sorashell &#x2F;path&#x2F;to&#x2F;your&#x2F;bin&#x2F;directory
+&lt;&#x2F;span&gt;&lt;&#x2F;pre&gt;&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;h2 id=&quot;shi-ifang&quot;&gt;使い方&lt;&#x2F;h2&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;code&gt;sorashell&lt;&#x2F;code&gt; コマンドを実行するとシェルが立ち上がります。 SORACOM CLI と同じグローバルフラグを使えます。&lt;pre style=&quot;background-color:#0f1419;&quot;&gt;
+&lt;span style=&quot;color:#bfbab0;&quot;&gt;    --api-key string         Specify API key otherwise soracom-cli performs authentication on behalf of you
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0;&quot;&gt;    --api-token string       Specify API token otherwise soracom-cli performs authentication on behalf of you
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0;&quot;&gt;    --coverage-type string   Specify coverage type, &amp;#39;g&amp;#39; for Global, &amp;#39;jp&amp;#39; for Japan
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0;&quot;&gt;-h, --help                   help for soracom
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0;&quot;&gt;    --profile string         Specify profile name
+&lt;&#x2F;span&gt;&lt;&#x2F;pre&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;SORACOM CLI と同じコマンド、引数を受け付けます (最初の &lt;code&gt;soracom&lt;&#x2F;code&gt; は不要)。&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;kbd&gt;Tab&lt;&#x2F;kbd&gt; キーで補完候補を移動し &lt;kbd&gt;Space&lt;&#x2F;kbd&gt; キーで選択します。&lt;&#x2F;li&gt;
+&lt;li&gt;Enjoy!&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;h2 id=&quot;tips-tricks&quot;&gt;Tips &amp;amp; Tricks&lt;&#x2F;h2&gt;
+&lt;ul&gt;
+&lt;li&gt;コマンド名やオプション名は Fuzzy マッチします。たとえば &lt;code&gt;--speed-class-filter&lt;&#x2F;code&gt; は &lt;code&gt;--scf&lt;&#x2F;code&gt; と入力してもマッチします。&lt;&#x2F;li&gt;
+&lt;li&gt;コマンドの補完候補が出なくなったら &lt;code&gt;--&lt;&#x2F;code&gt; を入力するとオプションの補完を始めます。&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;--imsi&lt;&#x2F;code&gt; や &lt;code&gt;--device-id&lt;&#x2F;code&gt;、&lt;code&gt;--resource-id&lt;&#x2F;code&gt; オプションを入力すると、引数の対象となる SIM の IMSI やデバイス ID を取得し補完候補に出します。表示されているすべての文字列 (プランやステータス、名前、モジュールタイプなど) から Fuzzy マッチできます。&lt;&#x2F;li&gt;
+&lt;li&gt;必須オプションには説明に &lt;code&gt;(required)&lt;&#x2F;code&gt; と表示されます。&lt;&#x2F;li&gt;
+&lt;li&gt;以下のオプションに指定できる補完候補を表示します。
+&lt;ul&gt;
+&lt;li&gt;SIM ステータス (&lt;code&gt;--status-filter&lt;&#x2F;code&gt;): &lt;code&gt;active&lt;&#x2F;code&gt;, &lt;code&gt;inactive&lt;&#x2F;code&gt;, &lt;code&gt;ready&lt;&#x2F;code&gt;, &lt;code&gt;suspended&lt;&#x2F;code&gt;, &lt;code&gt;terminated&lt;&#x2F;code&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;SIM スピードクラス (&lt;code&gt;--speed-class-filter&lt;&#x2F;code&gt;): &lt;code&gt;s1.minimum&lt;&#x2F;code&gt;, &lt;code&gt;s1.slow&lt;&#x2F;code&gt;, &lt;code&gt;s1.standard&lt;&#x2F;code&gt;, &lt;code&gt;s1.fast&lt;&#x2F;code&gt;, &lt;code&gt;s1.4xfast&lt;&#x2F;code&gt;, &lt;code&gt;t1.standard&lt;&#x2F;code&gt;, &lt;code&gt;u1.slow&lt;&#x2F;code&gt;, &lt;code&gt;u1.standard&lt;&#x2F;code&gt;&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;他のコマンドへのパイプ &lt;code&gt;|&lt;&#x2F;code&gt; やファイルへのリダイレクト &lt;code&gt;&amp;gt;&lt;&#x2F;code&gt; が使えます。&lt;&#x2F;li&gt;
+&lt;li&gt;先頭に &lt;code&gt;!&lt;&#x2F;code&gt; を入れると通常のコマンド (&lt;code&gt;!cd &#x2F;Users&#x2F;soracom&#x2F;Desktop&lt;&#x2F;code&gt; や &lt;code&gt;!ls&lt;&#x2F;code&gt; など)が実行できます。&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;パラメーターとしてファイルを引数に取るコマンド (&lt;code&gt;event-handlers create&lt;&#x2F;code&gt;) をうまく処理できていません。(また、私がよく使うコマンド以外はあまりテストできていませんので、バグやご質問は &lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;0x6b&#x2F;sorashell&#x2F;issues&quot;&gt;GitHub Issue&lt;&#x2F;a&gt; まで。&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;matome&quot;&gt;まとめ&lt;&#x2F;h2&gt;
+&lt;p&gt;IoT は管理対象デバイス数が大量になりがちです。API や CLI を日々の業務に取り入れて効率化していきたいですね。&lt;&#x2F;p&gt;
+&lt;p&gt;この記事の URL は Amazon Web Services Solutions Architect ブログへのトリビュートです。タイトルや内容は恐れ多くて真似できませんでした。&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;aws.typepad.com&#x2F;sajp&#x2F;2015&#x2F;12&#x2F;super-charge-your-aws-command-line-experience-with-aws-shell.html&quot;&gt;AWS Solutions Architect ブログ: AWS のコマンドライン体験を aws-shell で革新！&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+</description>
+            </item>
+        
+    </channel>
+</rss>
