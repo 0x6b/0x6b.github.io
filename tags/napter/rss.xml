@@ -158,6 +158,16 @@
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;microsoft&#x2F;vscode-remote-release&#x2F;issues&#x2F;1888&quot;&gt;allow other extensions to pass connection string · Issue #1888 · microsoft&#x2F;vscode-remote-release&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
 &lt;&#x2F;ul&gt;
+&lt;hr &#x2F;&gt;
+&lt;h3 id=&quot;2019-12-26-zhui-ji&quot;&gt;2019&#x2F;12&#x2F;26 追記&lt;&#x2F;h3&gt;
+&lt;p&gt;上記の issue で分かりづらいんだけど &lt;code&gt;vscode.newWindow&lt;&#x2F;code&gt; でできるよ、と教えてもらいました。&lt;&#x2F;p&gt;
+&lt;pre style=&quot;background-color:#0f1419;&quot;&gt;
+&lt;span style=&quot;color:#bfbab0;&quot;&gt;commands&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ffb454;&quot;&gt;executeCommand&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0;&quot;&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#c2d94c;&quot;&gt;&amp;quot;vscode.newWindow&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0cc;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0;&quot;&gt;{
+  remoteAuthority&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0cc;&quot;&gt;: &lt;&#x2F;span&gt;&lt;span style=&quot;color:#c2d94c;&quot;&gt;&amp;quot;ssh-remote+...&amp;quot;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0;&quot;&gt;})&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0cc;&quot;&gt;;
+&lt;&#x2F;span&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;ということでバージョン 0.12.0 をリリースしました。既存の振る舞いを変えないよう新しいオプション &lt;code&gt;soracom.napter.ssh.autoConnection&lt;&#x2F;code&gt; を追加していますのでお好みでご利用ください。&lt;&#x2F;p&gt;
+&lt;hr &#x2F;&gt;
 &lt;p&gt;そのほかの設定項目やアイコンの説明は &lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;0x6b&#x2F;soracom-napter-tools-vscode&quot;&gt;README&lt;&#x2F;a&gt; やソースコードをご覧ください。たとえば &lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;soracom&#x2F;soracom-cli&#x2F;&quot;&gt;soracom-cli&lt;&#x2F;a&gt; を使っている場合はその設定ファイルを使えます。また、よく使う操作は vscode のコマンドパレットに登録していますので、慣れるとキーボードだけで操作を完結できます。&lt;&#x2F;p&gt;
 &lt;p&gt;バグ報告やご質問は &lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;0x6b&#x2F;soracom-napter-tools-vscode&#x2F;issues&quot;&gt;GitHub Issue&lt;&#x2F;a&gt; までどうぞ。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;matome&quot;&gt;まとめ&lt;&#x2F;h2&gt;

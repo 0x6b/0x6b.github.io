@@ -115,6 +115,7 @@
                 <li>
                     <a href="https://0x6b.github.io/soracom-napter-tools-vscode/#shi-ifang" class="toc-link">使い方</a>
                     
+                    
                 </li>
                 
                 <li>
@@ -300,6 +301,16 @@
 <ul>
 <li><a href="https://github.com/microsoft/vscode-remote-release/issues/1888">allow other extensions to pass connection string · Issue #1888 · microsoft/vscode-remote-release</a></li>
 </ul>
+<hr />
+<h3 id="2019-12-26-zhui-ji">2019/12/26 追記</h3>
+<p>上記の issue で分かりづらいんだけど <code>vscode.newWindow</code> でできるよ、と教えてもらいました。</p>
+<pre style="background-color:#0f1419;">
+<span style="color:#bfbab0;">commands</span><span style="color:#f29668;">.</span><span style="color:#ffb454;">executeCommand</span><span style="color:#bfbab0;">(</span><span style="color:#c2d94c;">&quot;vscode.newWindow&quot;</span><span style="color:#bfbab0cc;">, </span><span style="color:#bfbab0;">{
+  remoteAuthority</span><span style="color:#bfbab0cc;">: </span><span style="color:#c2d94c;">&quot;ssh-remote+...&quot;
+</span><span style="color:#bfbab0;">})</span><span style="color:#bfbab0cc;">;
+</span></pre>
+<p>ということでバージョン 0.12.0 をリリースしました。既存の振る舞いを変えないよう新しいオプション <code>soracom.napter.ssh.autoConnection</code> を追加していますのでお好みでご利用ください。</p>
+<hr />
 <p>そのほかの設定項目やアイコンの説明は <a href="https://github.com/0x6b/soracom-napter-tools-vscode">README</a> やソースコードをご覧ください。たとえば <a href="https://github.com/soracom/soracom-cli/">soracom-cli</a> を使っている場合はその設定ファイルを使えます。また、よく使う操作は vscode のコマンドパレットに登録していますので、慣れるとキーボードだけで操作を完結できます。</p>
 <p>バグ報告やご質問は <a href="https://github.com/0x6b/soracom-napter-tools-vscode/issues">GitHub Issue</a> までどうぞ。</p>
 <h2 id="matome">まとめ</h2>
