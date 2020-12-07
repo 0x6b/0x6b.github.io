@@ -120,7 +120,7 @@
 <h2 id="soracom-napter-toha">SORACOM Napter とは</h2>
 <p>Napter は、SORACOM の SIM を使用したデバイスへ簡単にセキュアにリモートアクセスできるサービスです。SORACOM IoT SIM の刺さっているデバイスであれば、グローバル IP アドレスを割り当てたり、踏み台サーバーを用意したり、デバイスにエージェントをインストールしたりせずリモートからアクセスできます。必要な時にさっとアクセスできるためちょっとした作業やメンテナンス時にとても便利に使っています。</p>
 <h2 id="nssh-toha"><code>nssh</code> とは</h2>
-<p><code>nssh</code> は、SIM に付けた名前を利用して簡単に SSH できる CLI アプリケーションです。</p>
+<p><code>nssh</code> (<a href="https://github.com/0x6b/nssh">GitHub repository</a>) は、SIM に付けた名前を利用して簡単に SSH できる CLI アプリケーションです。</p>
 <img src="nssh.gif" width="100%" alt="How nssh works" title="How nssh works"/>
 <blockquote>
 <p>残念ながら現時点では macOS のみで動作します。Linux と Windows で実行すると <code>x/crypto/ssh.readVersion</code> の途中でハングアップしてしまい SSH 接続が確立できません。手元では <a href="https://mattn.kaoriya.net/software/lang/go/20170111165324.htm">Big Sky :: Windows からも ssh でリモートコマンド実行したい、それ golang で出来るよ</a> のサンプルも動作しなかったので環境起因の問題かなと思われますが、アドベントカレンダーの期日までに調査できませんでした。</p>
