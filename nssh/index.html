@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1"
+    />
+
+    <title>SORACOM Napter で簡単に SSH できる nssh を作りました &#x2F;&#x2F;&#x2F; ----- -..- -.... -...</title>
+
+    <link rel="alternate"
+    type="application/rss+xml" title="RSS" href="https:&#x2F;&#x2F;0x6b.github.io&#x2F;rss.xml">
+
+    <link
+      href="https://fonts.googleapis.com/css?family=Noto+Sans+JP|Source+Code+Pro&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="https:&#x2F;&#x2F;0x6b.github.io&#x2F;site.css">
+  </head>
+
+  <body>
+    <div class="container">
+      <div id="mobile-navbar" class="mobile-navbar">
+        <div class="mobile-header-logo">
+          <a href="/" class="logo">&#x2F;&#x2F;&#x2F; ----- -..- -.... -...</a>
+        </div>
+      </div>
+
+      <header id="header">
+        <div class="logo">
+          <a href="https:&#x2F;&#x2F;0x6b.github.io">&#x2F;&#x2F;&#x2F; ----- -..- -.... -...</a>
+        </div>
+        <div class="menu">
+          <ul>
+            <li>
+              <a href="https://github.com/0x6b">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path
+                    d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"
+                  ></path>
+                </svg>
+              </a>
+            </li>
+            <li>
+              <a href="https:&#x2F;&#x2F;0x6b.github.io&#x2F;rss.xml">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M4 11a9 9 0 0 1 9 9"></path>
+                  <path d="M4 4a16 16 0 0 1 16 16"></path>
+                  <circle cx="5" cy="19" r="1"></circle>
+                </svg>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </header>
+
+      <main>
+        <div class="content" id="mobile-panel">
+          
+
+
+
+<article class="post">
+    
+<header class="post-header">
+  <h1 class="post-title">
+    <a href="https:&#x2F;&#x2F;0x6b.github.io&#x2F;nssh&#x2F;">SORACOM Napter で簡単に SSH できる nssh を作りました</a>
+  </h1>
+  <div class="post-meta">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="12"
+      height="12"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+      <line x1="16" y1="2" x2="16" y2="6"></line>
+      <line x1="8" y1="2" x2="8" y2="6"></line>
+      <line x1="3" y1="10" x2="21" y2="10"></line>
+    </svg>
+    <span class="post-time">2020-12-07</span>
+  </div>
+</header>
+
+    <div class="post-content">
+      <h2 id="hazimeni">はじめに</h2>
+<p><a href="https://qiita.com/advent-calendar/2020/soracom">SORACOM Advent Calendar 2020</a> 7 日目の記事です。今日は昨年の <a href="https://0x6b.github.io/nssh/">SORACOM Napter 用の Visual Studio Code 拡張を作りました</a> に続いて <a href="https://soracom.jp/services/napter/">SORACOM Napter</a> (以下 Napter) に関する話題です。</p>
+<h2 id="soracom-napter-toha">SORACOM Napter とは</h2>
+<p>Napter は、SORACOM の SIM を使用したデバイスへ簡単にセキュアにリモートアクセスできるサービスです。SORACOM IoT SIM の刺さっているデバイスであれば、グローバル IP アドレスを割り当てたり、踏み台サーバーを用意したり、デバイスにエージェントをインストールしたりせずリモートからアクセスできます。必要な時にさっとアクセスできるためちょっとした作業やメンテナンス時にとても便利に使っています。</p>
+<h2 id="nssh-toha"><code>nssh</code> とは</h2>
+<p><code>nssh</code> は、SIM に付けた名前を利用して簡単に SSH できる CLI アプリケーションです。</p>
+<img src="nssh.gif" width="100%" alt="How nssh works" title="How nssh works"/>
+<blockquote>
+<p>残念ながら現時点では macOS のみで動作します。Linux と Windows で実行すると <code>x/crypto/ssh.readVersion</code> の途中でハングアップしてしまい SSH 接続が確立できません。手元では <a href="https://mattn.kaoriya.net/software/lang/go/20170111165324.htm">Big Sky :: Windows からも ssh でリモートコマンド実行したい、それ golang で出来るよ</a> のサンプルも動作しなかったので環境起因の問題かなと思われますが、アドベントカレンダーの期日までに調査できませんでした。</p>
+</blockquote>
+<p>昨年作った Visual Studio Code 用の拡張 <a href="https://marketplace.visualstudio.com/items?itemName=0x6b.nssh">SORACOM Napter Tools</a> は今も便利に使っています。しかしながらどんどんものぐさになっていくもので、簡単な作業 — ログを見る、SORACOM Harvest にテスト的にデータを送ってみるなど — のたびに vscode の新規ウィンドウが立ち上がってくるのが面倒だなーと思うようになってきました。</p>
+<p>シェルスクリプトで <a href="https://github.com/soracom/soracom-cli/">SORACOM CLI</a> のラッパーを作ってもよかったのですが、<a href="https://pkg.go.dev/golang.org/x/crypto/ssh"><code>x/crypto/ssh</code></a> という Go の標準パッケージが簡単に使えそうだったため勉強を兼ねて作成しました。勉強なので <a href="https://github.com/soracom/soracom-sdk-go">soracom/soracom-sdk-go</a> は使用せずすべて自前で実装しています。</p>
+<p>ここから事前準備と使い方を説明します。</p>
+<h2 id="shi-qian-zhun-bei">事前準備</h2>
+<p>一度だけの事前準備として以下の 4 ステップが必要です。公式ドキュメントを紹介しつつ、簡単に手順を説明します。SORACOM Advent Calendar ということでアカウントの作成などは省いていますが、まだの方はぜひ <a href="https://soracom.jp/start/">SORACOM Air for セルラーの利用方法: 今すぐ始めよう</a> から。</p>
+<ol>
+<li>(SORACOM ユーザーコンソールの作業) SAM ユーザーを作成し、認証キー ID と認証キーシークレットを生成する</li>
+<li>(SORACOM ユーザーコンソールの作業) SSH でアクセスしたい SIM カードに名前をつける</li>
+<li>(アクセス元マシンでの作業) <code>nssh</code> をインストールする</li>
+<li>(アクセス先マシンでの作業) Raspberry Pi などに USB ドングル + SORACOM IoT SIM を装着する</li>
+</ol>
+<h3 id="sam-yuzawozuo-cheng-si-ren-zheng-ki-id-toren-zheng-kisikuretutowosheng-cheng-suru">SAM ユーザーを作成し、認証キー ID と認証キーシークレットを生成する</h3>
+<p>この拡張は SORACOM API を使用していますので、呼び出しのために認証キー ID と認証キーシークレットが必要です。まずはこれらをゲットしましょう。</p>
+<p>セキュリティの観点から専用の SORACOM Access Managament (SAM) ユーザーを作成することをおすすめしますが、すでに SORACOM CLI などを利用中で、必要な権限を持っている <code>default.json</code> がある場合はコピーして <code>nssh.json</code> を作っても OK です。SAM は、管理ユーザー毎にアクセス権限を設定できるアクセス管理機能で、不要なアクセスや操作ミスを未然に防げます。</p>
+<ol>
+<li><a href="https://console.soracom.io/">SORACOM ユーザーコンソール</a> へログイン</li>
+<li>右上のユーザー名のボタンから <strong>セキュリティ</strong> をクリック</li>
+<li><strong>ユーザー作成</strong> ボタンをクリックし、適当な名前と説明を入力して <strong>作成</strong> ボタンをクリック</li>
+<li>作成したユーザー名をクリック</li>
+<li><strong>権限設定</strong> タブで以下の設定を入力し <strong>保存</strong> ボタンをクリック</li>
+</ol>
+<pre style="background-color:#0f1419;">
+<code><span style="color:#bfbab0;">{
+  </span><span style="color:#c2d94c;">&quot;statements&quot;</span><span style="color:#bfbab0cc;">: </span><span style="color:#bfbab0;">[
+    {
+      </span><span style="color:#c2d94c;">&quot;api&quot;</span><span style="color:#bfbab0cc;">: </span><span style="color:#bfbab0;">[
+        </span><span style="color:#c2d94c;">&quot;Subscriber:listSubscribers&quot;</span><span style="color:#bfbab0cc;">,
+        </span><span style="color:#c2d94c;">&quot;PortMapping:listPortMappingsForSubscriber&quot;</span><span style="color:#bfbab0cc;">,
+        </span><span style="color:#c2d94c;">&quot;PortMapping:createPortMapping&quot;
+      </span><span style="color:#bfbab0;">]</span><span style="color:#bfbab0cc;">,
+      </span><span style="color:#c2d94c;">&quot;effect&quot;</span><span style="color:#bfbab0cc;">: </span><span style="color:#c2d94c;">&quot;allow&quot;
+    </span><span style="color:#bfbab0;">}
+  ]
+}
+</span></code></pre>
+<ol start="6">
+<li><strong>認証設定</strong> タブの <strong>認証キーを生成</strong> ボタンをクリックし表示された <strong>認証キー ID</strong> と <strong>認証キーシークレット</strong> をコピー</li>
+<li><code>$HOME/.soracom/nssh.json</code> として以下の内容を保存</li>
+</ol>
+<pre style="background-color:#0f1419;">
+<code><span style="color:#bfbab0;">{
+  </span><span style="color:#c2d94c;">&quot;coverageType&quot;</span><span style="color:#bfbab0cc;">: </span><span style="color:#c2d94c;">&quot;jp&quot;</span><span style="color:#bfbab0cc;">, </span><span style="font-style:italic;color:#5c6773;">// デフォルトのカバレッジ
+  </span><span style="color:#c2d94c;">&quot;authKeyId&quot;</span><span style="color:#bfbab0cc;">: </span><span style="color:#c2d94c;">&quot;keyId-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span style="color:#bfbab0cc;">, </span><span style="font-style:italic;color:#5c6773;">// 認証キー ID
+  </span><span style="color:#c2d94c;">&quot;authKey&quot;</span><span style="color:#bfbab0cc;">: </span><span style="color:#c2d94c;">&quot;secret-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot; </span><span style="font-style:italic;color:#5c6773;">// 認証キーシークレット
+</span><span style="color:#bfbab0;">}
+</span></code></pre>
+<p>用語や詳細なガイドは <a href="https://dev.soracom.io/jp/docs/api_guide/">SORACOM API 利用ガイド</a> を、権限設定の詳細は <a href="https://dev.soracom.io/jp/start/sam/#sam01">SORACOM Access Management を使用して操作権限を管理する</a> も参照してみてください。</p>
+<h3 id="ssh-deakusesusitai-sim-kadoniming-qian-wotukeru">SSH でアクセスしたい SIM カードに名前をつける</h3>
+<p><a href="https://dev.soracom.io/jp/start/console/#sim_detail">ユーザーコンソールの使い方</a> などを参照し名前をつけておいてください。</p>
+<h3 id="nssh-woinsutorusuru"><code>nssh</code> をインストールする</h3>
+<p><a href="https://github.com/0x6b/nssh/releases">Releases</a> セクションからバイナリをダウンロードし、展開した実行ファイルを <code>PATH</code> の通ったディレクトリへ置いてください。</p>
+<h3 id="raspberry-pi-nadoni-usb-donguru-soracom-iot-sim-wozhuang-zhao-suru">Raspberry Pi などに USB ドングル + SORACOM IoT SIM を装着する</h3>
+<p><a href="https://soracom.jp/products/module/ak-020/">3G 対応データ通信端末 AK-020</a> や <a href="https://soracom.jp/products/module/ms2372h_607/">LTE 対応データ通信端末 Huawei MS2372h-607</a> などに SORACOM の SIM をセットし Raspberry Pi に装着、 <a href="https://soracom-files.s3.amazonaws.com/setup_air.sh"><code>setup_air.sh</code></a> を実行してセルラー通信ができるようにしてください。詳細な手順は <a href="https://dev.soracom.io/jp/start/device_setting/">各種デバイスで SORACOM Air を使用する</a> にあります。</p>
+<h2 id="shi-ifang">使い方</h2>
+<p>さて、ここまで来たら SSH はあっという間です。</p>
+<ol>
+<li>お好みのターミナルを開きます</li>
+<li>SIM の名前を指定して <code>nssh</code> を実行します: <code>nssh connect ユーザー名@SIMの名前</code></li>
+<li>Enjoy!</li>
+</ol>
+<p>SIM の名前に空白やシェルが特別に解釈しそうな文字列を含む場合はクオートするなり <code>'</code> や <code>&quot;</code> で囲んでみてください。以下のように気が利いている(と思う)ので便利に使えます。</p>
+<ul>
+<li>SIM がオフラインの場合はポートマッピングを作成しません。</li>
+<li>アクセス元の CIDR が許可されているポートマッピングがすでに存在する場合は再利用します。</li>
+<li><code>ユーザー名@</code> を省略した場合は <code>pi</code> を使用します。</li>
+</ul>
+<p>そのほかにもいくつかオプションがありますので <code>--help</code> や <a href="https://github.com/0x6b/nssh">README</a> をご覧ください。</p>
+<ul>
+<li><code>--duration</code>: アクセス可能時間(デフォルト 60 分)を指定</li>
+<li><code>--port</code>: 宛先ポート(デフォルト <code>22</code>)を指定</li>
+<li><code>--identity</code>: 公開鍵認証に使用するファイルを指定</li>
+<li><code>--coverage-type</code>: カバレッジを指定</li>
+<li><code>--profile-name</code>: 使用するプロファイル(デフォルト <code>nssh</code>) を指定</li>
+</ul>
+<p>バグ報告やご質問は <a href="https://github.com/0x6b/nssh/issues">GitHub Issues</a> までどうぞ。</p>
+<h2 id="matome">まとめ</h2>
+<p>雑に計測したところ SSH ログインまでの所要時間を大きく短縮できました。45 秒も充分にお手軽ですが、6 秒でアクセスできると便利さのレベルが変わりますね。2020 年 12 月現在、SORACOM Napter は 1 アカウントあたり 1 SIM 分を無料で利用できますのでぜひお試しください。</p>
+<ul>
+<li>ユーザーコンソールを使う方法: <strong>45 秒</strong>
+<ol>
+<li>ブラウザを開く</li>
+<li><a href="https://console.soracom.io">ユーザーコンソール</a> へログインする (+ MFA 認証)</li>
+<li>SIM 一覧画面から自分の SIM を探して選択する</li>
+<li><strong>操作</strong> メニューから <strong>オンデマンドリモートアクセス</strong> を選択する</li>
+<li><strong>OK</strong> をクリックする</li>
+<li>払い出された IP アドレスとポート番号をターミナルへコピペして SSH アクセスする</li>
+</ol>
+</li>
+<li>Visual Studio Code 拡張を使う方法: <strong>18 秒</strong>
+<ol>
+<li>vscode を開く</li>
+<li>コマンドパレット(<kbd>⇧⌘P</kbd>)から <code>Create New Port Mapping</code> を選ぶ</li>
+<li>対象の SIM を選択する</li>
+<li>vscode がなぜか毎回聞いてくるので OS の種類として <code>Linux</code> を選択する</li>
+<li>vscode が上がってくるのを待ち統合ターミナルでアクセスする</li>
+</ol>
+</li>
+<li><code>nssh</code> を使う方法: <strong>6 秒</strong> (ただし、シェルの履歴機能を使用)
+<ol>
+<li>ターミナルを開く</li>
+<li><code>nssh connect ユーザー名@SIMの名前</code> で SSH を開始する</li>
+</ol>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+
+    <div class="post-footer">
+        
+            
+                <div class="post-tags">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg>
+                    
+                        <a href="https:&#x2F;&#x2F;0x6b.github.io&#x2F;tags&#x2F;soracom&#x2F;">#soracom</a>
+                    
+                        <a href="https:&#x2F;&#x2F;0x6b.github.io&#x2F;tags&#x2F;napter&#x2F;">#napter</a>
+                    
+                        <a href="https:&#x2F;&#x2F;0x6b.github.io&#x2F;tags&#x2F;ssh&#x2F;">#ssh</a>
+                    
+                        <a href="https:&#x2F;&#x2F;0x6b.github.io&#x2F;tags&#x2F;cli&#x2F;">#cli</a>
+                    
+                </div>
+            
+            
+                <div class="post-nav">
+                    
+                        <a class="previous" href="https:&#x2F;&#x2F;0x6b.github.io&#x2F;super-charge-your-soracom-command-line-experience-with-sorashell&#x2F;">‹ SORACOM CLI をもっと便利に使えるツール sorashell を作りました</a>
+                    
+                    
+                    
+                    
+                </div>
+            
+        
+
+    </div>
+
+    
+    
+</article>
+
+
+        </div>
+      </main>
+
+      <footer id="footer">
+        <p><a href="https://github.com/0x6b">0x6b</a> / Opinion here is mine, not employer's / <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></p>
+      </footer>
+    </div>
+  </body>
+</html>

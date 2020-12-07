@@ -86,51 +86,6 @@
           
 
 
-<div class="post-toc" id="post-toc">
-    <div class="post-toc-content always-active">
-        <nav id="TableOfContents">
-            <ul>
-                
-                <li>
-                    <a href="https://0x6b.github.io/super-charge-your-soracom-command-line-experience-with-sorashell/#hazimeni" class="toc-link">はじめに</a>
-                    
-                </li>
-                
-                <li>
-                    <a href="https://0x6b.github.io/super-charge-your-soracom-command-line-experience-with-sorashell/#sorashell" class="toc-link">sorashell</a>
-                    
-                </li>
-                
-                <li>
-                    <a href="https://0x6b.github.io/super-charge-your-soracom-command-line-experience-with-sorashell/#shi-qian-zhun-bei" class="toc-link">事前準備</a>
-                    
-                </li>
-                
-                <li>
-                    <a href="https://0x6b.github.io/super-charge-your-soracom-command-line-experience-with-sorashell/#insutoru" class="toc-link">インストール</a>
-                    
-                </li>
-                
-                <li>
-                    <a href="https://0x6b.github.io/super-charge-your-soracom-command-line-experience-with-sorashell/#shi-ifang" class="toc-link">使い方</a>
-                    
-                </li>
-                
-                <li>
-                    <a href="https://0x6b.github.io/super-charge-your-soracom-command-line-experience-with-sorashell/#tips-tricks" class="toc-link">Tips &amp; Tricks</a>
-                    
-                </li>
-                
-                <li>
-                    <a href="https://0x6b.github.io/super-charge-your-soracom-command-line-experience-with-sorashell/#matome" class="toc-link">まとめ</a>
-                    
-                </li>
-                
-            </ul>
-        </nav>
-    </div>
-</div>
-
 
 <article class="post">
     
@@ -205,26 +160,26 @@
 <ol>
 <li><a href="https://golang.org/dl/">Go</a> の導入</li>
 <li><code>rakyll/static</code> の導入<pre style="background-color:#0f1419;">
-<span style="color:#bfbab0;">$ go get github.com/rakyll/statik # install rakyll/statik, asset embedder
-</span></pre></li>
+<code><span style="color:#bfbab0;">$ go get github.com/rakyll/statik # install rakyll/statik, asset embedder
+</span></code></pre></li>
 <li>リポジトリのクローン<pre style="background-color:#0f1419;">
-<span style="color:#bfbab0;">$ git clone https://github.com/0x6b/sorashell
-</span></pre></li>
+<code><span style="color:#bfbab0;">$ git clone https://github.com/0x6b/sorashell
+</span></code></pre></li>
 <li>ビルド<pre style="background-color:#0f1419;">
-<span style="color:#bfbab0;">$ cd sorashell
+<code><span style="color:#bfbab0;">$ cd sorashell
 </span><span style="color:#bfbab0;">$ make
 </span><span style="color:#bfbab0;">$ cp ./sorashell /path/to/your/bin/directory
-</span></pre></li>
+</span></code></pre></li>
 </ol>
 <h2 id="shi-ifang">使い方</h2>
 <ol>
 <li><code>sorashell</code> コマンドを実行するとシェルが立ち上がります。 SORACOM CLI と同じグローバルフラグを使えます。<pre style="background-color:#0f1419;">
-<span style="color:#bfbab0;">    --api-key string         Specify API key otherwise soracom-cli performs authentication on behalf of you
+<code><span style="color:#bfbab0;">    --api-key string         Specify API key otherwise soracom-cli performs authentication on behalf of you
 </span><span style="color:#bfbab0;">    --api-token string       Specify API token otherwise soracom-cli performs authentication on behalf of you
 </span><span style="color:#bfbab0;">    --coverage-type string   Specify coverage type, &#39;g&#39; for Global, &#39;jp&#39; for Japan
 </span><span style="color:#bfbab0;">-h, --help                   help for soracom
 </span><span style="color:#bfbab0;">    --profile string         Specify profile name
-</span></pre></li>
+</span></code></pre></li>
 <li>SORACOM CLI と同じコマンド、引数を受け付けます (最初の <code>soracom</code> は不要)。</li>
 <li><kbd>Tab</kbd> キーで補完候補を移動し <kbd>Space</kbd> キーで選択します。</li>
 <li>Enjoy!</li>
@@ -244,7 +199,7 @@
 <li>他のコマンドへのパイプ <code>|</code> やファイルへのリダイレクト <code>&gt;</code> が使えます。</li>
 <li>先頭に <code>!</code> を入れると通常のコマンド (<code>!cd /Users/soracom/Desktop</code> や <code>!ls</code> など)が実行できます。</li>
 </ul>
-<p>パラメーターとしてファイルを引数に取るコマンド (<code>event-handlers create</code>) をうまく処理できていません。(また、私がよく使うコマンド以外はあまりテストできていませんので、バグやご質問は <a href="https://github.com/0x6b/sorashell/issues">GitHub Issue</a> まで。</p>
+<p>パラメーターとしてファイルを引数に取るコマンド (<code>event-handlers create</code>) をうまく処理できていません。(また、私がよく使うコマンド以外はあまりテストできていませんので、バグやご質問は <a href="https://github.com/0x6b/sorashell/issues">GitHub Issues</a> まで。</p>
 <h2 id="matome">まとめ</h2>
 <p>IoT は管理対象デバイス数が大量になりがちです。API や CLI を日々の業務に取り入れて効率化していきたいですね。</p>
 <p>この記事の URL は Amazon Web Services Solutions Architect ブログへのトリビュートです。タイトルや内容は恐れ多くて真似できませんでした。</p>
@@ -274,6 +229,8 @@
                     
                         <a class="previous" href="https:&#x2F;&#x2F;0x6b.github.io&#x2F;soracom-napter-tools-vscode&#x2F;">‹ SORACOM Napter 用の Visual Studio Code 拡張を作りました</a>
                     
+                    
+                        <a class="next" href="https:&#x2F;&#x2F;0x6b.github.io&#x2F;nssh&#x2F;">SORACOM Napter で簡単に SSH できる nssh を作りました ›</a>
                     
                     
                     

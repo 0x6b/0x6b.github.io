@@ -1,58 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-    
-        <url>
-            <loc>https://0x6b.github.io/</loc>
-            
-        </url>
-    
-        <url>
-            <loc>https://0x6b.github.io/page/1/</loc>
-            
-        </url>
-    
-        <url>
-            <loc>https://0x6b.github.io/soracom-napter-tools-vscode/</loc>
-            
-                <lastmod>2019-12-13</lastmod>
-            
-        </url>
-    
-        <url>
-            <loc>https://0x6b.github.io/super-charge-your-soracom-command-line-experience-with-sorashell/</loc>
-            
-                <lastmod>2019-12-21</lastmod>
-            
-        </url>
-    
-        <url>
-            <loc>https://0x6b.github.io/tags/</loc>
-            
-        </url>
-    
-        <url>
-            <loc>https://0x6b.github.io/tags/cli/</loc>
-            
-        </url>
-    
-        <url>
-            <loc>https://0x6b.github.io/tags/extension/</loc>
-            
-        </url>
-    
-        <url>
-            <loc>https://0x6b.github.io/tags/napter/</loc>
-            
-        </url>
-    
-        <url>
-            <loc>https://0x6b.github.io/tags/soracom/</loc>
-            
-        </url>
-    
-        <url>
-            <loc>https://0x6b.github.io/tags/vscode/</loc>
-            
-        </url>
-    
+    <url>
+        <loc>https://0x6b.github.io/</loc>
+    </url>
+    <url>
+        <loc>https://0x6b.github.io/nssh/</loc>
+        <lastmod>2020-12-07</lastmod>
+    </url>
+    <url>
+        <loc>https://0x6b.github.io/page/1/</loc>
+    </url>
+    <url>
+        <loc>https://0x6b.github.io/soracom-napter-tools-vscode/</loc>
+        <lastmod>2019-12-13</lastmod>
+    </url>
+    <url>
+        <loc>https://0x6b.github.io/super-charge-your-soracom-command-line-experience-with-sorashell/</loc>
+        <lastmod>2019-12-21</lastmod>
+    </url>
+    <url>
+        <loc>https://0x6b.github.io/tags/</loc>
+    </url>
+    <url>
+        <loc>https://0x6b.github.io/tags/cli/</loc>
+    </url>
+    <url>
+        <loc>https://0x6b.github.io/tags/extension/</loc>
+    </url>
+    <url>
+        <loc>https://0x6b.github.io/tags/napter/</loc>
+    </url>
+    <url>
+        <loc>https://0x6b.github.io/tags/soracom/</loc>
+    </url>
+    <url>
+        <loc>https://0x6b.github.io/tags/ssh/</loc>
+    </url>
+    <url>
+        <loc>https://0x6b.github.io/tags/vscode/</loc>
+    </url>
 </urlset>
