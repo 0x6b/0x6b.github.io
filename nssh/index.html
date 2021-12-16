@@ -15,14 +15,14 @@
     <title>SORACOM Napter で簡単に SSH できる nssh を作りました &#x2F;&#x2F;&#x2F; ----- -..- -.... -...</title>
 
     <link rel="alternate"
-    type="application/rss+xml" title="RSS" href="https:&#x2F;&#x2F;0x6b.github.io&#x2F;rss.xml">
+    type="application/rss+xml" title="RSS" href="https://0x6b.github.io/rss.xml">
 
     <link
       href="https://fonts.googleapis.com/css?family=Noto+Sans+JP|Source+Code+Pro&display=swap"
       rel="stylesheet"
     />
 
-    <link rel="stylesheet" href="https:&#x2F;&#x2F;0x6b.github.io&#x2F;site.css">
+    <link rel="stylesheet" href="https://0x6b.github.io/site.css">
   </head>
 
   <body>
@@ -59,7 +59,7 @@
               </a>
             </li>
             <li>
-              <a href="https:&#x2F;&#x2F;0x6b.github.io&#x2F;rss.xml">
+              <a href="https://0x6b.github.io/rss.xml">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="24"
@@ -146,30 +146,28 @@
 <li>作成したユーザー名をクリック</li>
 <li><strong>権限設定</strong> タブで以下の設定を入力し <strong>保存</strong> ボタンをクリック</li>
 </ol>
-<pre style="background-color:#0f1419;">
-<code><span style="color:#bfbab0;">{
-  </span><span style="color:#c2d94c;">&quot;statements&quot;</span><span style="color:#bfbab0cc;">: </span><span style="color:#bfbab0;">[
-    {
-      </span><span style="color:#c2d94c;">&quot;api&quot;</span><span style="color:#bfbab0cc;">: </span><span style="color:#bfbab0;">[
-        </span><span style="color:#c2d94c;">&quot;Subscriber:listSubscribers&quot;</span><span style="color:#bfbab0cc;">,
-        </span><span style="color:#c2d94c;">&quot;PortMapping:listPortMappingsForSubscriber&quot;</span><span style="color:#bfbab0cc;">,
-        </span><span style="color:#c2d94c;">&quot;PortMapping:createPortMapping&quot;
-      </span><span style="color:#bfbab0;">]</span><span style="color:#bfbab0cc;">,
-      </span><span style="color:#c2d94c;">&quot;effect&quot;</span><span style="color:#bfbab0cc;">: </span><span style="color:#c2d94c;">&quot;allow&quot;
-    </span><span style="color:#bfbab0;">}
-  ]
-}
+<pre data-lang="json" style="background-color:#0f1419;color:#bfbab0;" class="language-json "><code class="language-json" data-lang="json"><span>{
+</span><span>  </span><span style="color:#c2d94c;">&quot;statements&quot;</span><span style="color:#bfbab0cc;">: </span><span>[
+</span><span>    {
+</span><span>      </span><span style="color:#c2d94c;">&quot;api&quot;</span><span style="color:#bfbab0cc;">: </span><span>[
+</span><span>        </span><span style="color:#c2d94c;">&quot;Subscriber:listSubscribers&quot;</span><span style="color:#bfbab0cc;">,
+</span><span>        </span><span style="color:#c2d94c;">&quot;PortMapping:listPortMappingsForSubscriber&quot;</span><span style="color:#bfbab0cc;">,
+</span><span>        </span><span style="color:#c2d94c;">&quot;PortMapping:createPortMapping&quot;
+</span><span>      ]</span><span style="color:#bfbab0cc;">,
+</span><span>      </span><span style="color:#c2d94c;">&quot;effect&quot;</span><span style="color:#bfbab0cc;">: </span><span style="color:#c2d94c;">&quot;allow&quot;
+</span><span>    }
+</span><span>  ]
+</span><span>}
 </span></code></pre>
 <ol start="6">
 <li><strong>認証設定</strong> タブの <strong>認証キーを生成</strong> ボタンをクリックし表示された <strong>認証キー ID</strong> と <strong>認証キーシークレット</strong> をコピー</li>
 <li><code>$HOME/.soracom/nssh.json</code> として以下の内容を保存</li>
 </ol>
-<pre style="background-color:#0f1419;">
-<code><span style="color:#bfbab0;">{
-  </span><span style="color:#c2d94c;">&quot;coverageType&quot;</span><span style="color:#bfbab0cc;">: </span><span style="color:#c2d94c;">&quot;jp&quot;</span><span style="color:#bfbab0cc;">, </span><span style="font-style:italic;color:#5c6773;">// デフォルトのカバレッジ
-  </span><span style="color:#c2d94c;">&quot;authKeyId&quot;</span><span style="color:#bfbab0cc;">: </span><span style="color:#c2d94c;">&quot;keyId-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span style="color:#bfbab0cc;">, </span><span style="font-style:italic;color:#5c6773;">// 認証キー ID
-  </span><span style="color:#c2d94c;">&quot;authKey&quot;</span><span style="color:#bfbab0cc;">: </span><span style="color:#c2d94c;">&quot;secret-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot; </span><span style="font-style:italic;color:#5c6773;">// 認証キーシークレット
-</span><span style="color:#bfbab0;">}
+<pre data-lang="json" style="background-color:#0f1419;color:#bfbab0;" class="language-json "><code class="language-json" data-lang="json"><span>{
+</span><span>  </span><span style="color:#c2d94c;">&quot;coverageType&quot;</span><span style="color:#bfbab0cc;">: </span><span style="color:#c2d94c;">&quot;jp&quot;</span><span style="color:#bfbab0cc;">, </span><span style="font-style:italic;color:#5c6773;">// デフォルトのカバレッジ
+</span><span>  </span><span style="color:#c2d94c;">&quot;authKeyId&quot;</span><span style="color:#bfbab0cc;">: </span><span style="color:#c2d94c;">&quot;keyId-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span style="color:#bfbab0cc;">, </span><span style="font-style:italic;color:#5c6773;">// 認証キー ID
+</span><span>  </span><span style="color:#c2d94c;">&quot;authKey&quot;</span><span style="color:#bfbab0cc;">: </span><span style="color:#c2d94c;">&quot;secret-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot; </span><span style="font-style:italic;color:#5c6773;">// 認証キーシークレット
+</span><span>}
 </span></code></pre>
 <p>用語や詳細なガイドは <a href="https://dev.soracom.io/jp/docs/api_guide/">SORACOM API 利用ガイド</a> を、権限設定の詳細は <a href="https://dev.soracom.io/jp/start/sam/#sam01">SORACOM Access Management を使用して操作権限を管理する</a> も参照してみてください。</p>
 <h3 id="ssh-deakusesusitai-sim-kadoniming-qian-wotukeru">SSH でアクセスしたい SIM カードに名前をつける</h3>
@@ -241,13 +239,13 @@
                 <div class="post-tags">
                     <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg>
                     
-                        <a href="https:&#x2F;&#x2F;0x6b.github.io&#x2F;tags&#x2F;soracom&#x2F;">#soracom</a>
+                        <a href="https://0x6b.github.io/tags/soracom/">#soracom</a>
                     
-                        <a href="https:&#x2F;&#x2F;0x6b.github.io&#x2F;tags&#x2F;napter&#x2F;">#napter</a>
+                        <a href="https://0x6b.github.io/tags/napter/">#napter</a>
                     
-                        <a href="https:&#x2F;&#x2F;0x6b.github.io&#x2F;tags&#x2F;ssh&#x2F;">#ssh</a>
+                        <a href="https://0x6b.github.io/tags/ssh/">#ssh</a>
                     
-                        <a href="https:&#x2F;&#x2F;0x6b.github.io&#x2F;tags&#x2F;cli&#x2F;">#cli</a>
+                        <a href="https://0x6b.github.io/tags/cli/">#cli</a>
                     
                 </div>
             
@@ -256,6 +254,8 @@
                     
                         <a class="previous" href="https:&#x2F;&#x2F;0x6b.github.io&#x2F;super-charge-your-soracom-command-line-experience-with-sorashell&#x2F;">‹ SORACOM CLI をもっと便利に使えるツール sorashell を作りました</a>
                     
+                    
+                        <a class="next" href="https:&#x2F;&#x2F;0x6b.github.io&#x2F;soracom-arc-and-aws-lambda-extension&#x2F;">soratun を改造して AWS Lambda から簡単に SORACOM Arc を使ってみました ›</a>
                     
                     
                     

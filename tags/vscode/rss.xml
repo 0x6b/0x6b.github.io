@@ -1,20 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
     <channel>
-        <title>&#x2F;&#x2F;&#x2F; ----- -..- -.... -...</title>
+      <title>&#x2F;&#x2F;&#x2F; ----- -..- -.... -... - vscode</title>
         <link>https://0x6b.github.io</link>
         <description></description>
         <generator>Zola</generator>
         <language>en</language>
         <atom:link href="https://0x6b.github.io/tags/vscode/rss.xml" rel="self" type="application/rss+xml"/>
         <lastBuildDate>Fri, 13 Dec 2019 00:00:00 +0000</lastBuildDate>
-        
-            <item>
-                <title>SORACOM Napter 用の Visual Studio Code 拡張を作りました</title>
-                <pubDate>Fri, 13 Dec 2019 00:00:00 +0000</pubDate>
-                <link>https://0x6b.github.io/soracom-napter-tools-vscode/</link>
-                <guid>https://0x6b.github.io/soracom-napter-tools-vscode/</guid>
-                <description>&lt;h2 id=&quot;hazimeni&quot;&gt;はじめに&lt;&#x2F;h2&gt;
+        <item>
+            <title>SORACOM Napter 用の Visual Studio Code 拡張を作りました</title>
+            <pubDate>Fri, 13 Dec 2019 00:00:00 +0000</pubDate>
+            <link>https://0x6b.github.io/soracom-napter-tools-vscode/</link>
+            <guid>https://0x6b.github.io/soracom-napter-tools-vscode/</guid>
+            <description>&lt;h2 id=&quot;hazimeni&quot;&gt;はじめに&lt;&#x2F;h2&gt;
 &lt;p&gt;&lt;a href=&quot;https:&#x2F;&#x2F;qiita.com&#x2F;advent-calendar&#x2F;2019&#x2F;soracom&quot;&gt;SORACOM Advent Calendar 2019&lt;&#x2F;a&gt; 13 日目の記事です。&lt;&#x2F;p&gt;
 &lt;p&gt;昨日は @toolyee からの &lt;a href=&quot;https:&#x2F;&#x2F;medium.com&#x2F;@toolyee&#x2F;iot%E3%81%AE%E4%B8%80%E7%95%AA%E7%B0%A1%E5%8D%98%E3%81%AA%E3%83%87%E3%83%A2-%E5%BD%93%E7%A4%BE%E6%AF%94-be76fd2c5184?&quot;&gt;IoT の一番簡単なデモ！(当社比)&lt;&#x2F;a&gt; でした。@hayate_h さんの &lt;a href=&quot;https:&#x2F;&#x2F;qiita.com&#x2F;hayate_h&#x2F;items&#x2F;4b755e15ec9cd5a55e31&quot;&gt;SORACOM LTE-M Button を使って、「モテモテスイッチ」を開発する。&lt;&#x2F;a&gt; から LTE-M ボタンの話題が続いたところで、今回は SORACOM Napter のお話です。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;soracom-napter-toha&quot;&gt;SORACOM Napter とは&lt;&#x2F;h2&gt;
@@ -96,24 +95,23 @@
 &lt;li&gt;作成したユーザー名をクリック&lt;&#x2F;li&gt;
 &lt;li&gt;&lt;strong&gt;権限設定&lt;&#x2F;strong&gt; タブで以下の拡張の動作に必要な権限のみを許可する設定を入力し &lt;strong&gt;保存&lt;&#x2F;strong&gt; ボタンをクリック&lt;&#x2F;li&gt;
 &lt;&#x2F;ol&gt;
-&lt;pre style=&quot;background-color:#0f1419;&quot;&gt;
-&lt;span style=&quot;color:#bfbab0;&quot;&gt;{
-  &lt;&#x2F;span&gt;&lt;span style=&quot;color:#39bae6;&quot;&gt;&amp;quot;statements&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0cc;&quot;&gt;: &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0;&quot;&gt;[
-    {
-      &lt;&#x2F;span&gt;&lt;span style=&quot;color:#39bae6;&quot;&gt;&amp;quot;api&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0cc;&quot;&gt;: &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0;&quot;&gt;[
-        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#c2d94c;&quot;&gt;&amp;quot;Subscriber:listSubscribers&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0cc;&quot;&gt;,
-        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#c2d94c;&quot;&gt;&amp;quot;Subscriber:getSubscriber&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0cc;&quot;&gt;,
-        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#c2d94c;&quot;&gt;&amp;quot;PortMapping:listPortMappings&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0cc;&quot;&gt;,
-        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#c2d94c;&quot;&gt;&amp;quot;PortMapping:createPortMapping&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0cc;&quot;&gt;,
-        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#c2d94c;&quot;&gt;&amp;quot;PortMapping:deletePortMapping&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0cc;&quot;&gt;,
-        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#c2d94c;&quot;&gt;&amp;quot;Subscriber:listSessionEvents&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0cc;&quot;&gt;,
-        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#c2d94c;&quot;&gt;&amp;quot;AuditLog:getNapterAuditLogs&amp;quot;
-      &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0;&quot;&gt;]&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0cc;&quot;&gt;,
-      &lt;&#x2F;span&gt;&lt;span style=&quot;color:#39bae6;&quot;&gt;&amp;quot;effect&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0cc;&quot;&gt;: &lt;&#x2F;span&gt;&lt;span style=&quot;color:#c2d94c;&quot;&gt;&amp;quot;allow&amp;quot;
-    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0;&quot;&gt;}
-  ]
-}
-&lt;&#x2F;span&gt;&lt;&#x2F;pre&gt;
+&lt;pre data-lang=&quot;json&quot; style=&quot;background-color:#0f1419;color:#bfbab0;&quot; class=&quot;language-json &quot;&gt;&lt;code class=&quot;language-json&quot; data-lang=&quot;json&quot;&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;  &lt;&#x2F;span&gt;&lt;span style=&quot;color:#c2d94c;&quot;&gt;&amp;quot;statements&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0cc;&quot;&gt;: &lt;&#x2F;span&gt;&lt;span&gt;[
+&lt;&#x2F;span&gt;&lt;span&gt;    {
+&lt;&#x2F;span&gt;&lt;span&gt;      &lt;&#x2F;span&gt;&lt;span style=&quot;color:#c2d94c;&quot;&gt;&amp;quot;api&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0cc;&quot;&gt;: &lt;&#x2F;span&gt;&lt;span&gt;[
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#c2d94c;&quot;&gt;&amp;quot;Subscriber:listSubscribers&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0cc;&quot;&gt;,
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#c2d94c;&quot;&gt;&amp;quot;Subscriber:getSubscriber&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0cc;&quot;&gt;,
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#c2d94c;&quot;&gt;&amp;quot;PortMapping:listPortMappings&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0cc;&quot;&gt;,
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#c2d94c;&quot;&gt;&amp;quot;PortMapping:createPortMapping&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0cc;&quot;&gt;,
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#c2d94c;&quot;&gt;&amp;quot;PortMapping:deletePortMapping&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0cc;&quot;&gt;,
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#c2d94c;&quot;&gt;&amp;quot;Subscriber:listSessionEvents&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0cc;&quot;&gt;,
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#c2d94c;&quot;&gt;&amp;quot;AuditLog:getNapterAuditLogs&amp;quot;
+&lt;&#x2F;span&gt;&lt;span&gt;      ]&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0cc;&quot;&gt;,
+&lt;&#x2F;span&gt;&lt;span&gt;      &lt;&#x2F;span&gt;&lt;span style=&quot;color:#c2d94c;&quot;&gt;&amp;quot;effect&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0cc;&quot;&gt;: &lt;&#x2F;span&gt;&lt;span style=&quot;color:#c2d94c;&quot;&gt;&amp;quot;allow&amp;quot;
+&lt;&#x2F;span&gt;&lt;span&gt;    }
+&lt;&#x2F;span&gt;&lt;span&gt;  ]
+&lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
 &lt;ol start=&quot;6&quot;&gt;
 &lt;li&gt;&lt;strong&gt;認証設定&lt;&#x2F;strong&gt; タブの &lt;strong&gt;認証キーを生成&lt;&#x2F;strong&gt; ボタンをクリックし表示された &lt;strong&gt;認証キー ID&lt;&#x2F;strong&gt; と &lt;strong&gt;認証キーシークレット&lt;&#x2F;strong&gt; をコピー&lt;&#x2F;li&gt;
 &lt;&#x2F;ol&gt;
@@ -161,19 +159,17 @@
 &lt;hr &#x2F;&gt;
 &lt;h3 id=&quot;2019-12-26-zhui-ji&quot;&gt;2019&#x2F;12&#x2F;26 追記&lt;&#x2F;h3&gt;
 &lt;p&gt;上記の issue で分かりづらいんだけど &lt;code&gt;vscode.newWindow&lt;&#x2F;code&gt; でできるよ、と教えてもらいました。&lt;&#x2F;p&gt;
-&lt;pre style=&quot;background-color:#0f1419;&quot;&gt;
-&lt;span style=&quot;color:#bfbab0;&quot;&gt;commands&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ffb454;&quot;&gt;executeCommand&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0;&quot;&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#c2d94c;&quot;&gt;&amp;quot;vscode.newWindow&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0cc;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0;&quot;&gt;{
-  remoteAuthority&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0cc;&quot;&gt;: &lt;&#x2F;span&gt;&lt;span style=&quot;color:#c2d94c;&quot;&gt;&amp;quot;ssh-remote+...&amp;quot;
-&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0;&quot;&gt;})&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0cc;&quot;&gt;;
-&lt;&#x2F;span&gt;&lt;&#x2F;pre&gt;
+&lt;pre data-lang=&quot;ts&quot; style=&quot;background-color:#0f1419;color:#bfbab0;&quot; class=&quot;language-ts &quot;&gt;&lt;code class=&quot;language-ts&quot; data-lang=&quot;ts&quot;&gt;&lt;span&gt;commands&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ffb454;&quot;&gt;executeCommand&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#c2d94c;&quot;&gt;&amp;quot;vscode.newWindow&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0cc;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;  remoteAuthority&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0cc;&quot;&gt;: &lt;&#x2F;span&gt;&lt;span style=&quot;color:#c2d94c;&quot;&gt;&amp;quot;ssh-remote+...&amp;quot;
+&lt;&#x2F;span&gt;&lt;span&gt;})&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0cc;&quot;&gt;;
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
 &lt;p&gt;ということでバージョン 0.12.0 をリリースしました。既存の振る舞いを変えないよう新しいオプション &lt;code&gt;soracom.napter.ssh.autoConnection&lt;&#x2F;code&gt; を追加していますのでお好みでご利用ください。&lt;&#x2F;p&gt;
 &lt;hr &#x2F;&gt;
 &lt;p&gt;そのほかの設定項目やアイコンの説明は &lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;0x6b&#x2F;soracom-napter-tools-vscode&quot;&gt;README&lt;&#x2F;a&gt; やソースコードをご覧ください。たとえば &lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;soracom&#x2F;soracom-cli&#x2F;&quot;&gt;soracom-cli&lt;&#x2F;a&gt; を使っている場合はその設定ファイルを使えます。また、よく使う操作は vscode のコマンドパレットに登録していますので、慣れるとキーボードだけで操作を完結できます。&lt;&#x2F;p&gt;
-&lt;p&gt;バグ報告やご質問は &lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;0x6b&#x2F;soracom-napter-tools-vscode&#x2F;issues&quot;&gt;GitHub Issue&lt;&#x2F;a&gt; までどうぞ。&lt;&#x2F;p&gt;
+&lt;p&gt;バグ報告やご質問は &lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;0x6b&#x2F;soracom-napter-tools-vscode&#x2F;issues&quot;&gt;GitHub Issues&lt;&#x2F;a&gt; までどうぞ。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;matome&quot;&gt;まとめ&lt;&#x2F;h2&gt;
 &lt;p&gt;この拡張は公開されている情報のみを利用して実装しました。API っていいですね。&lt;&#x2F;p&gt;
 </description>
-            </item>
-        
+        </item>
     </channel>
 </rss>

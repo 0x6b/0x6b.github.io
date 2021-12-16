@@ -11,6 +11,10 @@
         <loc>https://0x6b.github.io/page/1/</loc>
     </url>
     <url>
+        <loc>https://0x6b.github.io/soracom-arc-and-aws-lambda-extension/</loc>
+        <lastmod>2021-12-16</lastmod>
+    </url>
+    <url>
         <loc>https://0x6b.github.io/soracom-napter-tools-vscode/</loc>
         <lastmod>2019-12-13</lastmod>
     </url>
@@ -22,16 +26,28 @@
         <loc>https://0x6b.github.io/tags/</loc>
     </url>
     <url>
+        <loc>https://0x6b.github.io/tags/arc/</loc>
+    </url>
+    <url>
+        <loc>https://0x6b.github.io/tags/aws/</loc>
+    </url>
+    <url>
         <loc>https://0x6b.github.io/tags/cli/</loc>
     </url>
     <url>
         <loc>https://0x6b.github.io/tags/extension/</loc>
     </url>
     <url>
+        <loc>https://0x6b.github.io/tags/lambda/</loc>
+    </url>
+    <url>
         <loc>https://0x6b.github.io/tags/napter/</loc>
     </url>
     <url>
         <loc>https://0x6b.github.io/tags/soracom/</loc>
+    </url>
+    <url>
+        <loc>https://0x6b.github.io/tags/soratun/</loc>
     </url>
     <url>
         <loc>https://0x6b.github.io/tags/ssh/</loc>

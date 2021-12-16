@@ -15,14 +15,14 @@
     <title>SORACOM CLI をもっと便利に使えるツール sorashell を作りました &#x2F;&#x2F;&#x2F; ----- -..- -.... -...</title>
 
     <link rel="alternate"
-    type="application/rss+xml" title="RSS" href="https:&#x2F;&#x2F;0x6b.github.io&#x2F;rss.xml">
+    type="application/rss+xml" title="RSS" href="https://0x6b.github.io/rss.xml">
 
     <link
       href="https://fonts.googleapis.com/css?family=Noto+Sans+JP|Source+Code+Pro&display=swap"
       rel="stylesheet"
     />
 
-    <link rel="stylesheet" href="https:&#x2F;&#x2F;0x6b.github.io&#x2F;site.css">
+    <link rel="stylesheet" href="https://0x6b.github.io/site.css">
   </head>
 
   <body>
@@ -59,7 +59,7 @@
               </a>
             </li>
             <li>
-              <a href="https:&#x2F;&#x2F;0x6b.github.io&#x2F;rss.xml">
+              <a href="https://0x6b.github.io/rss.xml">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="24"
@@ -159,27 +159,27 @@
 <p>今のところは Go のインストールとリポジトリのクローン、ビルドが必要です。GitHub Actions などでビルドとリリースを自動化しようと思っていますが、アドベントカレンダーに間に合いませんでした (リポジトリには試行錯誤の残骸あり)。</p>
 <ol>
 <li><a href="https://golang.org/dl/">Go</a> の導入</li>
-<li><code>rakyll/static</code> の導入<pre style="background-color:#0f1419;">
-<code><span style="color:#bfbab0;">$ go get github.com/rakyll/statik # install rakyll/statik, asset embedder
-</span></code></pre></li>
-<li>リポジトリのクローン<pre style="background-color:#0f1419;">
-<code><span style="color:#bfbab0;">$ git clone https://github.com/0x6b/sorashell
-</span></code></pre></li>
-<li>ビルド<pre style="background-color:#0f1419;">
-<code><span style="color:#bfbab0;">$ cd sorashell
-</span><span style="color:#bfbab0;">$ make
-</span><span style="color:#bfbab0;">$ cp ./sorashell /path/to/your/bin/directory
-</span></code></pre></li>
+<li><code>rakyll/static</code> の導入<pre data-lang="console" style="background-color:#0f1419;color:#bfbab0;" class="language-console "><code class="language-console" data-lang="console"><span>$ go get github.com/rakyll/statik # install rakyll/statik, asset embedder
+</span></code></pre>
+</li>
+<li>リポジトリのクローン<pre data-lang="console" style="background-color:#0f1419;color:#bfbab0;" class="language-console "><code class="language-console" data-lang="console"><span>$ git clone https://github.com/0x6b/sorashell
+</span></code></pre>
+</li>
+<li>ビルド<pre data-lang="console" style="background-color:#0f1419;color:#bfbab0;" class="language-console "><code class="language-console" data-lang="console"><span>$ cd sorashell
+</span><span>$ make
+</span><span>$ cp ./sorashell /path/to/your/bin/directory
+</span></code></pre>
+</li>
 </ol>
 <h2 id="shi-ifang">使い方</h2>
 <ol>
-<li><code>sorashell</code> コマンドを実行するとシェルが立ち上がります。 SORACOM CLI と同じグローバルフラグを使えます。<pre style="background-color:#0f1419;">
-<code><span style="color:#bfbab0;">    --api-key string         Specify API key otherwise soracom-cli performs authentication on behalf of you
-</span><span style="color:#bfbab0;">    --api-token string       Specify API token otherwise soracom-cli performs authentication on behalf of you
-</span><span style="color:#bfbab0;">    --coverage-type string   Specify coverage type, &#39;g&#39; for Global, &#39;jp&#39; for Japan
-</span><span style="color:#bfbab0;">-h, --help                   help for soracom
-</span><span style="color:#bfbab0;">    --profile string         Specify profile name
-</span></code></pre></li>
+<li><code>sorashell</code> コマンドを実行するとシェルが立ち上がります。 SORACOM CLI と同じグローバルフラグを使えます。<pre style="background-color:#0f1419;color:#bfbab0;"><code><span>    --api-key string         Specify API key otherwise soracom-cli performs authentication on behalf of you
+</span><span>    --api-token string       Specify API token otherwise soracom-cli performs authentication on behalf of you
+</span><span>    --coverage-type string   Specify coverage type, &#39;g&#39; for Global, &#39;jp&#39; for Japan
+</span><span>-h, --help                   help for soracom
+</span><span>    --profile string         Specify profile name
+</span></code></pre>
+</li>
 <li>SORACOM CLI と同じコマンド、引数を受け付けます (最初の <code>soracom</code> は不要)。</li>
 <li><kbd>Tab</kbd> キーで補完候補を移動し <kbd>Space</kbd> キーで選択します。</li>
 <li>Enjoy!</li>
@@ -218,9 +218,9 @@
                 <div class="post-tags">
                     <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg>
                     
-                        <a href="https:&#x2F;&#x2F;0x6b.github.io&#x2F;tags&#x2F;soracom&#x2F;">#soracom</a>
+                        <a href="https://0x6b.github.io/tags/soracom/">#soracom</a>
                     
-                        <a href="https:&#x2F;&#x2F;0x6b.github.io&#x2F;tags&#x2F;cli&#x2F;">#cli</a>
+                        <a href="https://0x6b.github.io/tags/cli/">#cli</a>
                     
                 </div>
             
