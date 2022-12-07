@@ -11,8 +11,8 @@
         <item>
             <title>SORACOM Harvest Data 用の SQLite 拡張を作りました</title>
             <pubDate>Wed, 07 Dec 2022 00:00:00 +0000</pubDate>
-            <link>https://0x6b.github.io/2022-12-07-a-sqlite-extension-for-soracom-harvest-data/</link>
-            <guid>https://0x6b.github.io/2022-12-07-a-sqlite-extension-for-soracom-harvest-data/</guid>
+            <link>https://0x6b.github.io/a-sqlite-extension-for-soracom-harvest-data/</link>
+            <guid>https://0x6b.github.io/a-sqlite-extension-for-soracom-harvest-data/</guid>
             <description>&lt;h2 id=&quot;hazimeni&quot;&gt;はじめに&lt;&#x2F;h2&gt;
 &lt;p&gt;&lt;a href=&quot;https:&#x2F;&#x2F;qiita.com&#x2F;advent-calendar&#x2F;2022&#x2F;soracom&quot;&gt;SORACOM Advent Calendar 2022&lt;&#x2F;a&gt; 7 日目の記事です。&lt;a href=&quot;https:&#x2F;&#x2F;soracom.jp&#x2F;services&#x2F;harvest&#x2F;&quot;&gt;SORACOM Harvest&lt;&#x2F;a&gt; と &lt;a href=&quot;https:&#x2F;&#x2F;www.sqlite.org&#x2F;index.html&quot;&gt;SQLite&lt;&#x2F;a&gt; のお話です。&lt;&#x2F;p&gt;
 &lt;h3 id=&quot;soracom-harvest-toha&quot;&gt;SORACOM Harvest とは&lt;&#x2F;h3&gt;
