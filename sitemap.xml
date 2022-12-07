@@ -4,6 +4,10 @@
         <loc>https://0x6b.github.io/</loc>
     </url>
     <url>
+        <loc>https://0x6b.github.io/2022-12-07-a-sqlite-extension-for-soracom-harvest-data/</loc>
+        <lastmod>2022-12-07</lastmod>
+    </url>
+    <url>
         <loc>https://0x6b.github.io/nssh/</loc>
         <lastmod>2020-12-07</lastmod>
     </url>
@@ -38,6 +42,9 @@
         <loc>https://0x6b.github.io/tags/extension/</loc>
     </url>
     <url>
+        <loc>https://0x6b.github.io/tags/harvest/</loc>
+    </url>
+    <url>
         <loc>https://0x6b.github.io/tags/lambda/</loc>
     </url>
     <url>
@@ -48,6 +55,9 @@
     </url>
     <url>
         <loc>https://0x6b.github.io/tags/soratun/</loc>
+    </url>
+    <url>
+        <loc>https://0x6b.github.io/tags/sqlite/</loc>
     </url>
     <url>
         <loc>https://0x6b.github.io/tags/ssh/</loc>

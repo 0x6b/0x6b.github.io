@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+      <title>&#x2F;&#x2F;&#x2F; ----- -..- -.... -... - sqlite</title>
+        <link>https://0x6b.github.io</link>
+        <description></description>
+        <generator>Zola</generator>
+        <language>en</language>
+        <atom:link href="https://0x6b.github.io/tags/sqlite/rss.xml" rel="self" type="application/rss+xml"/>
+        <lastBuildDate>Wed, 07 Dec 2022 00:00:00 +0000</lastBuildDate>
+        <item>
+            <title>SORACOM Harvest Data 用の SQLite 拡張を作りました</title>
+            <pubDate>Wed, 07 Dec 2022 00:00:00 +0000</pubDate>
+            <link>https://0x6b.github.io/2022-12-07-a-sqlite-extension-for-soracom-harvest-data/</link>
+            <guid>https://0x6b.github.io/2022-12-07-a-sqlite-extension-for-soracom-harvest-data/</guid>
+            <description>&lt;h2 id=&quot;hazimeni&quot;&gt;はじめに&lt;&#x2F;h2&gt;
+&lt;p&gt;&lt;a href=&quot;https:&#x2F;&#x2F;qiita.com&#x2F;advent-calendar&#x2F;2022&#x2F;soracom&quot;&gt;SORACOM Advent Calendar 2022&lt;&#x2F;a&gt; 7 日目の記事です。&lt;a href=&quot;https:&#x2F;&#x2F;soracom.jp&#x2F;services&#x2F;harvest&#x2F;&quot;&gt;SORACOM Harvest&lt;&#x2F;a&gt; と &lt;a href=&quot;https:&#x2F;&#x2F;www.sqlite.org&#x2F;index.html&quot;&gt;SQLite&lt;&#x2F;a&gt; のお話です。&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;soracom-harvest-toha&quot;&gt;SORACOM Harvest とは&lt;&#x2F;h3&gt;
+&lt;p&gt;&lt;a href=&quot;https:&#x2F;&#x2F;users.soracom.io&#x2F;ja-jp&#x2F;docs&#x2F;harvest&#x2F;&quot;&gt;SORACOM Harvest&lt;&#x2F;a&gt; はサーバーやストレージ、アプリケーションを構築することなく SORACOM Air を使っている IoT デバイスからのセンサー情報や位置情報など任意の情報を簡単に SORACOM プラットフォームに蓄積し可視化できるサービスです。IoT プロジェクト開始の早い段階で、まずはデバイスからどんなデータが送られているかを確認する際に簡単に利用できます。&lt;&#x2F;p&gt;
+&lt;p&gt;以下の 2 つの機能を提供しています。今回はひとつめの &lt;strong&gt;SORACOM Harvest Data&lt;&#x2F;strong&gt; ネタです。&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;SORACOM Harvest Data&lt;&#x2F;strong&gt;: テキスト、JSON、バイナリなど&lt;strong&gt;データ&lt;&#x2F;strong&gt;を扱います。データのフォーマットに制限はありません。&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;SORACOM Harvest Files&lt;&#x2F;strong&gt;: 画像やログなどの&lt;strong&gt;ファイル&lt;&#x2F;strong&gt;を扱います。&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h3 id=&quot;sqlite-toha&quot;&gt;SQLite とは&lt;&#x2F;h3&gt;
+&lt;p&gt;SQLite とは C で実装された組み込み型のデータベースエンジンです。簡潔な説明ですので &lt;a href=&quot;https:&#x2F;&#x2F;www.sqlite.org&#x2F;index.html&quot;&gt;公式サイト&lt;&#x2F;a&gt; から引用します。&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;SQLite is a C-language library that implements a &lt;a href=&quot;https:&#x2F;&#x2F;www.sqlite.org&#x2F;footprint.html&quot;&gt;small&lt;&#x2F;a&gt;, &lt;a href=&quot;https:&#x2F;&#x2F;www.sqlite.org&#x2F;fasterthanfs.html&quot;&gt;fast&lt;&#x2F;a&gt;, &lt;a href=&quot;https:&#x2F;&#x2F;www.sqlite.org&#x2F;selfcontained.html&quot;&gt;self-contained&lt;&#x2F;a&gt;, &lt;a href=&quot;https:&#x2F;&#x2F;www.sqlite.org&#x2F;hirely.html&quot;&gt;high-reliability&lt;&#x2F;a&gt;, &lt;a href=&quot;https:&#x2F;&#x2F;www.sqlite.org&#x2F;fullsql.html&quot;&gt;full-featured&lt;&#x2F;a&gt;, SQL database engine. SQLite is the &lt;a href=&quot;https:&#x2F;&#x2F;www.sqlite.org&#x2F;mostdeployed.html&quot;&gt;most used&lt;&#x2F;a&gt; database engine in the world. SQLite is built into all mobile phones and most computers and comes bundled inside countless other applications that people use every day. &lt;a href=&quot;https:&#x2F;&#x2F;www.sqlite.org&#x2F;about.html&quot;&gt;More Information...&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;ふだん意識する機会は少ないかもしれませんが、みなさんがお使いの Android や iPhone、そして主要ブラウザ (Firefox, Chrome, Safari) に搭載されており、世界でもっとも使用されているデータベースエンジンと言われています。&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;soracom-harvest-data-to-sqlite&quot;&gt;SORACOM Harvest Data と SQLite&lt;&#x2F;h2&gt;
+&lt;p&gt;SQLite は実行時に機能を追加する &lt;a href=&quot;https:&#x2F;&#x2F;www.sqlite.org&#x2F;loadext.html&quot;&gt;Run-Time Loadable Extensions&lt;&#x2F;a&gt; というメカニズムがあります。SQL 関数を追加したり、照合順序 (collating sequence) を定義したり、仮想テーブルを実装したりといろいろできます。公式サイトの &lt;a href=&quot;https:&#x2F;&#x2F;www.sqlite.org&#x2F;contrib&quot;&gt;Contributed Files&lt;&#x2F;a&gt; セクションでは SQL に数学 (&lt;code&gt;acos&lt;&#x2F;code&gt;, &lt;code&gt;asin&lt;&#x2F;code&gt;, &lt;code&gt;atan&lt;&#x2F;code&gt; など) や文字列操作 (&lt;code&gt;replicate&lt;&#x2F;code&gt;, &lt;code&gt;charindex&lt;&#x2F;code&gt;, &lt;code&gt;lftstr&lt;&#x2F;code&gt; など) 関係の関数を追加する拡張 &lt;a href=&quot;https:&#x2F;&#x2F;www.sqlite.org&#x2F;contrib&#x2F;download&#x2F;extension-functions.c?get=25&quot;&gt;&lt;code&gt;extension-functions.c&lt;&#x2F;code&gt;&lt;&#x2F;a&gt; が紹介されています。&lt;&#x2F;p&gt;
+&lt;p&gt;今回はこのメカニズムを利用して SORACOM Harvest Data に蓄積されているデータを SQLIte の &lt;a href=&quot;https:&#x2F;&#x2F;www.sqlite.org&#x2F;vtab.html&quot;&gt;仮想テーブル&lt;&#x2F;a&gt; として取り扱える拡張を作ってみました。蓄積されたデータをクイックに手元で確認する際に便利に使えると思います。&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;0x6b&#x2F;libshsqlite&quot;&gt;0x6b&#x2F;libshsqlite: A SQLite extension which loads data from Soracom Harvest Data as a virtual table.&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;以下の環境で開発しました。プラットフォームに依存しないはずですが、他の OS ではうまく動かないかもしれません。&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;www.sqlite.org&quot;&gt;SQLite&lt;&#x2F;a&gt; 3.40.0&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;www.rust-lang.org&quot;&gt;Rust&lt;&#x2F;a&gt; 1.65.0 (stable-aarch64-apple-darwin)&lt;&#x2F;li&gt;
+&lt;li&gt;macOS 12.6 (Monterey) on Apple M1 MAX&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h2 id=&quot;shi-ifang&quot;&gt;使い方&lt;&#x2F;h2&gt;
+&lt;h3 id=&quot;rust-woinsutorusuru&quot;&gt;Rust をインストールする&lt;&#x2F;h3&gt;
+&lt;p&gt;拡張本体 (&lt;code&gt;.so&lt;&#x2F;code&gt; や &lt;code&gt;.dll&lt;&#x2F;code&gt; ファイル) を GitHub から配布する準備がまにあわなかったため、お手元でビルドが必要です。そのため、だいぶ面倒ですが Rust のインストールから。&lt;a href=&quot;https:&#x2F;&#x2F;www.rust-lang.org&#x2F;ja&#x2F;tools&#x2F;install&quot;&gt;Rust をインストール - Rust プログラミング言語&lt;&#x2F;a&gt; にしたがってください。&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;sosukodoworu-shou-suru&quot;&gt;ソースコードを入手する&lt;&#x2F;h3&gt;
+&lt;p&gt;拡張のソースコードを GitHub リポジトリから入手します。&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;shell&quot; style=&quot;background-color:#0f1419;color:#bfbab0;&quot; class=&quot;language-shell &quot;&gt;&lt;code class=&quot;language-shell&quot; data-lang=&quot;shell&quot;&gt;&lt;span&gt;$ git clone github.com&#x2F;0x6b&#x2F;libshsqlite
+&lt;&#x2F;span&gt;&lt;span&gt;$ cd libshsqlite
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h3 id=&quot;soracom-to-soracom-harvest-data-woshi-ishi-meru&quot;&gt;SORACOM と Soracom Harvest Data を使い始める&lt;&#x2F;h3&gt;
+&lt;p&gt;SORACOM Air for セルラーの SIM あるいは &lt;a href=&quot;https:&#x2F;&#x2F;soracom.jp&#x2F;services&#x2F;arc&#x2F;&quot;&gt;SORACOM Arc&lt;&#x2F;a&gt; によるバーチャル SIM&#x2F;Subscriber を用意します。私は開発・テスト時に Arc を便利に使いました。&lt;&#x2F;p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;users.soracom.io&#x2F;ja-jp&#x2F;guides&#x2F;getting-started&#x2F;&quot;&gt;SORACOM の利用を始める&lt;&#x2F;a&gt; にしたがって SIM カードをゲットし通信可能にします。バーチャル SIM も使用できます。SORACOM Arc の &lt;a href=&quot;https:&#x2F;&#x2F;users.soracom.io&#x2F;ja-jp&#x2F;docs&#x2F;arc&#x2F;&quot;&gt;公式ドキュメント&lt;&#x2F;a&gt; を参照しセットアップしてください。&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;users.soracom.io&#x2F;ja-jp&#x2F;docs&#x2F;harvest&#x2F;enable-data&#x2F;&quot;&gt;SORACOM Harvest Data を有効化&lt;&#x2F;a&gt; します。&lt;&#x2F;li&gt;
+&lt;li&gt;以下の権限を持つ &lt;a href=&quot;https:&#x2F;&#x2F;users.soracom.io&#x2F;ja-jp&#x2F;docs&#x2F;sam&#x2F;create-sam-user&#x2F;&quot;&gt;SAM ユーザーを作成します&lt;&#x2F;a&gt;。セキュリティの観点から専用のユーザーを作成することをおすすめしますが、すでに SORACOM CLI などを利用中で、必要な権限を持っているユーザーを使っている場合はその認証情報を使っても OK です。SAM は、管理ユーザー毎にアクセス権限を設定できるアクセス管理機能で、不要なアクセスや操作ミスを未然に防げます。&lt;pre data-lang=&quot;json&quot; style=&quot;background-color:#0f1419;color:#bfbab0;&quot; class=&quot;language-json &quot;&gt;&lt;code class=&quot;language-json&quot; data-lang=&quot;json&quot;&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;  &lt;&#x2F;span&gt;&lt;span style=&quot;color:#c2d94c;&quot;&gt;&amp;quot;statements&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0cc;&quot;&gt;: &lt;&#x2F;span&gt;&lt;span&gt;[
+&lt;&#x2F;span&gt;&lt;span&gt;    {
+&lt;&#x2F;span&gt;&lt;span&gt;      &lt;&#x2F;span&gt;&lt;span style=&quot;color:#c2d94c;&quot;&gt;&amp;quot;api&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0cc;&quot;&gt;: &lt;&#x2F;span&gt;&lt;span&gt;[
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#c2d94c;&quot;&gt;&amp;quot;Sim:getDataFromSim&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0cc;&quot;&gt;,
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#c2d94c;&quot;&gt;&amp;quot;Subscriber:getDataFromSubscriber&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0cc;&quot;&gt;,
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#c2d94c;&quot;&gt;&amp;quot;DataEntry:getDataEntries&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0cc;&quot;&gt;,
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#c2d94c;&quot;&gt;&amp;quot;DataEntry:getDataEntry&amp;quot;
+&lt;&#x2F;span&gt;&lt;span&gt;      ]&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0cc;&quot;&gt;,
+&lt;&#x2F;span&gt;&lt;span&gt;      &lt;&#x2F;span&gt;&lt;span style=&quot;color:#c2d94c;&quot;&gt;&amp;quot;effect&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0cc;&quot;&gt;: &lt;&#x2F;span&gt;&lt;span style=&quot;color:#c2d94c;&quot;&gt;&amp;quot;allow&amp;quot;
+&lt;&#x2F;span&gt;&lt;span&gt;    }
+&lt;&#x2F;span&gt;&lt;span&gt;  ]
+&lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;作成した SAM ユーザーの認証キーを生成し &lt;code&gt;authKeyId&lt;&#x2F;code&gt; と &lt;code&gt;authKey&lt;&#x2F;code&gt; をメモっておきます。&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;h3 id=&quot;soracom-puratutohuomuhedetawosong-xin-suru&quot;&gt;SORACOM プラットフォームへデータを送信する&lt;&#x2F;h3&gt;
+&lt;p&gt;&lt;a href=&quot;https:&#x2F;&#x2F;users.soracom.io&#x2F;ja-jp&#x2F;docs&#x2F;harvest&#x2F;send-data&#x2F;&quot;&gt;Harvest Data でデバイスのデータをクラウドで収集・取得・可視化する&lt;&#x2F;a&gt; を参考にしながら適当なデータを送信します。プロトコルは HTTP、TCP、UDP いずれでも構いません。&lt;&#x2F;p&gt;
+&lt;p&gt;同じリポジトリに拡張のテストのために UDP と HTTP でデータを送信する &lt;code&gt;soracom_harvest_client&lt;&#x2F;code&gt; crate を作っており、簡易な CLI もありますのでそちらでも大丈夫です。&lt;&#x2F;p&gt;
+&lt;h4 id=&quot;udp-desong-xin-suru&quot;&gt;UDP で送信する&lt;&#x2F;h4&gt;
+&lt;pre data-lang=&quot;shell&quot; style=&quot;background-color:#0f1419;color:#bfbab0;&quot; class=&quot;language-shell &quot;&gt;&lt;code class=&quot;language-shell&quot; data-lang=&quot;shell&quot;&gt;&lt;span&gt;$ cargo run -p soracom_harvest_client --quiet -- --udp hey
+&lt;&#x2F;span&gt;&lt;span&gt;2022-12-03T15:06:18.724035+09:00 hey
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h4 id=&quot;http-desong-xin-suru&quot;&gt;HTTP で送信する&lt;&#x2F;h4&gt;
+&lt;pre data-lang=&quot;shell&quot; style=&quot;background-color:#0f1419;color:#bfbab0;&quot; class=&quot;language-shell &quot;&gt;&lt;code class=&quot;language-shell&quot; data-lang=&quot;shell&quot;&gt;&lt;span&gt;$ cargo run -p soracom_harvest_client --quiet -- --http &amp;#39;{&amp;quot;temperature&amp;quot;:20}&amp;#39;
+&lt;&#x2F;span&gt;&lt;span&gt;2022-12-04T01:17:10.924355+09:00 {&amp;quot;temperature&amp;quot;:20}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h3 id=&quot;kuo-zhang-wobirudosuru&quot;&gt;拡張をビルドする&lt;&#x2F;h3&gt;
+&lt;p&gt;&lt;code&gt;cargo&lt;&#x2F;code&gt; コマンドでビルドします。&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;shell&quot; style=&quot;background-color:#0f1419;color:#bfbab0;&quot; class=&quot;language-shell &quot;&gt;&lt;code class=&quot;language-shell&quot; data-lang=&quot;shell&quot;&gt;&lt;span&gt;$ cargo build --release
+&lt;&#x2F;span&gt;&lt;span&gt;   Compiling autocfg v1.1.0
+&lt;&#x2F;span&gt;&lt;span&gt;   Compiling libc v0.2.137
+&lt;&#x2F;span&gt;&lt;span&gt;   Compiling cfg-if v1.0.0
+&lt;&#x2F;span&gt;&lt;span&gt;   ...
+&lt;&#x2F;span&gt;&lt;span&gt;   Compiling soracom_harvest_client v0.1.0 (&#x2F;...&#x2F;libshsqlite&#x2F;soracom_harvest_client)
+&lt;&#x2F;span&gt;&lt;span&gt;   Compiling soracom_harvest_api_client v0.1.0 (&#x2F;...&#x2F;libshsqlite&#x2F;soracom_harvest_api_client)
+&lt;&#x2F;span&gt;&lt;span&gt;   Compiling soracom_harvest_sqlite_extension v0.1.0 (&#x2F;...&#x2F;libshsqlite&#x2F;soracom_harvest_sqlite_extension)
+&lt;&#x2F;span&gt;&lt;span&gt;    Finished release [optimized] target(s) in 22.68s
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h3 id=&quot;kuo-zhang-wo-sqlite-nirodosuru&quot;&gt;拡張を SQLite にロードする&lt;&#x2F;h3&gt;
+&lt;ol&gt;
+&lt;li&gt;SAM ユーザーの認証情報を環境変数としてエクスポートします。&lt;pre data-lang=&quot;shell&quot; style=&quot;background-color:#0f1419;color:#bfbab0;&quot; class=&quot;language-shell &quot;&gt;&lt;code class=&quot;language-shell&quot; data-lang=&quot;shell&quot;&gt;&lt;span&gt;$ export LIBSHSQLITE_AUTH_KEY_ID=keyId-.. # authKeyId
+&lt;&#x2F;span&gt;&lt;span&gt;$ export LIBSHSQLITE_AUTH_KEY_SECRET=secret-... # authKey
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;SQLite を起動します。&lt;pre data-lang=&quot;shell&quot; style=&quot;background-color:#0f1419;color:#bfbab0;&quot; class=&quot;language-shell &quot;&gt;&lt;code class=&quot;language-shell&quot; data-lang=&quot;shell&quot;&gt;&lt;span&gt;$ sqlite3
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;拡張をロードします。Windows の場合は &lt;code&gt;libshsqlite&lt;&#x2F;code&gt; ではなくおそらく &lt;code&gt;shsqlite&lt;&#x2F;code&gt; と指定します。&lt;pre data-lang=&quot;shell&quot; style=&quot;background-color:#0f1419;color:#bfbab0;&quot; class=&quot;language-shell &quot;&gt;&lt;code class=&quot;language-shell&quot; data-lang=&quot;shell&quot;&gt;&lt;span&gt;sqlite&amp;gt; .load target&#x2F;release&#x2F;libshsqlite
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;code&gt;Error: unknown command or invalid arguments: &amp;quot;load&amp;quot;. Enter &amp;quot;.help&amp;quot; for help &lt;&#x2F;code&gt; というエラーが出てしまったら、お使いの SQLite が拡張のロードをサポートしていません。macOS の場合は &lt;code&gt;brew install sqlite3&lt;&#x2F;code&gt; などでよしなにインストールしてそちらを使用してください。&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;h3 id=&quot;soracom-harvest-data-nodetawokarajia-xiang-teburuwozuo-cheng-suru&quot;&gt;SORACOM Harvest Data のデータをから仮想テーブルを作成する&lt;&#x2F;h3&gt;
+&lt;p&gt;&lt;code&gt;CREATE VIRTUAL TABLE&lt;&#x2F;code&gt; 文を使って SORACOM Harvest Data のデータを元に仮想テーブルを作成します。データはこのタイミングでのみ取得しますので、仮想テーブル作成後に送信されたデータが必要な場合は作り直してください。仮想テーブルを &lt;code&gt;DROP&lt;&#x2F;code&gt; しても SORACOM Harvest Data に蓄積されているデータは削除されません。&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;sql&quot; style=&quot;background-color:#0f1419;color:#bfbab0;&quot; class=&quot;language-sql &quot;&gt;&lt;code class=&quot;language-sql&quot; data-lang=&quot;sql&quot;&gt;&lt;span&gt;CREATE VIRTUAL TABLE harvest_data &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff7733;&quot;&gt;USING&lt;&#x2F;span&gt;&lt;span&gt; shsqlite(
+&lt;&#x2F;span&gt;&lt;span&gt;    IMSI     &lt;&#x2F;span&gt;&lt;span style=&quot;color:#c2d94c;&quot;&gt;&amp;#39;imsi-of-your-sim&amp;#39;&lt;&#x2F;span&gt;&lt;span&gt;,
+&lt;&#x2F;span&gt;&lt;span&gt;    COVERAGE &lt;&#x2F;span&gt;&lt;span style=&quot;color:#c2d94c;&quot;&gt;&amp;#39;japan&amp;#39;
+&lt;&#x2F;span&gt;&lt;span&gt;);
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;以下のパラメータをモジュールの引数として指定できます。&lt;&#x2F;p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;引数&lt;&#x2F;th&gt;&lt;th&gt;説明&lt;&#x2F;th&gt;&lt;th&gt;デフォルト値&lt;&#x2F;th&gt;&lt;th style=&quot;text-align: center&quot;&gt;必須&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;IMSI&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;SIM カードの IMSI&lt;&#x2F;td&gt;&lt;td&gt;なし&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: center&quot;&gt;x&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;FROM&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;取得するデータの開始時刻 (UNIX 時刻ミリ秒)&lt;&#x2F;td&gt;&lt;td&gt;現在から 1 日前&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: center&quot;&gt;&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;TO&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;取得するデータの終了時刻 (UNIX 時刻ミリ秒)&lt;&#x2F;td&gt;&lt;td&gt;現在時刻&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: center&quot;&gt;&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;COVERAGE&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;SIM のカバレッジ (&lt;code&gt;global&lt;&#x2F;code&gt; または &lt;code&gt;japan&lt;&#x2F;code&gt;)&lt;&#x2F;td&gt;&lt;td&gt;&lt;code&gt;global&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: center&quot;&gt;&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;LIMIT&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;取得するデータの数。1 から 1000 まで。&lt;&#x2F;td&gt;&lt;td&gt;100&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: center&quot;&gt;&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;pre data-lang=&quot;sql&quot; style=&quot;background-color:#0f1419;color:#bfbab0;&quot; class=&quot;language-sql &quot;&gt;&lt;code class=&quot;language-sql&quot; data-lang=&quot;sql&quot;&gt;&lt;span&gt;CREATE VIRTUAL TABLE harvest_data &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff7733;&quot;&gt;USING&lt;&#x2F;span&gt;&lt;span&gt; shsqlite(
+&lt;&#x2F;span&gt;&lt;span&gt;    IMSI &lt;&#x2F;span&gt;&lt;span style=&quot;color:#c2d94c;&quot;&gt;&amp;#39;...&amp;#39;&lt;&#x2F;span&gt;&lt;span&gt;,
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff7733;&quot;&gt;FROM &lt;&#x2F;span&gt;&lt;span style=&quot;color:#c2d94c;&quot;&gt;&amp;#39;...&amp;#39;&lt;&#x2F;span&gt;&lt;span&gt;,
+&lt;&#x2F;span&gt;&lt;span&gt;    TO &lt;&#x2F;span&gt;&lt;span style=&quot;color:#c2d94c;&quot;&gt;&amp;#39;...&amp;#39;&lt;&#x2F;span&gt;&lt;span&gt;,
+&lt;&#x2F;span&gt;&lt;span&gt;    COVERAGE &lt;&#x2F;span&gt;&lt;span style=&quot;color:#c2d94c;&quot;&gt;&amp;#39;japan|global&amp;#39;&lt;&#x2F;span&gt;&lt;span&gt;,
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff7733;&quot;&gt;LIMIT &lt;&#x2F;span&gt;&lt;span style=&quot;color:#c2d94c;&quot;&gt;&amp;#39;...&amp;#39;
+&lt;&#x2F;span&gt;&lt;span&gt;);
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h3 id=&quot;soracom-harvest-data-nixu-ji-sareteirudetawokuerisuru&quot;&gt;SORACOM Harvest Data に蓄積されているデータをクエリする&lt;&#x2F;h3&gt;
+&lt;p&gt;ここまでくるといつものように SQL が使用できます。ちなみに &lt;code&gt;INSERT&lt;&#x2F;code&gt; や &lt;code&gt;UPDATE&lt;&#x2F;code&gt; はできません。&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;sql&quot; style=&quot;background-color:#0f1419;color:#bfbab0;&quot; class=&quot;language-sql &quot;&gt;&lt;code class=&quot;language-sql&quot; data-lang=&quot;sql&quot;&gt;&lt;span style=&quot;color:#ff7733;&quot;&gt;SELECT &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#39bae6;&quot;&gt;* &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff7733;&quot;&gt;FROM&lt;&#x2F;span&gt;&lt;span&gt; harvest_data;
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#5c6773;&quot;&gt;-- time           content_type      value
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#5c6773;&quot;&gt;-- -------------  ----------------  ------------------
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#5c6773;&quot;&gt;-- 1670084230984  application&#x2F;json  {&amp;quot;temperature&amp;quot;:20}
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#5c6773;&quot;&gt;-- 1670083937548  application&#x2F;json  {&amp;quot;value&amp;quot;:&amp;quot;hey&amp;quot;}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;SORACOM Harvest Data のタイムスタンプは UNIX 時刻ミリ秒ですので &lt;code&gt;datetime&lt;&#x2F;code&gt; 関数で変換できます。&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;sql&quot; style=&quot;background-color:#0f1419;color:#bfbab0;&quot; class=&quot;language-sql &quot;&gt;&lt;code class=&quot;language-sql&quot; data-lang=&quot;sql&quot;&gt;&lt;span style=&quot;color:#ff7733;&quot;&gt;SELECT datetime&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff7733;&quot;&gt;time&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29668;&quot;&gt;&#x2F;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;1000&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#c2d94c;&quot;&gt;&amp;quot;unixepoch&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;) &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29668;&quot;&gt;AS &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff7733;&quot;&gt;datetime&lt;&#x2F;span&gt;&lt;span&gt;, value &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff7733;&quot;&gt;FROM&lt;&#x2F;span&gt;&lt;span&gt; harvest_data;
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#5c6773;&quot;&gt;-- datetime             value
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#5c6773;&quot;&gt;-- -------------------  ------------------
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#5c6773;&quot;&gt;-- 2022-12-03 16:17:10  {&amp;quot;temperature&amp;quot;:20}
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#5c6773;&quot;&gt;-- 2022-12-03 16:12:17  {&amp;quot;value&amp;quot;:&amp;quot;hey&amp;quot;}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;UDP で送信した文字列 &lt;code&gt;hey&lt;&#x2F;code&gt; が &lt;code&gt;{&amp;quot;value&amp;quot;:&amp;quot;hey&amp;quot;}&lt;&#x2F;code&gt; となっている部分はポイントです。&lt;a href=&quot;https:&#x2F;&#x2F;users.soracom.io&#x2F;ja-jp&#x2F;docs&#x2F;harvest&#x2F;send-data&#x2F;&quot;&gt;公式ドキュメント&lt;&#x2F;a&gt; に記載のとおり、TCP または UDP で Harvest Data にデータを送信すると、データが Base64 形式でエンコードされた上で &lt;code&gt;payload&lt;&#x2F;code&gt; プロパティに設定された JSON 形式で蓄積されます。&lt;code&gt;hey&lt;&#x2F;code&gt; という文字列を UDP で送信すると、&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;soracom&#x2F;soracom-cli&#x2F;&quot;&gt;SORACOM CLI&lt;&#x2F;a&gt; や &lt;a href=&quot;https:&#x2F;&#x2F;users.soracom.io&#x2F;ja-jp&#x2F;tools&#x2F;api&#x2F;reference&#x2F;&quot;&gt;SORACOM API&lt;&#x2F;a&gt; では以下のように取得できます。&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;json&quot; style=&quot;background-color:#0f1419;color:#bfbab0;&quot; class=&quot;language-json &quot;&gt;&lt;code class=&quot;language-json&quot; data-lang=&quot;json&quot;&gt;&lt;span&gt;[
+&lt;&#x2F;span&gt;&lt;span&gt;  {
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#c2d94c;&quot;&gt;&amp;quot;content&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0cc;&quot;&gt;: &lt;&#x2F;span&gt;&lt;span style=&quot;color:#c2d94c;&quot;&gt;&amp;quot;{&lt;&#x2F;span&gt;&lt;span style=&quot;color:#95e6cb;&quot;&gt;\&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#c2d94c;&quot;&gt;payload&lt;&#x2F;span&gt;&lt;span style=&quot;color:#95e6cb;&quot;&gt;\&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#c2d94c;&quot;&gt;:&lt;&#x2F;span&gt;&lt;span style=&quot;color:#95e6cb;&quot;&gt;\&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#c2d94c;&quot;&gt;aGV5&lt;&#x2F;span&gt;&lt;span style=&quot;color:#95e6cb;&quot;&gt;\&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#c2d94c;&quot;&gt;}&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0cc;&quot;&gt;,
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#c2d94c;&quot;&gt;&amp;quot;contentType&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0cc;&quot;&gt;: &lt;&#x2F;span&gt;&lt;span style=&quot;color:#c2d94c;&quot;&gt;&amp;quot;application&#x2F;json&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0cc;&quot;&gt;,
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#c2d94c;&quot;&gt;&amp;quot;time&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0cc;&quot;&gt;: &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;1670047578752
+&lt;&#x2F;span&gt;&lt;span&gt;  }
+&lt;&#x2F;span&gt;&lt;span&gt;]
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;SORACOM ユーザーコンソールには、上記のデータ(&lt;code&gt;content&lt;&#x2F;code&gt; 部分)を「一次処理済みデータ」として自動的にデコードして表示してくれる気の利いた機能があります。今回作った拡張も同様の変換を実装しました。&lt;&#x2F;p&gt;
+&lt;p&gt;UDP でデータを送信すると、&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;shell&quot; style=&quot;background-color:#0f1419;color:#bfbab0;&quot; class=&quot;language-shell &quot;&gt;&lt;code class=&quot;language-shell&quot; data-lang=&quot;shell&quot;&gt;&lt;span&gt;$ cargo run -p soracom_harvest_client --quiet -- --udp hey
+&lt;&#x2F;span&gt;&lt;span&gt;2022-12-03T15:11:15.373075+09:00 hey
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;SORACOM プラットフォームには以下のような形で蓄積され、&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;json&quot; style=&quot;background-color:#0f1419;color:#bfbab0;&quot; class=&quot;language-json &quot;&gt;&lt;code class=&quot;language-json&quot; data-lang=&quot;json&quot;&gt;&lt;span&gt;{ &lt;&#x2F;span&gt;&lt;span style=&quot;color:#c2d94c;&quot;&gt;&amp;quot;payload&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0cc;&quot;&gt;: &lt;&#x2F;span&gt;&lt;span style=&quot;color:#c2d94c;&quot;&gt;&amp;quot;aGV5&amp;quot; &lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;SORACOM ユーザーコンソールでは &lt;strong&gt;一次処理済みデータ&lt;&#x2F;strong&gt; として以下のように表示されます。&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;json&quot; style=&quot;background-color:#0f1419;color:#bfbab0;&quot; class=&quot;language-json &quot;&gt;&lt;code class=&quot;language-json&quot; data-lang=&quot;json&quot;&gt;&lt;span&gt;{ &lt;&#x2F;span&gt;&lt;span style=&quot;color:#c2d94c;&quot;&gt;&amp;quot;value&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0cc;&quot;&gt;: &lt;&#x2F;span&gt;&lt;span style=&quot;color:#c2d94c;&quot;&gt;&amp;quot;hey&amp;quot; &lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;同様に SQLite でも以下のように変換されて表示されます。&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;sql&quot; style=&quot;background-color:#0f1419;color:#bfbab0;&quot; class=&quot;language-sql &quot;&gt;&lt;code class=&quot;language-sql&quot; data-lang=&quot;sql&quot;&gt;&lt;span style=&quot;color:#ff7733;&quot;&gt;SELECT &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#39bae6;&quot;&gt;* &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff7733;&quot;&gt;FROM&lt;&#x2F;span&gt;&lt;span&gt; harvest_data;
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#5c6773;&quot;&gt;-- time           content_type      value
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#5c6773;&quot;&gt;-- -------------  ----------------  ---------------
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#5c6773;&quot;&gt;-- 1670083937548  application&#x2F;json  {&amp;quot;value&amp;quot;:&amp;quot;hey&amp;quot;}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;&lt;code&gt;value&lt;&#x2F;code&gt; 列に &lt;code&gt;{&amp;quot;value&amp;quot;:&amp;quot;...&amp;quot;}&lt;&#x2F;code&gt; とあるのは冗長で少し気になりますが、整合性を考えてすべて JSON 形式にしました。SQLite は &lt;a href=&quot;https:&#x2F;&#x2F;www.sqlite.org&#x2F;json1.html&quot;&gt;JSON 関数&lt;&#x2F;a&gt;がありますので、以下のように値だけ取り出せます。&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;sql&quot; style=&quot;background-color:#0f1419;color:#bfbab0;&quot; class=&quot;language-sql &quot;&gt;&lt;code class=&quot;language-sql&quot; data-lang=&quot;sql&quot;&gt;&lt;span style=&quot;color:#ff7733;&quot;&gt;SELECT datetime&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff7733;&quot;&gt;time&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29668;&quot;&gt;&#x2F;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;1000&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#c2d94c;&quot;&gt;&amp;#39;unixepoch&amp;#39;&lt;&#x2F;span&gt;&lt;span&gt;) &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29668;&quot;&gt;as &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff7733;&quot;&gt;datetime&lt;&#x2F;span&gt;&lt;span&gt;,
+&lt;&#x2F;span&gt;&lt;span&gt;    value&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29668;&quot;&gt;-&amp;gt;&amp;gt;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#c2d94c;&quot;&gt;&amp;#39;$.value&amp;#39; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29668;&quot;&gt;AS&lt;&#x2F;span&gt;&lt;span&gt; value
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff7733;&quot;&gt;FROM&lt;&#x2F;span&gt;&lt;span&gt; harvest_data;
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#5c6773;&quot;&gt;-- datetime             value
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#5c6773;&quot;&gt;-- -------------------  -----
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#5c6773;&quot;&gt;-- 2022-12-03 16:12:17  hey
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;JSON 関数は &lt;code&gt;WHERE&lt;&#x2F;code&gt; 句にも使えて便利ですね。&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;sql&quot; style=&quot;background-color:#0f1419;color:#bfbab0;&quot; class=&quot;language-sql &quot;&gt;&lt;code class=&quot;language-sql&quot; data-lang=&quot;sql&quot;&gt;&lt;span style=&quot;color:#ff7733;&quot;&gt;SELECT datetime&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff7733;&quot;&gt;time&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29668;&quot;&gt;&#x2F;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;1000&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#c2d94c;&quot;&gt;&amp;quot;unixepoch&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;) &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29668;&quot;&gt;AS &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff7733;&quot;&gt;datetime&lt;&#x2F;span&gt;&lt;span&gt;,
+&lt;&#x2F;span&gt;&lt;span&gt;    value&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29668;&quot;&gt;-&amp;gt;&amp;gt;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#c2d94c;&quot;&gt;&amp;#39;$.temperature&amp;#39; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29668;&quot;&gt;AS&lt;&#x2F;span&gt;&lt;span&gt; temperature
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff7733;&quot;&gt;FROM&lt;&#x2F;span&gt;&lt;span&gt; harvest_data
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff7733;&quot;&gt;WHERE&lt;&#x2F;span&gt;&lt;span&gt; value&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29668;&quot;&gt;-&amp;gt;&amp;gt;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#c2d94c;&quot;&gt;&amp;#39;$.temperature&amp;#39; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29668;&quot;&gt;&amp;gt; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;10&lt;&#x2F;span&gt;&lt;span&gt;;
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#5c6773;&quot;&gt;-- datetime             temperature
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#5c6773;&quot;&gt;-- -------------------  -----------
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#5c6773;&quot;&gt;-- 2022-12-03 16:17:10  20
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;SORACOM CLI と &lt;a href=&quot;https:&#x2F;&#x2F;stedolan.github.io&#x2F;jq&#x2F;&quot;&gt;&lt;code&gt;jq&lt;&#x2F;code&gt;&lt;&#x2F;a&gt; コマンドを組み合わせ、base64 をデコードしつつ CSV に変換する場合は以下のような感じでしょうか。もう少しうまく書けそうですが jq 難しいです。&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;shell&quot; style=&quot;background-color:#0f1419;color:#bfbab0;&quot; class=&quot;language-shell &quot;&gt;&lt;code class=&quot;language-shell&quot; data-lang=&quot;shell&quot;&gt;&lt;span&gt;$ soracom subscribers get-data --imsi xxxxxxxxxxxxxxx | jq -r &amp;#39;.[]
+&lt;&#x2F;span&gt;&lt;span&gt;    | {
+&lt;&#x2F;span&gt;&lt;span&gt;        time: .time,
+&lt;&#x2F;span&gt;&lt;span&gt;        contentType: .contentType,
+&lt;&#x2F;span&gt;&lt;span&gt;        value: .content | fromjson | .payload | @base64d
+&lt;&#x2F;span&gt;&lt;span&gt;      }
+&lt;&#x2F;span&gt;&lt;span&gt;    | [.time, .contentType, .value]
+&lt;&#x2F;span&gt;&lt;span&gt;    | @csv&amp;#39;
+&lt;&#x2F;span&gt;&lt;span&gt;1670048590499,&amp;quot;application&#x2F;json&amp;quot;,&amp;quot;hey&amp;quot;
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h2 id=&quot;shi-zhuang-nohua-woshao-si&quot;&gt;実装の話を少し&lt;&#x2F;h2&gt;
+&lt;h3 id=&quot;sqlite-kuo-zhang-nozuo-rifang&quot;&gt;SQLite 拡張の作り方&lt;&#x2F;h3&gt;
+&lt;p&gt;Rust による SQLite 拡張の作り方は分かりやすい以下のブログ記事および関連する GitHub リポジトリ、そして公式ドキュメントを参照しました。&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;sergey.khabibullin.com&#x2F;sqlite-extensions-in-rust&#x2F;&quot;&gt;Extending SQLite with Rust to support Excel files as virtual tables | Sergey Khabibullin - blog&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;x2bool&#x2F;xlite&quot;&gt;x2bool&#x2F;xlite: SQLite extension for querying Excel (.xlsx, .xls, .ods) files as virtual tables&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;www.sqlite.org&#x2F;loadext.html&quot;&gt;Run-Time Loadable Extensions&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;まずは手元の環境にあわせて &lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;rust-lang&#x2F;rust-bindgen&quot;&gt;&lt;code&gt;rust-bindgen&lt;&#x2F;code&gt;&lt;&#x2F;a&gt; を使用して SQLite 拡張の FFI バインディングを生成しました。SQLite のバージョンに依存しない(後方互換性がある)はずですので上記リポジトリのバインディングをそのまま使用しても動くと思いましたが念のため。&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;shell&quot; style=&quot;background-color:#0f1419;color:#bfbab0;&quot; class=&quot;language-shell &quot;&gt;&lt;code class=&quot;language-shell&quot; data-lang=&quot;shell&quot;&gt;&lt;span&gt;$ bindgen --default-macro-constant-type signed sqlite3ext.h -o sqlite3ext.rs
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;あとは既存の実装を参考に拡張の動作に必要な関数を実装していくだけです。ポイントは以下のとおりです。&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;shsqlite_create&lt;&#x2F;code&gt;: 仮想テーブルを作成する際に呼ばれます。&lt;code&gt;CREATE VIRTUAL TABLE&lt;&#x2F;code&gt; 文に渡した IMSI やカバレッジなどの引数をパースし、SORACOM プラットフォームから Harvest Data に蓄積されたデータを取得し、仮想テーブルとして宣言します。データの取得は &lt;code&gt;soracom_harvest_api_client&lt;&#x2F;code&gt; crate として外出ししています。API 呼び出しの認証、データの取得、データの削除(テストに使用)のみを実装したシンプルな API クライアントです。&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;shsqlite_open&lt;&#x2F;code&gt;: 仮想カーソル(内部で保持しているデータにアクセスするカーソル)を初期化します。&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;shsqlite_next&lt;&#x2F;code&gt;: 仮想カーソルをひとつ進めます。&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;shsqlite_column&lt;&#x2F;code&gt;: 各列の値を返します。&lt;a href=&quot;https:&#x2F;&#x2F;doc.rust-lang.org&#x2F;std&#x2F;vec&#x2F;struct.Vec.html&quot;&gt;&lt;code&gt;std::vec::Vec&lt;&#x2F;code&gt;&lt;&#x2F;a&gt; に保存したデータを返しているだけです。&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;shsqlite_rowid&lt;&#x2F;code&gt;: 各列のインデックスを返します。&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h3 id=&quot;rust-noyokatutatokoro&quot;&gt;Rust のよかったところ&lt;&#x2F;h3&gt;
+&lt;p&gt;Option 型 (Rust における &lt;a href=&quot;https:&#x2F;&#x2F;doc.rust-lang.org&#x2F;std&#x2F;option&#x2F;enum.Option.html&quot;&gt;&lt;code&gt;std::option::Option&lt;&#x2F;code&gt;&lt;&#x2F;a&gt;) とパターンマッチをまともに使ったのは Rust が初めてだったのですが、エラーを含むすべてのパターンをコンパイラに矯正・強制されつつ自然な形でカバーできるので実装していて安心感がありました (これまでは JavaScript&#x2F;TypeScript か Go が多かった)。TCP または UDP で送信されたデータをデコードする処理の実装のあたりです。&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;rust&quot; style=&quot;background-color:#0f1419;color:#bfbab0;&quot; class=&quot;language-rust &quot;&gt;&lt;code class=&quot;language-rust&quot; data-lang=&quot;rust&quot;&gt;&lt;span style=&quot;color:#ff7733;&quot;&gt;fn &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ffb454;&quot;&gt;try_decode&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;content&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0cc;&quot;&gt;:&lt;&#x2F;span&gt;&lt;span&gt; String) &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0cc;&quot;&gt;-&amp;gt;&lt;&#x2F;span&gt;&lt;span&gt; String {
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#5c6773;&quot;&gt;&#x2F;&#x2F; API からゲットしたデータの content プロパティが {&amp;quot;payload&amp;quot;: &amp;quot;value&amp;quot;} の形になっている場合、
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#5c6773;&quot;&gt;&#x2F;&#x2F; それはきっと base64 でエンコードされたデータのはず
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff7733;&quot;&gt;if let &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#39bae6;&quot;&gt;Ok&lt;&#x2F;span&gt;&lt;span&gt;(base64_encoded_payload) &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29668;&quot;&gt;=
+&lt;&#x2F;span&gt;&lt;span&gt;        serde_json&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29668;&quot;&gt;::&lt;&#x2F;span&gt;&lt;span&gt;from_str&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29668;&quot;&gt;::&lt;&#x2F;span&gt;&lt;span&gt;&amp;lt;Base64EncodedPayload&amp;gt;(content&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f07178;&quot;&gt;as_str&lt;&#x2F;span&gt;&lt;span&gt;())
+&lt;&#x2F;span&gt;&lt;span&gt;    {
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#5c6773;&quot;&gt;&#x2F;&#x2F; payload プロパティの中身が base64 でデコードできて、
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff7733;&quot;&gt;if let &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#39bae6;&quot;&gt;Ok&lt;&#x2F;span&gt;&lt;span&gt;(decoded) &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29668;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span&gt;base64&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29668;&quot;&gt;::&lt;&#x2F;span&gt;&lt;span&gt;decode(base64_encoded_payload&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;payload) {
+&lt;&#x2F;span&gt;&lt;span&gt;            &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#5c6773;&quot;&gt;&#x2F;&#x2F; かつ、UTF-8 としてデコードできて、
+&lt;&#x2F;span&gt;&lt;span&gt;            &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff7733;&quot;&gt;if let &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#39bae6;&quot;&gt;Ok&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff7733;&quot;&gt;str&lt;&#x2F;span&gt;&lt;span&gt;) &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29668;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#39bae6;&quot;&gt;String&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29668;&quot;&gt;::&lt;&#x2F;span&gt;&lt;span&gt;from_utf8(decoded) {
+&lt;&#x2F;span&gt;&lt;span&gt;                &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#5c6773;&quot;&gt;&#x2F;&#x2F; かつ、ASCII で表示可能な文字のみであった場合は、
+&lt;&#x2F;span&gt;&lt;span&gt;                &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff7733;&quot;&gt;if str&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f07178;&quot;&gt;chars&lt;&#x2F;span&gt;&lt;span&gt;()&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f07178;&quot;&gt;all&lt;&#x2F;span&gt;&lt;span&gt;(|&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;c&lt;&#x2F;span&gt;&lt;span&gt;| &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f07178;&quot;&gt;matches!&lt;&#x2F;span&gt;&lt;span&gt;(c &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29668;&quot;&gt;as &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff7733;&quot;&gt;u8&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0cc;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;0x20&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29668;&quot;&gt;..=&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;0x7E&lt;&#x2F;span&gt;&lt;span&gt;)) {
+&lt;&#x2F;span&gt;&lt;span&gt;                    &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#5c6773;&quot;&gt;&#x2F;&#x2F; {&amp;quot;value&amp;quot;: &amp;quot;デコードした文字列&amp;quot;} という形で返却する
+&lt;&#x2F;span&gt;&lt;span&gt;                    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff7733;&quot;&gt;return &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f07178;&quot;&gt;format!&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff7733;&quot;&gt;r&lt;&#x2F;span&gt;&lt;span style=&quot;color:#c2d94c;&quot;&gt;#&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#95e6cb;&quot;&gt;{{&lt;&#x2F;span&gt;&lt;span style=&quot;color:#c2d94c;&quot;&gt;&amp;quot;value&amp;quot;:&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29718;&quot;&gt;{str}&lt;&#x2F;span&gt;&lt;span style=&quot;color:#c2d94c;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#95e6cb;&quot;&gt;}}&lt;&#x2F;span&gt;&lt;span style=&quot;color:#c2d94c;&quot;&gt;&amp;quot;#&lt;&#x2F;span&gt;&lt;span&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0cc;&quot;&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;                }
+&lt;&#x2F;span&gt;&lt;span&gt;            }
+&lt;&#x2F;span&gt;&lt;span&gt;        }
+&lt;&#x2F;span&gt;&lt;span&gt;    }
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#5c6773;&quot;&gt;&#x2F;&#x2F; 上記の条件のどれにも引っかからなかった場合は、元の content をそのまま返す
+&lt;&#x2F;span&gt;&lt;span&gt;    content
+&lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;また、&lt;code&gt;Arc&amp;lt;Mutex&amp;lt;...&amp;gt;&amp;gt;&lt;&#x2F;code&gt; によって参照を共有しつつ値を変更するというパターンも、シグネチャは見づらいものの慣れてくると快適でした。&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;a href=&quot;https:&#x2F;&#x2F;crates.io&#x2F;&quot;&gt;crates.io&lt;&#x2F;a&gt; を使えること、&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;rust-lang&#x2F;cargo&#x2F;&quot;&gt;cargo&lt;&#x2F;a&gt;、&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;rust-lang&#x2F;rust-clippy&quot;&gt;clippy&lt;&#x2F;a&gt; といったツールチェインを使えること、monorepo (&lt;a href=&quot;https:&#x2F;&#x2F;doc.rust-lang.org&#x2F;book&#x2F;ch14-03-cargo-workspaces.html&quot;&gt;ワークスペース&lt;&#x2F;a&gt;) が標準でサポートされていること、テストの仕組みも用意されていることなど、全体を通してよい開発体験でした。&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;matome&quot;&gt;まとめ&lt;&#x2F;h2&gt;
+&lt;p&gt;SORACOM Harvest Data に蓄積されたデータを SQLite で取り扱える拡張を、最近(というかずっと)勉強中の Rust を使って開発しました。最近コードを書く機会がめっきり減っているのでとても楽しめました。&lt;a href=&quot;https:&#x2F;&#x2F;qiita.com&#x2F;advent-calendar&#x2F;2022&#x2F;soracom&quot;&gt;SORACOM Advent Calendar 2022&lt;&#x2F;a&gt; をセットアップしてくださった &lt;a href=&quot;https:&#x2F;&#x2F;soracom-ug.jp&#x2F;&quot;&gt;SORACOM ユーザーグループ&lt;&#x2F;a&gt; (SORACOM UG) のみなさまに感謝します。&lt;&#x2F;p&gt;
+&lt;p&gt;2022 年 12 月現在、SORACOM Harvest Data は 1 アカウントあたり毎月 31 日分(1 日 2,000 書き込みリクエストまで)の無料利用枠があります。ぜひご活用ください。&lt;&#x2F;p&gt;
+</description>
+        </item>
+    </channel>
+</rss>
