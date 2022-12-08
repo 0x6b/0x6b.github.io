@@ -206,7 +206,7 @@
 </span></code></pre>
 <code>Error: unknown command or invalid arguments: &quot;load&quot;. Enter &quot;.help&quot; for help </code> というエラーが出てしまったら、お使いの SQLite が拡張のロードをサポートしていません。macOS の場合は <code>brew install sqlite3</code> などでよしなにインストールしてそちらを使用してください。</li>
 </ol>
-<h3 id="soracom-harvest-data-nodetawokarajia-xiang-teburuwozuo-cheng-suru">SORACOM Harvest Data のデータをから仮想テーブルを作成する</h3>
+<h3 id="soracom-harvest-data-nodetakarajia-xiang-teburuwozuo-cheng-suru">SORACOM Harvest Data のデータから仮想テーブルを作成する</h3>
 <p><code>CREATE VIRTUAL TABLE</code> 文を使って SORACOM Harvest Data のデータを元に仮想テーブルを作成します。データはこのタイミングでのみ取得しますので、仮想テーブル作成後に送信されたデータが必要な場合は作り直してください。仮想テーブルを <code>DROP</code> しても SORACOM Harvest Data に蓄積されているデータは削除されません。</p>
 <pre data-lang="sql" style="background-color:#0f1419;color:#bfbab0;" class="language-sql "><code class="language-sql" data-lang="sql"><span>CREATE VIRTUAL TABLE harvest_data </span><span style="color:#ff7733;">USING</span><span> shsqlite(
 </span><span>    IMSI     </span><span style="color:#c2d94c;">&#39;imsi-of-your-sim&#39;</span><span>,
@@ -282,7 +282,7 @@
 <pre data-lang="sql" style="background-color:#0f1419;color:#bfbab0;" class="language-sql "><code class="language-sql" data-lang="sql"><span style="color:#ff7733;">SELECT datetime</span><span>(</span><span style="color:#ff7733;">time</span><span style="color:#f29668;">/</span><span style="color:#f29718;">1000</span><span>, </span><span style="color:#c2d94c;">&quot;unixepoch&quot;</span><span>) </span><span style="color:#f29668;">AS </span><span style="color:#ff7733;">datetime</span><span>,
 </span><span>    value</span><span style="color:#f29668;">-&gt;&gt;</span><span style="color:#c2d94c;">&#39;$.temperature&#39; </span><span style="color:#f29668;">AS</span><span> temperature
 </span><span>    </span><span style="color:#ff7733;">FROM</span><span> harvest_data
-</span><span>    </span><span style="color:#ff7733;">WHERE</span><span> value</span><span style="color:#f29668;">-&gt;&gt;</span><span style="color:#c2d94c;">&#39;$.temperature&#39; </span><span style="color:#f29668;">&gt; </span><span style="color:#f29718;">10</span><span>;
+</span><span>    </span><span style="color:#ff7733;">WHERE</span><span> temperature </span><span style="color:#f29668;">&gt; </span><span style="color:#f29718;">10</span><span>;
 </span><span style="font-style:italic;color:#5c6773;">-- datetime             temperature
 </span><span style="font-style:italic;color:#5c6773;">-- -------------------  -----------
 </span><span style="font-style:italic;color:#5c6773;">-- 2022-12-03 16:17:10  20
