@@ -2,18 +2,19 @@
 <rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
     <channel>
       <title>&#x2F;&#x2F;&#x2F; ----- -..- -.... -... - ssh</title>
-        <link>https://0x6b.github.io</link>
-        <description></description>
-        <generator>Zola</generator>
-        <language>en</language>
-        <atom:link href="https://0x6b.github.io/tags/ssh/rss.xml" rel="self" type="application/rss+xml"/>
-        <lastBuildDate>Mon, 07 Dec 2020 00:00:00 +0000</lastBuildDate>
-        <item>
-            <title>SORACOM Napter で簡単に SSH できる nssh を作りました</title>
-            <pubDate>Mon, 07 Dec 2020 00:00:00 +0000</pubDate>
-            <link>https://0x6b.github.io/nssh/</link>
-            <guid>https://0x6b.github.io/nssh/</guid>
-            <description>&lt;h2 id=&quot;hazimeni&quot;&gt;はじめに&lt;&#x2F;h2&gt;
+      <link>https://0x6b.github.io</link>
+      <description></description>
+      <generator>Zola</generator>
+      <language>en</language>
+      <atom:link href="https://0x6b.github.io/tags/ssh/rss.xml" rel="self" type="application/rss+xml"/>
+      <lastBuildDate>Mon, 07 Dec 2020 00:00:00 +0000</lastBuildDate>
+      <item>
+          <title>SORACOM Napter で簡単に SSH できる nssh を作りました</title>
+          <pubDate>Mon, 07 Dec 2020 00:00:00 +0000</pubDate>
+          <author>Unknown</author>
+          <link>https://0x6b.github.io/nssh/</link>
+          <guid>https://0x6b.github.io/nssh/</guid>
+          <description>&lt;h2 id=&quot;hazimeni&quot;&gt;はじめに&lt;&#x2F;h2&gt;
 &lt;p&gt;&lt;a href=&quot;https:&#x2F;&#x2F;qiita.com&#x2F;advent-calendar&#x2F;2020&#x2F;soracom&quot;&gt;SORACOM Advent Calendar 2020&lt;&#x2F;a&gt; 7 日目の記事です。今日は昨年の &lt;a href=&quot;https:&#x2F;&#x2F;0x6b.github.io&#x2F;nssh&#x2F;&quot;&gt;SORACOM Napter 用の Visual Studio Code 拡張を作りました&lt;&#x2F;a&gt; に続いて &lt;a href=&quot;https:&#x2F;&#x2F;soracom.jp&#x2F;services&#x2F;napter&#x2F;&quot;&gt;SORACOM Napter&lt;&#x2F;a&gt; (以下 Napter) に関する話題です。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;soracom-napter-toha&quot;&gt;SORACOM Napter とは&lt;&#x2F;h2&gt;
 &lt;p&gt;Napter は、SORACOM の SIM を使用したデバイスへ簡単にセキュアにリモートアクセスできるサービスです。SORACOM IoT SIM の刺さっているデバイスであれば、グローバル IP アドレスを割り当てたり、踏み台サーバーを用意したり、デバイスにエージェントをインストールしたりせずリモートからアクセスできます。必要な時にさっとアクセスできるためちょっとした作業やメンテナンス時にとても便利に使っています。&lt;&#x2F;p&gt;
@@ -126,6 +127,6 @@
 &lt;&#x2F;li&gt;
 &lt;&#x2F;ul&gt;
 </description>
-        </item>
+      </item>
     </channel>
 </rss>

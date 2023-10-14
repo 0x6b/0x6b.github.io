@@ -132,7 +132,7 @@
 <p>ふだん意識する機会は少ないかもしれませんが、みなさんがお使いの Android や iPhone、そして主要ブラウザ (Firefox, Chrome, Safari) に搭載されており、世界でもっとも使用されているデータベースエンジンと言われています。</p>
 <h2 id="soracom-harvest-data-to-sqlite">SORACOM Harvest Data と SQLite</h2>
 <p>SQLite は実行時に機能を追加する <a href="https://www.sqlite.org/loadext.html">Run-Time Loadable Extensions</a> というメカニズムがあります。SQL 関数を追加したり、照合順序 (collating sequence) を定義したり、仮想テーブルを実装したりといろいろできます。公式サイトの <a href="https://www.sqlite.org/contrib">Contributed Files</a> セクションでは SQL に数学 (<code>acos</code>, <code>asin</code>, <code>atan</code> など) や文字列操作 (<code>replicate</code>, <code>charindex</code>, <code>lftstr</code> など) 関係の関数を追加する拡張 <a href="https://www.sqlite.org/contrib/download/extension-functions.c?get=25"><code>extension-functions.c</code></a> が紹介されています。</p>
-<p>今回はこのメカニズムを利用して SORACOM Harvest Data に蓄積されているデータを SQLIte の <a href="https://www.sqlite.org/vtab.html">仮想テーブル</a> として取り扱える拡張を作ってみました。蓄積されたデータをクイックに手元で確認する際に便利に使えると思います。</p>
+<p>今回はこのメカニズムを利用して SORACOM Harvest Data に蓄積されているデータを SQLite の <a href="https://www.sqlite.org/vtab.html">仮想テーブル</a> として取り扱える拡張を作ってみました。蓄積されたデータをクイックに手元で確認する際に便利に使えると思います。</p>
 <p><a href="https://github.com/0x6b/libshsqlite">0x6b/libshsqlite: A SQLite extension which loads data from Soracom Harvest Data as a virtual table.</a></p>
 <p>以下の環境で開発しました。プラットフォームに依存しないはずですが、他の OS ではうまく動かないかもしれません。</p>
 <ul>

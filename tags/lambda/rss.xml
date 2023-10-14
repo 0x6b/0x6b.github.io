@@ -2,18 +2,19 @@
 <rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
     <channel>
       <title>&#x2F;&#x2F;&#x2F; ----- -..- -.... -... - lambda</title>
-        <link>https://0x6b.github.io</link>
-        <description></description>
-        <generator>Zola</generator>
-        <language>en</language>
-        <atom:link href="https://0x6b.github.io/tags/lambda/rss.xml" rel="self" type="application/rss+xml"/>
-        <lastBuildDate>Thu, 16 Dec 2021 00:00:00 +0000</lastBuildDate>
-        <item>
-            <title>soratun を改造して AWS Lambda から簡単に SORACOM Arc を使ってみました</title>
-            <pubDate>Thu, 16 Dec 2021 00:00:00 +0000</pubDate>
-            <link>https://0x6b.github.io/soracom-arc-and-aws-lambda-extension/</link>
-            <guid>https://0x6b.github.io/soracom-arc-and-aws-lambda-extension/</guid>
-            <description>&lt;h2 id=&quot;hazimeni&quot;&gt;はじめに&lt;&#x2F;h2&gt;
+      <link>https://0x6b.github.io</link>
+      <description></description>
+      <generator>Zola</generator>
+      <language>en</language>
+      <atom:link href="https://0x6b.github.io/tags/lambda/rss.xml" rel="self" type="application/rss+xml"/>
+      <lastBuildDate>Thu, 16 Dec 2021 00:00:00 +0000</lastBuildDate>
+      <item>
+          <title>soratun を改造して AWS Lambda から簡単に SORACOM Arc を使ってみました</title>
+          <pubDate>Thu, 16 Dec 2021 00:00:00 +0000</pubDate>
+          <author>Unknown</author>
+          <link>https://0x6b.github.io/soracom-arc-and-aws-lambda-extension/</link>
+          <guid>https://0x6b.github.io/soracom-arc-and-aws-lambda-extension/</guid>
+          <description>&lt;h2 id=&quot;hazimeni&quot;&gt;はじめに&lt;&#x2F;h2&gt;
 &lt;p&gt;&lt;a href=&quot;https:&#x2F;&#x2F;qiita.com&#x2F;advent-calendar&#x2F;2021&#x2F;soracominc&quot;&gt;株式会社ソラコム Advent Calendar 2021&lt;&#x2F;a&gt; 16 日目の記事です。今日は 2021 年 6 月に発表された &lt;a href=&quot;https:&#x2F;&#x2F;soracom.jp&#x2F;services&#x2F;arc&#x2F;&quot;&gt;SORACOM Arc&lt;&#x2F;a&gt; (以下 Arc) とそのクライアントエージェント &lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;soracom&#x2F;soratun&#x2F;&quot;&gt;soratun&lt;&#x2F;a&gt;、そして AWS Lambda extension のお話です。&lt;&#x2F;p&gt;
 &lt;h3 id=&quot;soracom-arc-toha&quot;&gt;SORACOM Arc とは&lt;&#x2F;h3&gt;
 &lt;p&gt;&lt;a href=&quot;https:&#x2F;&#x2F;users.soracom.io&#x2F;ja-jp&#x2F;docs&#x2F;arc&#x2F;&quot;&gt;SORACOM Arc&lt;&#x2F;a&gt; はソラコムが 2021 年 6 月にリリースした、SIM カードがなくてもソラコムのプラットフォームサービスをセキュアに利用できるサービスです。伝送路の安全性を &lt;a href=&quot;https:&#x2F;&#x2F;www.wireguard.com&#x2F;&quot;&gt;WireGuard&lt;&#x2F;a&gt; を使って確保しており、WireGuard を使える機器であれば iPhone や Android のようなスマートフォンから、Raspberry Pi を含む Linux、そして M5Stack で利用されている ESP32 でも動作します(参照: &lt;a href=&quot;https:&#x2F;&#x2F;zenn.dev&#x2F;ciniml&#x2F;articles&#x2F;wireguard-esp32&quot;&gt;WireGuard for ESP32 の実装的なところ&lt;&#x2F;a&gt;—ciniml さんによる &lt;a href=&quot;https:&#x2F;&#x2F;qiita.com&#x2F;advent-calendar&#x2F;2021&#x2F;soracom&quot;&gt;SORACOM Advent Calendar 2021&lt;&#x2F;a&gt; 7 日目の記事)。&lt;&#x2F;p&gt;
@@ -148,6 +149,6 @@
 &lt;p&gt;wireguard-go と gVisor という超巨人の肩を借りつつ AWS Lambda extension として実装することで、Lambda 関数から簡単にソラコムのプラットフォームサービスを利用できるようになりました。&lt;&#x2F;p&gt;
 &lt;p&gt;2021 年 12 月現在、SORACOM Arc は 1 アカウントあたりバーチャル SIM1 契約分の基本使用料(月額)、1GB 分のデータ通信が無料で利用できますのでぜひお試しください。&lt;&#x2F;p&gt;
 </description>
-        </item>
+      </item>
     </channel>
 </rss>

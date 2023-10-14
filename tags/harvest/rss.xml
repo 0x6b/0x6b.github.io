@@ -2,18 +2,19 @@
 <rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
     <channel>
       <title>&#x2F;&#x2F;&#x2F; ----- -..- -.... -... - harvest</title>
-        <link>https://0x6b.github.io</link>
-        <description></description>
-        <generator>Zola</generator>
-        <language>en</language>
-        <atom:link href="https://0x6b.github.io/tags/harvest/rss.xml" rel="self" type="application/rss+xml"/>
-        <lastBuildDate>Wed, 07 Dec 2022 00:00:00 +0000</lastBuildDate>
-        <item>
-            <title>SORACOM Harvest Data 用の SQLite 拡張を作りました</title>
-            <pubDate>Wed, 07 Dec 2022 00:00:00 +0000</pubDate>
-            <link>https://0x6b.github.io/a-sqlite-extension-for-soracom-harvest-data/</link>
-            <guid>https://0x6b.github.io/a-sqlite-extension-for-soracom-harvest-data/</guid>
-            <description>&lt;h2 id=&quot;hazimeni&quot;&gt;はじめに&lt;&#x2F;h2&gt;
+      <link>https://0x6b.github.io</link>
+      <description></description>
+      <generator>Zola</generator>
+      <language>en</language>
+      <atom:link href="https://0x6b.github.io/tags/harvest/rss.xml" rel="self" type="application/rss+xml"/>
+      <lastBuildDate>Wed, 07 Dec 2022 00:00:00 +0000</lastBuildDate>
+      <item>
+          <title>SORACOM Harvest Data 用の SQLite 拡張を作りました</title>
+          <pubDate>Wed, 07 Dec 2022 00:00:00 +0000</pubDate>
+          <author>Unknown</author>
+          <link>https://0x6b.github.io/a-sqlite-extension-for-soracom-harvest-data/</link>
+          <guid>https://0x6b.github.io/a-sqlite-extension-for-soracom-harvest-data/</guid>
+          <description>&lt;h2 id=&quot;hazimeni&quot;&gt;はじめに&lt;&#x2F;h2&gt;
 &lt;p&gt;&lt;a href=&quot;https:&#x2F;&#x2F;qiita.com&#x2F;advent-calendar&#x2F;2022&#x2F;soracom&quot;&gt;SORACOM Advent Calendar 2022&lt;&#x2F;a&gt; 7 日目の記事です。&lt;a href=&quot;https:&#x2F;&#x2F;soracom.jp&#x2F;services&#x2F;harvest&#x2F;&quot;&gt;SORACOM Harvest&lt;&#x2F;a&gt; と &lt;a href=&quot;https:&#x2F;&#x2F;www.sqlite.org&#x2F;index.html&quot;&gt;SQLite&lt;&#x2F;a&gt; のお話です。&lt;&#x2F;p&gt;
 &lt;h3 id=&quot;soracom-harvest-toha&quot;&gt;SORACOM Harvest とは&lt;&#x2F;h3&gt;
 &lt;p&gt;&lt;a href=&quot;https:&#x2F;&#x2F;users.soracom.io&#x2F;ja-jp&#x2F;docs&#x2F;harvest&#x2F;&quot;&gt;SORACOM Harvest&lt;&#x2F;a&gt; はサーバーやストレージ、アプリケーションを構築することなく SORACOM Air を使っている IoT デバイスからのセンサー情報や位置情報など任意の情報を簡単に SORACOM プラットフォームに蓄積し可視化できるサービスです。IoT プロジェクト開始の早い段階で、まずはデバイスからどんなデータが送られているかを確認する際に簡単に利用できます。&lt;&#x2F;p&gt;
@@ -30,7 +31,7 @@
 &lt;p&gt;ふだん意識する機会は少ないかもしれませんが、みなさんがお使いの Android や iPhone、そして主要ブラウザ (Firefox, Chrome, Safari) に搭載されており、世界でもっとも使用されているデータベースエンジンと言われています。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;soracom-harvest-data-to-sqlite&quot;&gt;SORACOM Harvest Data と SQLite&lt;&#x2F;h2&gt;
 &lt;p&gt;SQLite は実行時に機能を追加する &lt;a href=&quot;https:&#x2F;&#x2F;www.sqlite.org&#x2F;loadext.html&quot;&gt;Run-Time Loadable Extensions&lt;&#x2F;a&gt; というメカニズムがあります。SQL 関数を追加したり、照合順序 (collating sequence) を定義したり、仮想テーブルを実装したりといろいろできます。公式サイトの &lt;a href=&quot;https:&#x2F;&#x2F;www.sqlite.org&#x2F;contrib&quot;&gt;Contributed Files&lt;&#x2F;a&gt; セクションでは SQL に数学 (&lt;code&gt;acos&lt;&#x2F;code&gt;, &lt;code&gt;asin&lt;&#x2F;code&gt;, &lt;code&gt;atan&lt;&#x2F;code&gt; など) や文字列操作 (&lt;code&gt;replicate&lt;&#x2F;code&gt;, &lt;code&gt;charindex&lt;&#x2F;code&gt;, &lt;code&gt;lftstr&lt;&#x2F;code&gt; など) 関係の関数を追加する拡張 &lt;a href=&quot;https:&#x2F;&#x2F;www.sqlite.org&#x2F;contrib&#x2F;download&#x2F;extension-functions.c?get=25&quot;&gt;&lt;code&gt;extension-functions.c&lt;&#x2F;code&gt;&lt;&#x2F;a&gt; が紹介されています。&lt;&#x2F;p&gt;
-&lt;p&gt;今回はこのメカニズムを利用して SORACOM Harvest Data に蓄積されているデータを SQLIte の &lt;a href=&quot;https:&#x2F;&#x2F;www.sqlite.org&#x2F;vtab.html&quot;&gt;仮想テーブル&lt;&#x2F;a&gt; として取り扱える拡張を作ってみました。蓄積されたデータをクイックに手元で確認する際に便利に使えると思います。&lt;&#x2F;p&gt;
+&lt;p&gt;今回はこのメカニズムを利用して SORACOM Harvest Data に蓄積されているデータを SQLite の &lt;a href=&quot;https:&#x2F;&#x2F;www.sqlite.org&#x2F;vtab.html&quot;&gt;仮想テーブル&lt;&#x2F;a&gt; として取り扱える拡張を作ってみました。蓄積されたデータをクイックに手元で確認する際に便利に使えると思います。&lt;&#x2F;p&gt;
 &lt;p&gt;&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;0x6b&#x2F;libshsqlite&quot;&gt;0x6b&#x2F;libshsqlite: A SQLite extension which loads data from Soracom Harvest Data as a virtual table.&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
 &lt;p&gt;以下の環境で開発しました。プラットフォームに依存しないはずですが、他の OS ではうまく動かないかもしれません。&lt;&#x2F;p&gt;
 &lt;ul&gt;
@@ -245,6 +246,6 @@
 &lt;p&gt;SORACOM Harvest Data に蓄積されたデータを SQLite で取り扱える拡張を、最近(というかずっと)勉強中の Rust を使って開発しました。最近コードを書く機会がめっきり減っているのでとても楽しめました。&lt;a href=&quot;https:&#x2F;&#x2F;qiita.com&#x2F;advent-calendar&#x2F;2022&#x2F;soracom&quot;&gt;SORACOM Advent Calendar 2022&lt;&#x2F;a&gt; をセットアップしてくださった &lt;a href=&quot;https:&#x2F;&#x2F;soracom-ug.jp&#x2F;&quot;&gt;SORACOM ユーザーグループ&lt;&#x2F;a&gt; (SORACOM UG) のみなさまに感謝します。&lt;&#x2F;p&gt;
 &lt;p&gt;2022 年 12 月現在、SORACOM Harvest Data は 1 アカウントあたり毎月 31 日分(1 日 2,000 書き込みリクエストまで)の無料利用枠があります。ぜひご活用ください。&lt;&#x2F;p&gt;
 </description>
-        </item>
+      </item>
     </channel>
 </rss>
