@@ -23,6 +23,21 @@
     />
 
     <link rel="stylesheet" href="https://0x6b.github.io/site.css">
+
+    
+<!-- facebook open graph tags -->
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https:&#x2F;&#x2F;0x6b.github.io&#x2F;nssh&#x2F;" />
+<meta property="og:title" content="SORACOM Napter で簡単に SSH できる nssh を作りました &#x2F;&#x2F;&#x2F; ----- -..- -.... -..." />
+<meta property="og:image" content="https:&#x2F;&#x2F;0x6b.github.io&#x2F;nssh&#x2F;ogimage.png" />
+
+<!-- twitter card tags additive with the og: tags -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:domain" value="0x6b.github.io" />
+<meta name="twitter:title" value="SORACOM Napter で簡単に SSH できる nssh を作りました &#x2F;&#x2F;&#x2F; ----- -..- -.... -..." />
+<meta name="twitter:image" content="https:&#x2F;&#x2F;0x6b.github.io&#x2F;nssh&#x2F;ogimage.png" />
+<meta name="twitter:url" value="https:&#x2F;&#x2F;0x6b.github.io&#x2F;nssh&#x2F;" />
+
   </head>
 
   <body>
@@ -115,7 +130,10 @@
 </header>
 
     <div class="post-content">
-      <h2 id="hazimeni">はじめに</h2>
+      <blockquote class="disclosure">
+<p><a href="https://www.caa.go.jp/policies/policy/representation/fair_labeling/guideline/assets/representation_cms216_230328_03.pdf">「一般消費者が事業者の表示であることを判別することが困難である表示」の運用基準</a>に基づく開示: この記事は記載の日付時点で<a href="https://soracom.jp">株式会社ソラコム</a>のエンジニアリングチームに所属する社員が執筆しました。ただし、個人としての投稿であり、株式会社ソラコムとしての正式な発言や見解ではありません。</p>
+</blockquote>
+<h2 id="hazimeni">はじめに</h2>
 <p><a href="https://qiita.com/advent-calendar/2020/soracom">SORACOM Advent Calendar 2020</a> 7 日目の記事です。今日は昨年の <a href="https://0x6b.github.io/nssh/">SORACOM Napter 用の Visual Studio Code 拡張を作りました</a> に続いて <a href="https://soracom.jp/services/napter/">SORACOM Napter</a> (以下 Napter) に関する話題です。</p>
 <h2 id="soracom-napter-toha">SORACOM Napter とは</h2>
 <p>Napter は、SORACOM の SIM を使用したデバイスへ簡単にセキュアにリモートアクセスできるサービスです。SORACOM IoT SIM の刺さっているデバイスであれば、グローバル IP アドレスを割り当てたり、踏み台サーバーを用意したり、デバイスにエージェントをインストールしたりせずリモートからアクセスできます。必要な時にさっとアクセスできるためちょっとした作業やメンテナンス時にとても便利に使っています。</p>

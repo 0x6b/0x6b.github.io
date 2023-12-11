@@ -14,7 +14,10 @@
           <author>Unknown</author>
           <link>https://0x6b.github.io/a-sqlite-extension-for-soracom-harvest-data/</link>
           <guid>https://0x6b.github.io/a-sqlite-extension-for-soracom-harvest-data/</guid>
-          <description>&lt;h2 id=&quot;hazimeni&quot;&gt;はじめに&lt;&#x2F;h2&gt;
+          <description>&lt;blockquote class=&quot;disclosure&quot;&gt;
+&lt;p&gt;&lt;a href=&quot;https:&#x2F;&#x2F;www.caa.go.jp&#x2F;policies&#x2F;policy&#x2F;representation&#x2F;fair_labeling&#x2F;guideline&#x2F;assets&#x2F;representation_cms216_230328_03.pdf&quot;&gt;「一般消費者が事業者の表示であることを判別することが困難である表示」の運用基準&lt;&#x2F;a&gt;に基づく開示: この記事は記載の日付時点で&lt;a href=&quot;https:&#x2F;&#x2F;soracom.jp&quot;&gt;株式会社ソラコム&lt;&#x2F;a&gt;のエンジニアリングチームに所属する社員が執筆しました。ただし、個人としての投稿であり、株式会社ソラコムとしての正式な発言や見解ではありません。&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;h2 id=&quot;hazimeni&quot;&gt;はじめに&lt;&#x2F;h2&gt;
 &lt;p&gt;&lt;a href=&quot;https:&#x2F;&#x2F;qiita.com&#x2F;advent-calendar&#x2F;2022&#x2F;soracom&quot;&gt;SORACOM Advent Calendar 2022&lt;&#x2F;a&gt; 7 日目の記事です。&lt;a href=&quot;https:&#x2F;&#x2F;soracom.jp&#x2F;services&#x2F;harvest&#x2F;&quot;&gt;SORACOM Harvest&lt;&#x2F;a&gt; と &lt;a href=&quot;https:&#x2F;&#x2F;www.sqlite.org&#x2F;index.html&quot;&gt;SQLite&lt;&#x2F;a&gt; のお話です。&lt;&#x2F;p&gt;
 &lt;h3 id=&quot;soracom-harvest-toha&quot;&gt;SORACOM Harvest とは&lt;&#x2F;h3&gt;
 &lt;p&gt;&lt;a href=&quot;https:&#x2F;&#x2F;users.soracom.io&#x2F;ja-jp&#x2F;docs&#x2F;harvest&#x2F;&quot;&gt;SORACOM Harvest&lt;&#x2F;a&gt; はサーバーやストレージ、アプリケーションを構築することなく SORACOM Air を使っている IoT デバイスからのセンサー情報や位置情報など任意の情報を簡単に SORACOM プラットフォームに蓄積し可視化できるサービスです。IoT プロジェクト開始の早い段階で、まずはデバイスからどんなデータが送られているかを確認する際に簡単に利用できます。&lt;&#x2F;p&gt;
