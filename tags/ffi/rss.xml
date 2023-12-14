@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
     <channel>
-      <title>&#x2F;&#x2F;&#x2F; ----- -..- -.... -... - soratun</title>
+      <title>&#x2F;&#x2F;&#x2F; ----- -..- -.... -... - FFI</title>
       <link>https://0x6b.github.io</link>
       <description></description>
       <generator>Zola</generator>
       <language>en</language>
-      <atom:link href="https://0x6b.github.io/tags/soratun/rss.xml" rel="self" type="application/rss+xml"/>
+      <atom:link href="https://0x6b.github.io/tags/ffi/rss.xml" rel="self" type="application/rss+xml"/>
       <lastBuildDate>Fri, 15 Dec 2023 00:00:00 +0000</lastBuildDate>
       <item>
           <title>いろいろなプログラミング言語から SORACOM Arc を使える libsoratun を作りました</title>
@@ -225,151 +225,6 @@
 &lt;p&gt;今回は SORACOM Arc への接続を C のライブラリとしてパッケージした &lt;code&gt;libsoratun&lt;&#x2F;code&gt; を紹介しました。&lt;&#x2F;p&gt;
 &lt;p&gt;今回は試していませんが、Ruby には &lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;ffi&#x2F;ffi&quot;&gt;Ruby-FFI&lt;&#x2F;a&gt; gem があり、Perl には &lt;a href=&quot;https:&#x2F;&#x2F;metacpan.org&#x2F;pod&#x2F;FFI::Platypus&quot;&gt;FFI::Platypus&lt;&#x2F;a&gt; モジュール、PHP は標準で &lt;a href=&quot;https:&#x2F;&#x2F;www.php.net&#x2F;ffi&quot;&gt;FFI&lt;&#x2F;a&gt; をサポートしています。プラットフォーム毎にビルドしなければならないという手間はあるものの、一度作ってしまえば使い慣れたスクリプト言語から root 権限不要で SORACOM プラットフォームへデータが送信できますのでテストなどの際に便利にお使いいただけると思います。&lt;&#x2F;p&gt;
 &lt;p&gt;2023 年 12 月現在、SORACOM Arc は 1 アカウントあたりバーチャル SIM&#x2F;Subscriber 1 契約分の基本使用料 (月額)、1 GB 分のデータ通信が無料で利用できます。また、1 アカウントあたり 1 回に限り初期費用が無料です。ぜひお試しください。&lt;&#x2F;p&gt;
-</description>
-      </item>
-      <item>
-          <title>soratun を改造して AWS Lambda から簡単に SORACOM Arc を使ってみました</title>
-          <pubDate>Thu, 16 Dec 2021 00:00:00 +0000</pubDate>
-          <author>Unknown</author>
-          <link>https://0x6b.github.io/soracom-arc-and-aws-lambda-extension/</link>
-          <guid>https://0x6b.github.io/soracom-arc-and-aws-lambda-extension/</guid>
-          <description>&lt;blockquote class=&quot;disclosure&quot;&gt;
-&lt;p&gt;&lt;a href=&quot;https:&#x2F;&#x2F;www.caa.go.jp&#x2F;policies&#x2F;policy&#x2F;representation&#x2F;fair_labeling&#x2F;guideline&#x2F;assets&#x2F;representation_cms216_230328_03.pdf&quot;&gt;「一般消費者が事業者の表示であることを判別することが困難である表示」の運用基準&lt;&#x2F;a&gt;に基づく開示: この記事は記載の日付時点で&lt;a href=&quot;https:&#x2F;&#x2F;soracom.jp&quot;&gt;株式会社ソラコム&lt;&#x2F;a&gt;のエンジニアリングチームに所属する社員が執筆しました。ただし、個人としての投稿であり、株式会社ソラコムとしての正式な発言や見解ではありません。&lt;&#x2F;p&gt;
-&lt;&#x2F;blockquote&gt;
-&lt;h2 id=&quot;hazimeni&quot;&gt;はじめに&lt;&#x2F;h2&gt;
-&lt;p&gt;&lt;a href=&quot;https:&#x2F;&#x2F;qiita.com&#x2F;advent-calendar&#x2F;2021&#x2F;soracominc&quot;&gt;株式会社ソラコム Advent Calendar 2021&lt;&#x2F;a&gt; 16 日目の記事です。今日は 2021 年 6 月に発表された &lt;a href=&quot;https:&#x2F;&#x2F;soracom.jp&#x2F;services&#x2F;arc&#x2F;&quot;&gt;SORACOM Arc&lt;&#x2F;a&gt; (以下 Arc) とそのクライアントエージェント &lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;soracom&#x2F;soratun&#x2F;&quot;&gt;soratun&lt;&#x2F;a&gt;、そして AWS Lambda extension のお話です。&lt;&#x2F;p&gt;
-&lt;h3 id=&quot;soracom-arc-toha&quot;&gt;SORACOM Arc とは&lt;&#x2F;h3&gt;
-&lt;p&gt;&lt;a href=&quot;https:&#x2F;&#x2F;users.soracom.io&#x2F;ja-jp&#x2F;docs&#x2F;arc&#x2F;&quot;&gt;SORACOM Arc&lt;&#x2F;a&gt; はソラコムが 2021 年 6 月にリリースした、SIM カードがなくてもソラコムのプラットフォームサービスをセキュアに利用できるサービスです。伝送路の安全性を &lt;a href=&quot;https:&#x2F;&#x2F;www.wireguard.com&#x2F;&quot;&gt;WireGuard&lt;&#x2F;a&gt; を使って確保しており、WireGuard を使える機器であれば iPhone や Android のようなスマートフォンから、Raspberry Pi を含む Linux、そして M5Stack で利用されている ESP32 でも動作します(参照: &lt;a href=&quot;https:&#x2F;&#x2F;zenn.dev&#x2F;ciniml&#x2F;articles&#x2F;wireguard-esp32&quot;&gt;WireGuard for ESP32 の実装的なところ&lt;&#x2F;a&gt;—ciniml さんによる &lt;a href=&quot;https:&#x2F;&#x2F;qiita.com&#x2F;advent-calendar&#x2F;2021&#x2F;soracom&quot;&gt;SORACOM Advent Calendar 2021&lt;&#x2F;a&gt; 7 日目の記事)。&lt;&#x2F;p&gt;
-&lt;p&gt;物理的な SIM カードに代わってバーチャル SIM を発行し、バーチャル SIM に紐付いた WireGuard 認証情報を使って SORACOM プラットフォームと接続します。&lt;&#x2F;p&gt;
-&lt;h3 id=&quot;soratun-toha&quot;&gt;soratun とは&lt;&#x2F;h3&gt;
-&lt;p&gt;soratun (&lt;em&gt;&lt;strong&gt;sora&lt;&#x2F;strong&gt;&lt;&#x2F;em&gt;-com &lt;em&gt;&lt;strong&gt;tun&lt;&#x2F;strong&gt;&lt;&#x2F;em&gt;-nel, ソラタン) とは SORACOM Arc を簡単・安全に使っていただくために開発した WireGuard クライアントで、MIT ライセンスで公開しています。&lt;&#x2F;p&gt;
-&lt;p&gt;バーチャル SIM は &lt;a href=&quot;https:&#x2F;&#x2F;console.soracom.io&quot;&gt;SORACOM ユーザーコンソール&lt;&#x2F;a&gt; や &lt;a href=&quot;https:&#x2F;&#x2F;users.soracom.io&#x2F;ja-jp&#x2F;tools&#x2F;cli&#x2F;&quot;&gt;SORACOM CLI&lt;&#x2F;a&gt; から作成できますが、soratun は作成から仮想ネットワークデバイス(tun)を使った WireGuard 接続までを一つのコンパクトなバイナリファイルでまとめていい感じにやってくれます。詳細は &lt;a href=&quot;https:&#x2F;&#x2F;users.soracom.io&#x2F;ja-jp&#x2F;docs&#x2F;arc&#x2F;soratun-overview&#x2F;&quot;&gt;公式ドキュメント&lt;&#x2F;a&gt; や &lt;a href=&quot;https:&#x2F;&#x2F;soracom.connpass.com&#x2F;event&#x2F;218134&#x2F;&quot;&gt;SORACOM Meetup〜Wi-Fi からもソラコムを！はじめよう新サービス SORACOM Arc&lt;&#x2F;a&gt; で発表した資料 &lt;a href=&quot;https:&#x2F;&#x2F;speakerdeck.com&#x2F;soracom&#x2F;soracom-meetup-arc-soratun-overview&quot;&gt;クライアントエージェント soratun とは &#x2F; SORACOM Meetup Arc soratun overview - Speaker Deck&lt;&#x2F;a&gt; をご覧ください。&lt;&#x2F;p&gt;
-&lt;h3 id=&quot;aws-lambda-extension-toha&quot;&gt;AWS Lambda Extension とは&lt;&#x2F;h3&gt;
-&lt;p&gt;AWS Lambda extension は 2021 年 5 月に GA となった比較的新しい機能で、AWS Lambda (以下 Lambda) 関数の実行環境を独自に拡張できます。こちらも詳細は &lt;a href=&quot;https:&#x2F;&#x2F;docs.aws.amazon.com&#x2F;lambda&#x2F;latest&#x2F;dg&#x2F;using-extensions.html&quot;&gt;公式ドキュメント&lt;&#x2F;a&gt; をご覧いただきたいところですが、誤解を恐れずに今回のユースケースに絞って簡単に説明すると、Lambda の実行環境に Lambda 関数とネットワーク経由でコミュニケーションできる独自のプロセスを立てられる機能です。&lt;&#x2F;p&gt;
-&lt;p&gt;GA が発表された &lt;a href=&quot;https:&#x2F;&#x2F;aws.amazon.com&#x2F;jp&#x2F;blogs&#x2F;aws&#x2F;getting-started-with-using-your-favorite-operational-tools-on-aws-lambda-extensions-are-now-generally-available&#x2F;&quot;&gt;記事&lt;&#x2F;a&gt; ではトレーシング、ロギング、モニタリング、プロファイリングなどの extension が紹介されています。&lt;&#x2F;p&gt;
-&lt;h2 id=&quot;aws-lambda-extension-to-soracom-arc&quot;&gt;AWS Lambda Extension と SORACOM Arc&lt;&#x2F;h2&gt;
-&lt;p&gt;ようやく本題です。Lambda extension と改造版 soratun を組み合わせて以下のようなことをやりました。&lt;&#x2F;p&gt;
-&lt;ol&gt;
-&lt;li&gt;&lt;code&gt;soratun&lt;&#x2F;code&gt; を SORACOM プラットフォームへのプロキシサーバーとして動作するよう改造しました (雑に &lt;code&gt;soraproxy&lt;&#x2F;code&gt; と命名)。&lt;&#x2F;li&gt;
-&lt;li&gt;&lt;code&gt;soraproxy&lt;&#x2F;code&gt; を Lambda extension として動作するよう AWS のサンプルを元にラッパースクリプトを作りました。&lt;&#x2F;li&gt;
-&lt;li&gt;Lambda extension を経由して Lambda 関数からプログラミング言語を問わず簡単に SORACOM プラットフォームへデータを送信できるようになりました。&lt;&#x2F;li&gt;
-&lt;&#x2F;ol&gt;
-&lt;p&gt;アウトプットの質と量で尊敬する 1stship さんによる &lt;a href=&quot;https:&#x2F;&#x2F;qiita.com&#x2F;advent-calendar&#x2F;2021&#x2F;soracom&quot;&gt;SORACOM Advent Calendar 2021&lt;&#x2F;a&gt; 13 日目の記事 &lt;a href=&quot;https:&#x2F;&#x2F;qiita.com&#x2F;1stship&#x2F;items&#x2F;6885e6d1dd42defbb448&quot;&gt;SORACOM Arc を特権なしで使えるツールを開発してみた&lt;&#x2F;a&gt; を直前に拝見してネタが重複してしまったかと焦りましたが、アプローチが異なっていたのでよかったです。そして 1stship さんの記事は AWS やソラコムのスクリーンショット満載で大変親切であります。&lt;&#x2F;p&gt;
-&lt;p&gt;以下にそれぞれのステップを説明します。&lt;&#x2F;p&gt;
-&lt;h3 id=&quot;soratun-nogai-zao&quot;&gt;&lt;code&gt;soratun&lt;&#x2F;code&gt; の改造&lt;&#x2F;h3&gt;
-&lt;p&gt;&lt;code&gt;soratun&lt;&#x2F;code&gt; を SORACOM プラットフォームへのプロキシサーバーとして動作するよう改造します。既存の &lt;code&gt;soratun&lt;&#x2F;code&gt; コマンドとは別に &lt;code&gt;soraproxy&lt;&#x2F;code&gt; というコマンドを作っています。&lt;&#x2F;p&gt;
-&lt;p&gt;&lt;code&gt;soratun&lt;&#x2F;code&gt; の WireGuard 実装そのものはユーザー空間で動くとはいえ、稼動には tun デバイスの作成が必須です。実際に試していないのですが、Lambda extension では root 権限(正確には &lt;code&gt;NET_ADMIN&lt;&#x2F;code&gt; capability)が必要になるネットワークインターフェースの作成ができないような気がしました。&lt;&#x2F;p&gt;
-&lt;p&gt;そこで、&lt;code&gt;soratun&lt;&#x2F;code&gt; が使用している &lt;a href=&quot;https:&#x2F;&#x2F;git.zx2c4.com&#x2F;wireguard-go&quot;&gt;wireguard-go&lt;&#x2F;a&gt; に含まれる &lt;a href=&quot;https:&#x2F;&#x2F;git.zx2c4.com&#x2F;wireguard-go&#x2F;tree&#x2F;tun&#x2F;netstack&quot;&gt;&lt;code&gt;tun&#x2F;netstack&lt;&#x2F;code&gt;&lt;&#x2F;a&gt; パッケージを利用します。このパッケージはドキュメントがほとんど無いのですが、&lt;a href=&quot;https:&#x2F;&#x2F;gvisor.dev&#x2F;&quot;&gt;gVisor&lt;&#x2F;a&gt; の TCP&#x2F;IP スタックを使った WireGuard トンネルを提供します。すなわちネットワークインターフェースを含め WireGuard 接続を全部ユーザー空間で実装できる(= 特別な権限が不要)ことになります。&lt;&#x2F;p&gt;
-&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;&lt;&#x2F;th&gt;&lt;th&gt;soratun&lt;&#x2F;th&gt;&lt;th&gt;soraproxy&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
-&lt;tr&gt;&lt;td&gt;WireGuard&lt;&#x2F;td&gt;&lt;td&gt;ユーザー空間 (wireguard-go)&lt;&#x2F;td&gt;&lt;td&gt;ユーザー空間 (wireguard-go)&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
-&lt;tr&gt;&lt;td&gt;ネットワーク&lt;&#x2F;td&gt;&lt;td&gt;カーネル (tun)&lt;&#x2F;td&gt;&lt;td&gt;ユーザー空間 (gVisor)&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
-&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
-&lt;p&gt;プロキシサーバーとしての実装はだいぶ適当で、SORACOM プラットフォームの &lt;a href=&quot;https:&#x2F;&#x2F;users.soracom.io&#x2F;ja-jp&#x2F;docs&#x2F;unified-endpoint&#x2F;&quot;&gt;Unified Endpoint&lt;&#x2F;a&gt; に対する HTTP クライアントを作成し、受け取った POST リクエストを転送します。&lt;&#x2F;p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;0x6b&#x2F;soratun&#x2F;blob&#x2F;8735ab99fe3ea2fd2f76bbc7ca56710431b1a5ed&#x2F;cmd&#x2F;soraproxy_up.go&quot;&gt;&lt;code&gt;cmd&#x2F;soraproxy_up.go&lt;&#x2F;code&gt;&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
-&lt;&#x2F;ul&gt;
-&lt;p&gt;今回のポイントである &lt;code&gt;tun&#x2F;netstack&lt;&#x2F;code&gt; パッケージを使用しているのはこのあたりです。gVisor を使ったトンネルを作成し Go の &lt;a href=&quot;https:&#x2F;&#x2F;pkg.go.dev&#x2F;net&#x2F;http#Client&quot;&gt;net&#x2F;http.Client&lt;&#x2F;a&gt; の &lt;code&gt;Transport&lt;&#x2F;code&gt; として渡しています。簡単ですね。&lt;&#x2F;p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;0x6b&#x2F;soratun&#x2F;blob&#x2F;8735ab99fe3ea2fd2f76bbc7ca56710431b1a5ed&#x2F;unified_endpoint_http_client.go#L47&quot;&gt;&lt;code&gt;unified_endpoint_http_client.go#47&lt;&#x2F;code&gt;&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
-&lt;&#x2F;ul&gt;
-&lt;h3 id=&quot;aws-lambda-extension-tositepatukezi&quot;&gt;AWS Lambda Extension としてパッケージ&lt;&#x2F;h3&gt;
-&lt;p&gt;AWS の公式サンプル &lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;aws-samples&#x2F;aws-lambda-extensions&#x2F;blob&#x2F;d240b9d9658b2f5fec7ca96fbb2bb773f0221c9e&#x2F;custom-runtime-extension-demo&#x2F;extensionssrc&#x2F;extensions&#x2F;extension1.sh&quot;&gt;&lt;code&gt;aws-lambda-extensions&#x2F;extension1.sh&lt;&#x2F;code&gt;&lt;&#x2F;a&gt; を参考に &lt;code&gt;soraproxy&lt;&#x2F;code&gt; が Lambda extension として動作するようラッパースクリプトを作成します。&lt;&#x2F;p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;0x6b&#x2F;soratun&#x2F;blob&#x2F;8735ab99fe3ea2fd2f76bbc7ca56710431b1a5ed&#x2F;aws-lambda-extension&#x2F;extensions&#x2F;extension.sh#L43&quot;&gt;&lt;code&gt;aws-lambda-extension&#x2F;extensions&#x2F;extension.sh#43&lt;&#x2F;code&gt;&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
-&lt;&#x2F;ul&gt;
-&lt;p&gt;&lt;code&gt;LAMBDA_TASK_ROOT&lt;&#x2F;code&gt; 環境変数を使用し、SORACOM Arc の認証情報 (&lt;code&gt;arc.json&lt;&#x2F;code&gt;) は Lambda 関数にパッケージされたファイルを参照しています。Lambda 関数単位でバーチャル SIM を切り替えるのも簡単ですね。最後に &lt;code&gt;&amp;amp;&lt;&#x2F;code&gt; を付けずにブロックしてしまってはまりましたが、厳密には &lt;code&gt;soraproxy&lt;&#x2F;code&gt; の起動まで待つようにしないと問題が起きそうな概念検証感あふれる実装であります。&lt;&#x2F;p&gt;
-&lt;pre data-lang=&quot;bash&quot; style=&quot;background-color:#393939;color:#dedede;&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span&gt;&#x2F;opt&#x2F;bin&#x2F;soraproxy up --config &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fed6af;&quot;&gt;$&lt;&#x2F;span&gt;&lt;span&gt;{LAMBDA_TASK_ROOT}&#x2F;arc.json --address &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fed6af;&quot;&gt;$&lt;&#x2F;span&gt;&lt;span&gt;{SORAPROXY_ADDRESS} --port &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fed6af;&quot;&gt;$&lt;&#x2F;span&gt;&lt;span&gt;{SORAPROXY_PORT} &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ececec;&quot;&gt;&amp;amp;
-&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
-&lt;p&gt;&lt;code&gt;soraproxy&lt;&#x2F;code&gt; のバイナリと上記のスクリプトを &lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;0x6b&#x2F;soratun&#x2F;blob&#x2F;8735ab99fe3ea2fd2f76bbc7ca56710431b1a5ed&#x2F;aws-lambda-extension&#x2F;scripts&#x2F;build.sh&quot;&gt;&lt;code&gt;aws-lambda-extension&#x2F;scripts&#x2F;build.sh&lt;&#x2F;code&gt;&lt;&#x2F;a&gt; を使って Zip ファイルにまとめ、Lambda レイヤーとして登録します(参考: &lt;a href=&quot;https:&#x2F;&#x2F;docs.aws.amazon.com&#x2F;ja_jp&#x2F;lambda&#x2F;latest&#x2F;dg&#x2F;configuration-layers.html&quot;&gt;Lambda レイヤーの作成と共有 - AWS Lambda&lt;&#x2F;a&gt;)。&lt;&#x2F;p&gt;
-&lt;h3 id=&quot;soraproxy-woshi-yong-suru-aws-lambda-guan-shu-noshi-zhuang&quot;&gt;&lt;code&gt;soraproxy&lt;&#x2F;code&gt; を使用する AWS Lambda 関数の実装&lt;&#x2F;h3&gt;
-&lt;p&gt;新しい Lambda 関数を作って上記の Lambda extension をレイヤーとして指定します(Lambda 関数の言語は何でも使えますが、レイヤーは ARN で指定する必要がありました)。&lt;&#x2F;p&gt;
-&lt;p&gt;今回は JavaScript でテストしました。関数(&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;0x6b&#x2F;soratun&#x2F;blob&#x2F;8735ab99fe3ea2fd2f76bbc7ca56710431b1a5ed&#x2F;aws-lambda-extension&#x2F;example&#x2F;index.js&quot;&gt;&lt;code&gt;index.js&lt;&#x2F;code&gt;&lt;&#x2F;a&gt;)と SORACOM Arc の認証情報を保存した &lt;code&gt;arc.json&lt;&#x2F;code&gt; (&lt;code&gt;soratun&lt;&#x2F;code&gt; で使っているものそのまま)の 2 つのみです。Lambda 関数としてはシンプルで、&lt;code&gt;soraproxy&lt;&#x2F;code&gt; が待ち受けている &lt;code&gt;localhost:8080&lt;&#x2F;code&gt; へ &lt;code&gt;POST&lt;&#x2F;code&gt; しています。これだけで Unified Endpoint へデータが送信できます。&lt;&#x2F;p&gt;
-&lt;pre data-lang=&quot;js&quot; style=&quot;background-color:#393939;color:#dedede;&quot; class=&quot;language-js &quot;&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span style=&quot;color:#fffb9d;&quot;&gt;const &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6ae;&quot;&gt;http &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ececec;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fffd87;&quot;&gt;require&lt;&#x2F;span&gt;&lt;span style=&quot;color:#78cecc80;&quot;&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d68686;&quot;&gt;http&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#78cecc80;&quot;&gt;)&lt;&#x2F;span&gt;&lt;span&gt;;
-&lt;&#x2F;span&gt;&lt;span&gt;
-&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fffb9d;&quot;&gt;exports&lt;&#x2F;span&gt;&lt;span&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fffd87;&quot;&gt;handler &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ececec;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fffb9d;&quot;&gt;async &lt;&#x2F;span&gt;&lt;span&gt;(event) &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fffb9d;&quot;&gt;=&amp;gt;
-&lt;&#x2F;span&gt;&lt;span&gt;  &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ececec;&quot;&gt;new &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d6;&quot;&gt;Promise&lt;&#x2F;span&gt;&lt;span style=&quot;color:#78cecc80;&quot;&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fffb9d;&quot;&gt;async &lt;&#x2F;span&gt;&lt;span&gt;(resolve, reject) &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fffb9d;&quot;&gt;=&amp;gt; &lt;&#x2F;span&gt;&lt;span&gt;{
-&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fffb9d;&quot;&gt;const &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6ae;&quot;&gt;req &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ececec;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span&gt;http.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fffd87;&quot;&gt;request&lt;&#x2F;span&gt;&lt;span style=&quot;color:#78cecc80;&quot;&gt;(
-&lt;&#x2F;span&gt;&lt;span&gt;      { host: &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d68686;&quot;&gt;localhost&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;, port: &lt;&#x2F;span&gt;&lt;span style=&quot;font-weight:bold;color:#87d6d5;&quot;&gt;8080&lt;&#x2F;span&gt;&lt;span&gt;, path: &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d68686;&quot;&gt;&#x2F;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;, method: &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d68686;&quot;&gt;POST&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot; &lt;&#x2F;span&gt;&lt;span&gt;},
-&lt;&#x2F;span&gt;&lt;span&gt;      (res) &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fffb9d;&quot;&gt;=&amp;gt; &lt;&#x2F;span&gt;&lt;span&gt;{
-&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fffb9d;&quot;&gt;let &lt;&#x2F;span&gt;&lt;span&gt;buffer &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ececec;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;;
-&lt;&#x2F;span&gt;&lt;span&gt;        res.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fffd87;&quot;&gt;on&lt;&#x2F;span&gt;&lt;span style=&quot;color:#78cecc80;&quot;&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d68686;&quot;&gt;data&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;, (chunk) &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fffb9d;&quot;&gt;=&amp;gt; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#78cecc80;&quot;&gt;(&lt;&#x2F;span&gt;&lt;span&gt;buffer &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ececec;&quot;&gt;+= &lt;&#x2F;span&gt;&lt;span&gt;chunk&lt;&#x2F;span&gt;&lt;span style=&quot;color:#78cecc80;&quot;&gt;))&lt;&#x2F;span&gt;&lt;span&gt;;
-&lt;&#x2F;span&gt;&lt;span&gt;        res.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fffd87;&quot;&gt;on&lt;&#x2F;span&gt;&lt;span style=&quot;color:#78cecc80;&quot;&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d68686;&quot;&gt;end&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;, () &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fffb9d;&quot;&gt;=&amp;gt; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fffd87;&quot;&gt;resolve&lt;&#x2F;span&gt;&lt;span style=&quot;color:#78cecc80;&quot;&gt;(&lt;&#x2F;span&gt;&lt;span&gt;{ statusCode: &lt;&#x2F;span&gt;&lt;span style=&quot;font-weight:bold;color:#87d6d5;&quot;&gt;200&lt;&#x2F;span&gt;&lt;span&gt;, body: buffer }&lt;&#x2F;span&gt;&lt;span style=&quot;color:#78cecc80;&quot;&gt;))&lt;&#x2F;span&gt;&lt;span&gt;;
-&lt;&#x2F;span&gt;&lt;span&gt;      }
-&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#78cecc80;&quot;&gt;)&lt;&#x2F;span&gt;&lt;span&gt;;
-&lt;&#x2F;span&gt;&lt;span&gt;    req.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fffd87;&quot;&gt;on&lt;&#x2F;span&gt;&lt;span style=&quot;color:#78cecc80;&quot;&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d68686;&quot;&gt;error&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;, (e) &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fffb9d;&quot;&gt;=&amp;gt;
-&lt;&#x2F;span&gt;&lt;span&gt;      &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fffd87;&quot;&gt;reject&lt;&#x2F;span&gt;&lt;span style=&quot;color:#78cecc80;&quot;&gt;(&lt;&#x2F;span&gt;&lt;span&gt;{ statusCode: &lt;&#x2F;span&gt;&lt;span style=&quot;font-weight:bold;color:#87d6d5;&quot;&gt;500&lt;&#x2F;span&gt;&lt;span&gt;, body: &lt;&#x2F;span&gt;&lt;span style=&quot;font-weight:bold;color:#d6d6ae;&quot;&gt;JSON&lt;&#x2F;span&gt;&lt;span&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fffd87;&quot;&gt;stringify&lt;&#x2F;span&gt;&lt;span style=&quot;color:#78cecc80;&quot;&gt;(&lt;&#x2F;span&gt;&lt;span&gt;e.message, &lt;&#x2F;span&gt;&lt;span style=&quot;font-weight:bold;color:#d6d6ae;&quot;&gt;null&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;font-weight:bold;color:#87d6d5;&quot;&gt;2&lt;&#x2F;span&gt;&lt;span style=&quot;color:#78cecc80;&quot;&gt;) &lt;&#x2F;span&gt;&lt;span&gt;}&lt;&#x2F;span&gt;&lt;span style=&quot;color:#78cecc80;&quot;&gt;)
-&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#78cecc80;&quot;&gt;)&lt;&#x2F;span&gt;&lt;span&gt;;
-&lt;&#x2F;span&gt;&lt;span&gt;    req.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fffd87;&quot;&gt;write&lt;&#x2F;span&gt;&lt;span style=&quot;color:#78cecc80;&quot;&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;font-weight:bold;color:#d6d6ae;&quot;&gt;JSON&lt;&#x2F;span&gt;&lt;span&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fffd87;&quot;&gt;stringify&lt;&#x2F;span&gt;&lt;span style=&quot;color:#78cecc80;&quot;&gt;(&lt;&#x2F;span&gt;&lt;span&gt;event&lt;&#x2F;span&gt;&lt;span style=&quot;color:#78cecc80;&quot;&gt;))&lt;&#x2F;span&gt;&lt;span&gt;;
-&lt;&#x2F;span&gt;&lt;span&gt;    req.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fffd87;&quot;&gt;end&lt;&#x2F;span&gt;&lt;span style=&quot;color:#78cecc80;&quot;&gt;()&lt;&#x2F;span&gt;&lt;span&gt;;
-&lt;&#x2F;span&gt;&lt;span&gt;  }&lt;&#x2F;span&gt;&lt;span style=&quot;color:#78cecc80;&quot;&gt;)&lt;&#x2F;span&gt;&lt;span&gt;;
-&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
-&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;0x6b.github.io&#x2F;soracom-arc-and-aws-lambda-extension&#x2F;lambda-management-console.png&quot; alt=&quot;AWS Lambda Management Console&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
-&lt;p&gt;テスト実行すると、以下のように Lambda extension (&lt;code&gt;soraproxy&lt;&#x2F;code&gt;) が WireGuard 接続を初期化し、Unified Endpoint へ &lt;code&gt;POST&lt;&#x2F;code&gt; している様子が見えます。&lt;&#x2F;p&gt;
-&lt;pre style=&quot;background-color:#393939;color:#dedede;&quot;&gt;&lt;code&gt;&lt;span&gt;Function Logs
-&lt;&#x2F;span&gt;&lt;span&gt;15:23:32 setup proxy server for Unified Endpoint
-&lt;&#x2F;span&gt;&lt;span&gt;DEBUG: (soraproxy&#x2F;proxy) 2021&#x2F;12&#x2F;12 15:23:32 proxy server for Unified Endpoint started at 0.0.0.0:8080
-&lt;&#x2F;span&gt;&lt;span&gt;DEBUG: (soraproxy&#x2F;proxy&#x2F;tunnel) 2021&#x2F;12&#x2F;12 15:23:32 Routine: handshake worker 1 - started
-&lt;&#x2F;span&gt;&lt;span&gt;DEBUG: (soraproxy&#x2F;proxy&#x2F;tunnel) 2021&#x2F;12&#x2F;12 15:23:32 Routine: encryption worker 1 - started
-&lt;&#x2F;span&gt;&lt;span&gt;DEBUG: (soraproxy&#x2F;proxy&#x2F;tunnel) 2021&#x2F;12&#x2F;12 15:23:32 Routine: decryption worker 1 - started
-&lt;&#x2F;span&gt;&lt;span&gt;DEBUG: (soraproxy&#x2F;proxy&#x2F;tunnel) 2021&#x2F;12&#x2F;12 15:23:32 Routine: encryption worker 2 - started
-&lt;&#x2F;span&gt;&lt;span&gt;DEBUG: (soraproxy&#x2F;proxy&#x2F;tunnel) 2021&#x2F;12&#x2F;12 15:23:32 Routine: receive incoming v4 - started
-&lt;&#x2F;span&gt;&lt;span&gt;DEBUG: (soraproxy&#x2F;proxy&#x2F;tunnel) 2021&#x2F;12&#x2F;12 15:23:32 peer(cx&#x2F;Q…7vVA) - Routine: sequential sender - started
-&lt;&#x2F;span&gt;&lt;span&gt;DEBUG: (soraproxy&#x2F;proxy&#x2F;tunnel) 2021&#x2F;12&#x2F;12 15:23:32 peer(cx&#x2F;Q…7vVA) - Routine: sequential receiver - started
-&lt;&#x2F;span&gt;&lt;span&gt;DEBUG: (soraproxy&#x2F;proxy&#x2F;tunnel) 2021&#x2F;12&#x2F;12 15:23:32 Routine: decryption worker 2 - started
-&lt;&#x2F;span&gt;&lt;span&gt;DEBUG: (soraproxy&#x2F;proxy&#x2F;tunnel) 2021&#x2F;12&#x2F;12 15:23:32 Routine: handshake worker 2 - started
-&lt;&#x2F;span&gt;&lt;span&gt;DEBUG: (soraproxy&#x2F;proxy&#x2F;tunnel) 2021&#x2F;12&#x2F;12 15:23:32 Routine: TUN reader - started
-&lt;&#x2F;span&gt;&lt;span&gt;DEBUG: (soraproxy&#x2F;proxy&#x2F;tunnel) 2021&#x2F;12&#x2F;12 15:23:32 Routine: event worker - started
-&lt;&#x2F;span&gt;&lt;span&gt;DEBUG: (soraproxy&#x2F;proxy&#x2F;tunnel) 2021&#x2F;12&#x2F;12 15:23:32 Interface up requested
-&lt;&#x2F;span&gt;&lt;span&gt;EXTENSION	Name: extension.sh	State: Ready	Events: [SHUTDOWN,INVOKE]
-&lt;&#x2F;span&gt;&lt;span&gt;+ trap - SIGTERM
-&lt;&#x2F;span&gt;&lt;span&gt;+ EVENT_DATA=&amp;#39;{&amp;quot;eventType&amp;quot;:&amp;quot;INVOKE&amp;quot;,&amp;quot;deadlineMs&amp;quot;:1639322915570,&amp;quot;requestId&amp;quot;:&amp;quot;xxxxxxxx-68e3-4be4-a682-e362c35837ff&amp;quot;,&amp;quot;invokedFunctionArn&amp;quot;:&amp;quot;arn:aws:lambda:ap-northeast-1:xxxxxxxxxxxx:function:soraproxy&amp;quot;,&amp;quot;tracing&amp;quot;:{&amp;quot;type&amp;quot;:&amp;quot;X-Amzn-Trace-Id&amp;quot;,&amp;quot;value&amp;quot;:&amp;quot;Root=1-61b613f3-37678b955845097c7d499e07;Parent=033592cd59b3e60b;Sampled=0&amp;quot;}}&amp;#39;
-&lt;&#x2F;span&gt;&lt;span&gt;+ [[ {&amp;quot;eventType&amp;quot;:&amp;quot;INVOKE&amp;quot;,&amp;quot;deadlineMs&amp;quot;:1639322915570,&amp;quot;requestId&amp;quot;:&amp;quot;xxxxxxxx-68e3-4be4-a682-e362c35837ff&amp;quot;,&amp;quot;invokedFunctionArn&amp;quot;:&amp;quot;arn:aws:lambda:ap-northeast-1:xxxxxxxxxxxx:function:soraproxy&amp;quot;,&amp;quot;tracing&amp;quot;:{&amp;quot;type&amp;quot;:&amp;quot;X-Amzn-Trace-Id&amp;quot;,&amp;quot;value&amp;quot;:&amp;quot;Root=1-61b613f3-37678b955845097c7d499e07;Parent=033592cd59b3e60b;Sampled=0&amp;quot;}} == *\S\H\U\T\D\O\W\N* ]]
-&lt;&#x2F;span&gt;&lt;span&gt;+ echo &amp;#39;[extension.sh] Received event: {&amp;quot;eventType&amp;quot;:&amp;quot;INVOKE&amp;quot;,&amp;quot;deadlineMs&amp;quot;:1639322915570,&amp;quot;requestId&amp;quot;:&amp;quot;xxxxxxxx-68e3-4be4-a682-e362c35837ff&amp;quot;,&amp;quot;invokedFunctionArn&amp;quot;:&amp;quot;arn:aws:lambda:ap-northeast-1:xxxxxxxxxxxx:function:soraproxy&amp;quot;,&amp;quot;tracing&amp;quot;:{&amp;quot;type&amp;quot;:&amp;quot;X-Amzn-Trace-Id&amp;quot;,&amp;quot;value&amp;quot;:&amp;quot;Root=1-61b613f3-37678b955845097c7d499e07;Parent=033592cd59b3e60b;Sampled=0&amp;quot;}}&amp;#39;
-&lt;&#x2F;span&gt;&lt;span&gt;[extension.sh] Received event: {&amp;quot;eventType&amp;quot;:&amp;quot;INVOKE&amp;quot;,&amp;quot;deadlineMs&amp;quot;:1639322915570,&amp;quot;requestId&amp;quot;:&amp;quot;xxxxxxxx-68e3-4be4-a682-e362c35837ff&amp;quot;,&amp;quot;invokedFunctionArn&amp;quot;:&amp;quot;arn:aws:lambda:ap-northeast-1:xxxxxxxxxxxx:function:soraproxy&amp;quot;,&amp;quot;tracing&amp;quot;:{&amp;quot;type&amp;quot;:&amp;quot;X-Amzn-Trace-Id&amp;quot;,&amp;quot;value&amp;quot;:&amp;quot;Root=1-61b613f3-37678b955845097c7d499e07;Parent=033592cd59b3e60b;Sampled=0&amp;quot;}}
-&lt;&#x2F;span&gt;&lt;span&gt;+ sleep 1
-&lt;&#x2F;span&gt;&lt;span&gt;DEBUG: (soraproxy&#x2F;proxy) 2021&#x2F;12&#x2F;12 15:23:32 route POST &#x2F; to Unified Endpoint
-&lt;&#x2F;span&gt;&lt;span&gt;--- Request dump ---------------------------------
-&lt;&#x2F;span&gt;&lt;span&gt;POST &#x2F; HTTP&#x2F;1.1
-&lt;&#x2F;span&gt;&lt;span&gt;Host: 100.127.69.42:80
-&lt;&#x2F;span&gt;&lt;span&gt;
-&lt;&#x2F;span&gt;&lt;span&gt;{&amp;quot;key1&amp;quot;:10.2,&amp;quot;key2&amp;quot;:0,&amp;quot;key3&amp;quot;:5}
-&lt;&#x2F;span&gt;&lt;span&gt;--- End of request dump --------------------------
-&lt;&#x2F;span&gt;&lt;span&gt;DEBUG: (soraproxy&#x2F;proxy&#x2F;tunnel) 2021&#x2F;12&#x2F;12 15:23:32 peer(cx&#x2F;Q…7vVA) - Sending handshake initiation
-&lt;&#x2F;span&gt;&lt;span&gt;DEBUG: (soraproxy&#x2F;proxy&#x2F;tunnel) 2021&#x2F;12&#x2F;12 15:23:32 peer(cx&#x2F;Q…7vVA) - Received handshake response
-&lt;&#x2F;span&gt;&lt;span&gt;--- Response dump --------------------------------
-&lt;&#x2F;span&gt;&lt;span&gt;HTTP&#x2F;1.1 201 Created
-&lt;&#x2F;span&gt;&lt;span&gt;Connection: close
-&lt;&#x2F;span&gt;&lt;span&gt;Content-Length: 0
-&lt;&#x2F;span&gt;&lt;span&gt;Date: Sun, 12 Dec 2021 15:23:32 GMT
-&lt;&#x2F;span&gt;&lt;span&gt;
-&lt;&#x2F;span&gt;&lt;span&gt;
-&lt;&#x2F;span&gt;&lt;span&gt;--- End of response dump -------------------------
-&lt;&#x2F;span&gt;&lt;span&gt;+ true
-&lt;&#x2F;span&gt;&lt;span&gt;+ echo &amp;#39;[extension.sh] Waiting for event. Get &#x2F;next event from http:&#x2F;&#x2F;127.0.0.1:9001&#x2F;2020-01-01&#x2F;extension&#x2F;event&#x2F;next&amp;#39;
-&lt;&#x2F;span&gt;&lt;span&gt;[extension.sh] Waiting for event. Get &#x2F;next event from http:&#x2F;&#x2F;127.0.0.1:9001&#x2F;2020-01-01&#x2F;extension&#x2F;event&#x2F;next
-&lt;&#x2F;span&gt;&lt;span&gt;+ PID=50
-&lt;&#x2F;span&gt;&lt;span&gt;+ forward_sigterm_and_wait
-&lt;&#x2F;span&gt;&lt;span&gt;+ trap _term SIGTERM
-&lt;&#x2F;span&gt;&lt;span&gt;+ &#x2F;opt&#x2F;bin&#x2F;curl -sS -L -XGET http:&#x2F;&#x2F;127.0.0.1:9001&#x2F;2020-01-01&#x2F;extension&#x2F;event&#x2F;next --header &amp;#39;Lambda-Extension-Identifier: xxxxxxxx-6dff-4060-83b5-c3fac699488f&amp;#39;
-&lt;&#x2F;span&gt;&lt;span&gt;+ wait 50
-&lt;&#x2F;span&gt;&lt;span&gt;END RequestId: xxxxxxxx-68e3-4be4-a682-e362c35837ff
-&lt;&#x2F;span&gt;&lt;span&gt;REPORT RequestId: xxxxxxxx-68e3-4be4-a682-e362c35837ff	Duration: 1005.43 ms	Billed Duration: 1006 ms	Memory Size: 512 MB	Max Memory Used: 81 MB	Init Duration: 275.38 ms
-&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
-&lt;h3 id=&quot;shi-sitemitaifang-ha&quot;&gt;試してみたい方は&lt;&#x2F;h3&gt;
-&lt;p&gt;実験的な機能であることから &lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;soracom&#x2F;soratun&#x2F;&quot;&gt;soracom&#x2F;soratun&lt;&#x2F;a&gt; にはマージしていません。soratun のメインのターゲットである Raspberry Pi (の 32-bit 版)を gVisor が &lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;google&#x2F;gvisor&#x2F;issues&#x2F;5692#issuecomment-842600032&quot;&gt;正式にサポートしていない&lt;&#x2F;a&gt; ことが大きな理由です。とはいえ soratun はオープンソースとして公開しており、要件に応じたカスタマイズの土台として利用できます。今回のようにすべてユーザー空間で実装する方式にはいろいろな可能性がありそうに思いますのでぜひお試しください。&lt;&#x2F;p&gt;
-&lt;p&gt;Lambda extension レイヤーの Zip ファイルアーカイブを作る手順は以下のとおりです。&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;0x6b&#x2F;soratun&#x2F;blob&#x2F;main&#x2F;docs&#x2F;CONTRIBUTING.md&quot;&gt;soratun&#x2F;CONTRIBUTING.md&lt;&#x2F;a&gt; の Prerequisites が必要です。&lt;&#x2F;p&gt;
-&lt;pre data-lang=&quot;bash&quot; style=&quot;background-color:#393939;color:#dedede;&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span&gt;$ git clone https:&#x2F;&#x2F;github.com&#x2F;0x6b&#x2F;soratun
-&lt;&#x2F;span&gt;&lt;span&gt;$ cd soratun
-&lt;&#x2F;span&gt;&lt;span&gt;$ git switch soraproxy
-&lt;&#x2F;span&gt;&lt;span&gt;$ make lambda-extension
-&lt;&#x2F;span&gt;&lt;span&gt;...
-&lt;&#x2F;span&gt;&lt;span&gt;Created &#x2F;path&#x2F;to&#x2F;aws-lambda-extension&#x2F;soraproxy.zip
-&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
-&lt;p&gt;差分全体は &lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;soracom&#x2F;soratun&#x2F;compare&#x2F;main...0x6b:soraproxy?expand=1&quot;&gt;GitHub&lt;&#x2F;a&gt; でご覧ください。&lt;&#x2F;p&gt;
-&lt;p&gt;ちなみに、最近の gVisor ではコンパイルに失敗してしまうため少し古めのバージョンを使用しています。コミットログから分かるように &lt;code&gt;soraproxy&lt;&#x2F;code&gt; は結構前から試作していたのですが、アドベントカレンダーしめきり前に最新パッケージにしようとして失敗して焦りました。詳細は追いかけられていません。&lt;&#x2F;p&gt;
-&lt;h2 id=&quot;matome&quot;&gt;まとめ&lt;&#x2F;h2&gt;
-&lt;p&gt;wireguard-go と gVisor という超巨人の肩を借りつつ AWS Lambda extension として実装することで、Lambda 関数から簡単にソラコムのプラットフォームサービスを利用できるようになりました。&lt;&#x2F;p&gt;
-&lt;p&gt;2021 年 12 月現在、SORACOM Arc は 1 アカウントあたりバーチャル SIM1 契約分の基本使用料(月額)、1GB 分のデータ通信が無料で利用できますのでぜひお試しください。&lt;&#x2F;p&gt;
 </description>
       </item>
     </channel>

@@ -8,6 +8,10 @@
         <lastmod>2022-12-07</lastmod>
     </url>
     <url>
+        <loc>https://0x6b.github.io/libsoratun/</loc>
+        <lastmod>2023-12-15</lastmod>
+    </url>
+    <url>
         <loc>https://0x6b.github.io/nssh/</loc>
         <lastmod>2020-12-07</lastmod>
     </url>
@@ -30,10 +34,7 @@
         <loc>https://0x6b.github.io/tags/</loc>
     </url>
     <url>
-        <loc>https://0x6b.github.io/tags/arc/</loc>
-    </url>
-    <url>
-        <loc>https://0x6b.github.io/tags/aws/</loc>
+        <loc>https://0x6b.github.io/tags/aws-lambda/</loc>
     </url>
     <url>
         <loc>https://0x6b.github.io/tags/cli/</loc>
@@ -42,13 +43,16 @@
         <loc>https://0x6b.github.io/tags/extension/</loc>
     </url>
     <url>
-        <loc>https://0x6b.github.io/tags/harvest/</loc>
+        <loc>https://0x6b.github.io/tags/ffi/</loc>
     </url>
     <url>
-        <loc>https://0x6b.github.io/tags/lambda/</loc>
+        <loc>https://0x6b.github.io/tags/soracom-arc/</loc>
     </url>
     <url>
-        <loc>https://0x6b.github.io/tags/napter/</loc>
+        <loc>https://0x6b.github.io/tags/soracom-harvest/</loc>
+    </url>
+    <url>
+        <loc>https://0x6b.github.io/tags/soracom-napter/</loc>
     </url>
     <url>
         <loc>https://0x6b.github.io/tags/soracom/</loc>

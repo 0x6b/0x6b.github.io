@@ -163,7 +163,7 @@
 <p>拡張本体 (<code>.so</code> や <code>.dll</code> ファイル) を GitHub から配布する準備がまにあわなかったため、お手元でビルドが必要です。そのため、だいぶ面倒ですが Rust のインストールから。<a href="https://www.rust-lang.org/ja/tools/install">Rust をインストール - Rust プログラミング言語</a> にしたがってください。</p>
 <h3 id="sosukodoworu-shou-suru">ソースコードを入手する</h3>
 <p>拡張のソースコードを GitHub リポジトリから入手します。</p>
-<pre data-lang="shell" style="background-color:#0f1419;color:#bfbab0;" class="language-shell "><code class="language-shell" data-lang="shell"><span>$ git clone github.com/0x6b/libshsqlite
+<pre data-lang="shell" style="background-color:#393939;color:#dedede;" class="language-shell "><code class="language-shell" data-lang="shell"><span>$ git clone github.com/0x6b/libshsqlite
 </span><span>$ cd libshsqlite
 </span></code></pre>
 <h3 id="soracom-to-soracom-harvest-data-woshi-ishi-meru">SORACOM と Soracom Harvest Data を使い始める</h3>
@@ -171,16 +171,16 @@
 <ol>
 <li><a href="https://users.soracom.io/ja-jp/guides/getting-started/">SORACOM の利用を始める</a> にしたがって SIM カードをゲットし通信可能にします。バーチャル SIM も使用できます。SORACOM Arc の <a href="https://users.soracom.io/ja-jp/docs/arc/">公式ドキュメント</a> を参照しセットアップしてください。</li>
 <li><a href="https://users.soracom.io/ja-jp/docs/harvest/enable-data/">SORACOM Harvest Data を有効化</a> します。</li>
-<li>以下の権限を持つ <a href="https://users.soracom.io/ja-jp/docs/sam/create-sam-user/">SAM ユーザーを作成します</a>。セキュリティの観点から専用のユーザーを作成することをおすすめしますが、すでに SORACOM CLI などを利用中で、必要な権限を持っているユーザーを使っている場合はその認証情報を使っても OK です。SAM は、管理ユーザー毎にアクセス権限を設定できるアクセス管理機能で、不要なアクセスや操作ミスを未然に防げます。<pre data-lang="json" style="background-color:#0f1419;color:#bfbab0;" class="language-json "><code class="language-json" data-lang="json"><span>{
-</span><span>  </span><span style="color:#c2d94c;">&quot;statements&quot;</span><span style="color:#bfbab0cc;">: </span><span>[
+<li>以下の権限を持つ <a href="https://users.soracom.io/ja-jp/docs/sam/create-sam-user/">SAM ユーザーを作成します</a>。セキュリティの観点から専用のユーザーを作成することをおすすめしますが、すでに SORACOM CLI などを利用中で、必要な権限を持っているユーザーを使っている場合はその認証情報を使っても OK です。SAM は、管理ユーザー毎にアクセス権限を設定できるアクセス管理機能で、不要なアクセスや操作ミスを未然に防げます。<pre data-lang="json" style="background-color:#393939;color:#dedede;" class="language-json "><code class="language-json" data-lang="json"><span>{
+</span><span>  </span><span style="color:#d6d6d680;">&quot;</span><span style="color:#d68686;">statements</span><span style="color:#d6d6d680;">&quot;</span><span>: [
 </span><span>    {
-</span><span>      </span><span style="color:#c2d94c;">&quot;api&quot;</span><span style="color:#bfbab0cc;">: </span><span>[
-</span><span>        </span><span style="color:#c2d94c;">&quot;Sim:getDataFromSim&quot;</span><span style="color:#bfbab0cc;">,
-</span><span>        </span><span style="color:#c2d94c;">&quot;Subscriber:getDataFromSubscriber&quot;</span><span style="color:#bfbab0cc;">,
-</span><span>        </span><span style="color:#c2d94c;">&quot;DataEntry:getDataEntries&quot;</span><span style="color:#bfbab0cc;">,
-</span><span>        </span><span style="color:#c2d94c;">&quot;DataEntry:getDataEntry&quot;
-</span><span>      ]</span><span style="color:#bfbab0cc;">,
-</span><span>      </span><span style="color:#c2d94c;">&quot;effect&quot;</span><span style="color:#bfbab0cc;">: </span><span style="color:#c2d94c;">&quot;allow&quot;
+</span><span>      </span><span style="color:#d6d6d680;">&quot;</span><span style="color:#d68686;">api</span><span style="color:#d6d6d680;">&quot;</span><span>: [
+</span><span>        </span><span style="color:#d6d6d680;">&quot;</span><span style="color:#d68686;">Sim:getDataFromSim</span><span style="color:#d6d6d680;">&quot;</span><span>,
+</span><span>        </span><span style="color:#d6d6d680;">&quot;</span><span style="color:#d68686;">Subscriber:getDataFromSubscriber</span><span style="color:#d6d6d680;">&quot;</span><span>,
+</span><span>        </span><span style="color:#d6d6d680;">&quot;</span><span style="color:#d68686;">DataEntry:getDataEntries</span><span style="color:#d6d6d680;">&quot;</span><span>,
+</span><span>        </span><span style="color:#d6d6d680;">&quot;</span><span style="color:#d68686;">DataEntry:getDataEntry</span><span style="color:#d6d6d680;">&quot;
+</span><span>      ],
+</span><span>      </span><span style="color:#d6d6d680;">&quot;</span><span style="color:#d68686;">effect</span><span style="color:#d6d6d680;">&quot;</span><span>: </span><span style="color:#d6d6d680;">&quot;</span><span style="color:#d68686;">allow</span><span style="color:#d6d6d680;">&quot;
 </span><span>    }
 </span><span>  ]
 </span><span>}
@@ -192,16 +192,16 @@
 <p><a href="https://users.soracom.io/ja-jp/docs/harvest/send-data/">Harvest Data でデバイスのデータをクラウドで収集・取得・可視化する</a> を参考にしながら適当なデータを送信します。プロトコルは HTTP、TCP、UDP いずれでも構いません。</p>
 <p>同じリポジトリに拡張のテストのために UDP と HTTP でデータを送信する <code>soracom_harvest_client</code> crate を作っており、簡易な CLI もありますのでそちらでも大丈夫です。</p>
 <h4 id="udp-desong-xin-suru">UDP で送信する</h4>
-<pre data-lang="shell" style="background-color:#0f1419;color:#bfbab0;" class="language-shell "><code class="language-shell" data-lang="shell"><span>$ cargo run -p soracom_harvest_client --quiet -- --udp hey
+<pre data-lang="shell" style="background-color:#393939;color:#dedede;" class="language-shell "><code class="language-shell" data-lang="shell"><span>$ cargo run -p soracom_harvest_client --quiet -- --udp hey
 </span><span>2022-12-03T15:06:18.724035+09:00 hey
 </span></code></pre>
 <h4 id="http-desong-xin-suru">HTTP で送信する</h4>
-<pre data-lang="shell" style="background-color:#0f1419;color:#bfbab0;" class="language-shell "><code class="language-shell" data-lang="shell"><span>$ cargo run -p soracom_harvest_client --quiet -- --http &#39;{&quot;temperature&quot;:20}&#39;
+<pre data-lang="shell" style="background-color:#393939;color:#dedede;" class="language-shell "><code class="language-shell" data-lang="shell"><span>$ cargo run -p soracom_harvest_client --quiet -- --http &#39;{&quot;temperature&quot;:20}&#39;
 </span><span>2022-12-04T01:17:10.924355+09:00 {&quot;temperature&quot;:20}
 </span></code></pre>
 <h3 id="kuo-zhang-wobirudosuru">拡張をビルドする</h3>
 <p><code>cargo</code> コマンドでビルドします。</p>
-<pre data-lang="shell" style="background-color:#0f1419;color:#bfbab0;" class="language-shell "><code class="language-shell" data-lang="shell"><span>$ cargo build --release
+<pre data-lang="shell" style="background-color:#393939;color:#dedede;" class="language-shell "><code class="language-shell" data-lang="shell"><span>$ cargo build --release
 </span><span>   Compiling autocfg v1.1.0
 </span><span>   Compiling libc v0.2.137
 </span><span>   Compiling cfg-if v1.0.0
@@ -213,23 +213,23 @@
 </span></code></pre>
 <h3 id="kuo-zhang-wo-sqlite-nirodosuru">拡張を SQLite にロードする</h3>
 <ol>
-<li>SAM ユーザーの認証情報を環境変数としてエクスポートします。<pre data-lang="shell" style="background-color:#0f1419;color:#bfbab0;" class="language-shell "><code class="language-shell" data-lang="shell"><span>$ export LIBSHSQLITE_AUTH_KEY_ID=keyId-.. # authKeyId
+<li>SAM ユーザーの認証情報を環境変数としてエクスポートします。<pre data-lang="shell" style="background-color:#393939;color:#dedede;" class="language-shell "><code class="language-shell" data-lang="shell"><span>$ export LIBSHSQLITE_AUTH_KEY_ID=keyId-.. # authKeyId
 </span><span>$ export LIBSHSQLITE_AUTH_KEY_SECRET=secret-... # authKey
 </span></code></pre>
 </li>
-<li>SQLite を起動します。<pre data-lang="shell" style="background-color:#0f1419;color:#bfbab0;" class="language-shell "><code class="language-shell" data-lang="shell"><span>$ sqlite3
+<li>SQLite を起動します。<pre data-lang="shell" style="background-color:#393939;color:#dedede;" class="language-shell "><code class="language-shell" data-lang="shell"><span>$ sqlite3
 </span></code></pre>
 </li>
-<li>拡張をロードします。Windows の場合は <code>libshsqlite</code> ではなくおそらく <code>shsqlite</code> と指定します。<pre data-lang="shell" style="background-color:#0f1419;color:#bfbab0;" class="language-shell "><code class="language-shell" data-lang="shell"><span>sqlite&gt; .load target/release/libshsqlite
+<li>拡張をロードします。Windows の場合は <code>libshsqlite</code> ではなくおそらく <code>shsqlite</code> と指定します。<pre data-lang="shell" style="background-color:#393939;color:#dedede;" class="language-shell "><code class="language-shell" data-lang="shell"><span>sqlite&gt; .load target/release/libshsqlite
 </span></code></pre>
 <code>Error: unknown command or invalid arguments: &quot;load&quot;. Enter &quot;.help&quot; for help </code> というエラーが出てしまったら、お使いの SQLite が拡張のロードをサポートしていません。macOS の場合は <code>brew install sqlite3</code> などでよしなにインストールしてそちらを使用してください。</li>
 </ol>
 <h3 id="soracom-harvest-data-nodetakarajia-xiang-teburuwozuo-cheng-suru">SORACOM Harvest Data のデータから仮想テーブルを作成する</h3>
 <p><code>CREATE VIRTUAL TABLE</code> 文を使って SORACOM Harvest Data のデータを元に仮想テーブルを作成します。データはこのタイミングでのみ取得しますので、仮想テーブル作成後に送信されたデータが必要な場合は作り直してください。仮想テーブルを <code>DROP</code> しても SORACOM Harvest Data に蓄積されているデータは削除されません。</p>
-<pre data-lang="sql" style="background-color:#0f1419;color:#bfbab0;" class="language-sql "><code class="language-sql" data-lang="sql"><span>CREATE VIRTUAL TABLE harvest_data </span><span style="color:#ff7733;">USING</span><span> shsqlite(
-</span><span>    IMSI     </span><span style="color:#c2d94c;">&#39;imsi-of-your-sim&#39;</span><span>,
-</span><span>    COVERAGE </span><span style="color:#c2d94c;">&#39;japan&#39;
-</span><span>);
+<pre data-lang="sql" style="background-color:#393939;color:#dedede;" class="language-sql "><code class="language-sql" data-lang="sql"><span style="font-weight:bold;color:#95bff3;">CREATE VIRTUAL TABLE harvest_data </span><span style="font-weight:bold;color:#b7b7b7;">USING</span><span style="font-weight:bold;color:#95bff3;"> shsqlite(
+</span><span style="font-weight:bold;color:#95bff3;">    IMSI     </span><span style="font-weight:bold;color:#d6d6d680;">&#39;</span><span style="font-weight:bold;color:#d68686;">imsi-of-your-sim</span><span style="font-weight:bold;color:#d6d6d680;">&#39;</span><span style="font-weight:bold;color:#95bff3;">,
+</span><span style="font-weight:bold;color:#95bff3;">    COVERAGE </span><span style="font-weight:bold;color:#d6d6d680;">&#39;</span><span style="font-weight:bold;color:#d68686;">japan</span><span style="font-weight:bold;color:#d6d6d680;">&#39;
+</span><span style="font-weight:bold;color:#95bff3;">);
 </span></code></pre>
 <p>以下のパラメータをモジュールの引数として指定できます。</p>
 <table><thead><tr><th>引数</th><th>説明</th><th>デフォルト値</th><th style="text-align: center">必須</th></tr></thead><tbody>
@@ -239,74 +239,74 @@
 <tr><td><code>COVERAGE</code></td><td>SIM のカバレッジ (<code>global</code> または <code>japan</code>)</td><td><code>global</code></td><td style="text-align: center"></td></tr>
 <tr><td><code>LIMIT</code></td><td>取得するデータの数。1 から 1000 まで。</td><td>100</td><td style="text-align: center"></td></tr>
 </tbody></table>
-<pre data-lang="sql" style="background-color:#0f1419;color:#bfbab0;" class="language-sql "><code class="language-sql" data-lang="sql"><span>CREATE VIRTUAL TABLE harvest_data </span><span style="color:#ff7733;">USING</span><span> shsqlite(
-</span><span>    IMSI </span><span style="color:#c2d94c;">&#39;...&#39;</span><span>,
-</span><span>    </span><span style="color:#ff7733;">FROM </span><span style="color:#c2d94c;">&#39;...&#39;</span><span>,
-</span><span>    TO </span><span style="color:#c2d94c;">&#39;...&#39;</span><span>,
-</span><span>    COVERAGE </span><span style="color:#c2d94c;">&#39;japan|global&#39;</span><span>,
-</span><span>    </span><span style="color:#ff7733;">LIMIT </span><span style="color:#c2d94c;">&#39;...&#39;
-</span><span>);
+<pre data-lang="sql" style="background-color:#393939;color:#dedede;" class="language-sql "><code class="language-sql" data-lang="sql"><span style="font-weight:bold;color:#95bff3;">CREATE VIRTUAL TABLE harvest_data </span><span style="font-weight:bold;color:#b7b7b7;">USING</span><span style="font-weight:bold;color:#95bff3;"> shsqlite(
+</span><span style="font-weight:bold;color:#95bff3;">    IMSI </span><span style="font-weight:bold;color:#d6d6d680;">&#39;</span><span style="font-weight:bold;color:#d68686;">...</span><span style="font-weight:bold;color:#d6d6d680;">&#39;</span><span style="font-weight:bold;color:#95bff3;">,
+</span><span style="font-weight:bold;color:#95bff3;">    </span><span style="font-weight:bold;color:#b7b7b7;">FROM </span><span style="font-weight:bold;color:#d6d6d680;">&#39;</span><span style="font-weight:bold;color:#d68686;">...</span><span style="font-weight:bold;color:#d6d6d680;">&#39;</span><span style="font-weight:bold;color:#95bff3;">,
+</span><span style="font-weight:bold;color:#95bff3;">    TO </span><span style="font-weight:bold;color:#d6d6d680;">&#39;</span><span style="font-weight:bold;color:#d68686;">...</span><span style="font-weight:bold;color:#d6d6d680;">&#39;</span><span style="font-weight:bold;color:#95bff3;">,
+</span><span style="font-weight:bold;color:#95bff3;">    COVERAGE </span><span style="font-weight:bold;color:#d6d6d680;">&#39;</span><span style="font-weight:bold;color:#d68686;">japan|global</span><span style="font-weight:bold;color:#d6d6d680;">&#39;</span><span style="font-weight:bold;color:#95bff3;">,
+</span><span style="font-weight:bold;color:#95bff3;">    </span><span style="font-weight:bold;color:#b7b7b7;">LIMIT </span><span style="font-weight:bold;color:#d6d6d680;">&#39;</span><span style="font-weight:bold;color:#d68686;">...</span><span style="font-weight:bold;color:#d6d6d680;">&#39;
+</span><span style="font-weight:bold;color:#95bff3;">);
 </span></code></pre>
 <h3 id="soracom-harvest-data-nixu-ji-sareteirudetawokuerisuru">SORACOM Harvest Data に蓄積されているデータをクエリする</h3>
 <p>ここまでくるといつものように SQL が使用できます。ちなみに <code>INSERT</code> や <code>UPDATE</code> はできません。</p>
-<pre data-lang="sql" style="background-color:#0f1419;color:#bfbab0;" class="language-sql "><code class="language-sql" data-lang="sql"><span style="color:#ff7733;">SELECT </span><span style="font-style:italic;color:#39bae6;">* </span><span style="color:#ff7733;">FROM</span><span> harvest_data;
-</span><span style="font-style:italic;color:#5c6773;">-- time           content_type      value
-</span><span style="font-style:italic;color:#5c6773;">-- -------------  ----------------  ------------------
-</span><span style="font-style:italic;color:#5c6773;">-- 1670084230984  application/json  {&quot;temperature&quot;:20}
-</span><span style="font-style:italic;color:#5c6773;">-- 1670083937548  application/json  {&quot;value&quot;:&quot;hey&quot;}
+<pre data-lang="sql" style="background-color:#393939;color:#dedede;" class="language-sql "><code class="language-sql" data-lang="sql"><span style="font-weight:bold;color:#b7b7b7;">SELECT </span><span style="font-weight:bold;color:#95bff3;">* </span><span style="font-weight:bold;color:#b7b7b7;">FROM</span><span style="font-weight:bold;color:#95bff3;"> harvest_data;
+</span><span style="font-weight:bold;color:#a0cfa1;">--</span><span style="font-weight:bold;color:#87ae86;"> time           content_type      value
+</span><span style="font-weight:bold;color:#a0cfa1;">--</span><span style="font-weight:bold;color:#87ae86;"> -------------  ----------------  ------------------
+</span><span style="font-weight:bold;color:#a0cfa1;">--</span><span style="font-weight:bold;color:#87ae86;"> 1670084230984  application/json  {&quot;temperature&quot;:20}
+</span><span style="font-weight:bold;color:#a0cfa1;">--</span><span style="font-weight:bold;color:#87ae86;"> 1670083937548  application/json  {&quot;value&quot;:&quot;hey&quot;}
 </span></code></pre>
 <p>SORACOM Harvest Data のタイムスタンプは UNIX 時刻ミリ秒ですので <code>datetime</code> 関数で変換できます。</p>
-<pre data-lang="sql" style="background-color:#0f1419;color:#bfbab0;" class="language-sql "><code class="language-sql" data-lang="sql"><span style="color:#ff7733;">SELECT datetime</span><span>(</span><span style="color:#ff7733;">time</span><span style="color:#f29668;">/</span><span style="color:#f29718;">1000</span><span>, </span><span style="color:#c2d94c;">&quot;unixepoch&quot;</span><span>) </span><span style="color:#f29668;">AS </span><span style="color:#ff7733;">datetime</span><span>, value </span><span style="color:#ff7733;">FROM</span><span> harvest_data;
-</span><span style="font-style:italic;color:#5c6773;">-- datetime             value
-</span><span style="font-style:italic;color:#5c6773;">-- -------------------  ------------------
-</span><span style="font-style:italic;color:#5c6773;">-- 2022-12-03 16:17:10  {&quot;temperature&quot;:20}
-</span><span style="font-style:italic;color:#5c6773;">-- 2022-12-03 16:12:17  {&quot;value&quot;:&quot;hey&quot;}
+<pre data-lang="sql" style="background-color:#393939;color:#dedede;" class="language-sql "><code class="language-sql" data-lang="sql"><span style="font-weight:bold;color:#b7b7b7;">SELECT </span><span style="font-weight:bold;color:#fffb9d;">datetime</span><span style="font-weight:bold;color:#95bff3;">(</span><span style="font-weight:bold;color:#fffb9d;">time</span><span style="font-weight:bold;color:#ececec;">/</span><span style="font-weight:bold;color:#87d6d5;">1000</span><span style="font-weight:bold;color:#95bff3;">, </span><span style="font-weight:bold;color:#d6d6d680;">&quot;</span><span style="font-weight:bold;color:#d68686;">unixepoch</span><span style="font-weight:bold;color:#d6d6d680;">&quot;</span><span style="font-weight:bold;color:#95bff3;">) </span><span style="font-weight:bold;color:#ececec;">AS </span><span style="font-weight:bold;color:#fffb9d;">datetime</span><span style="font-weight:bold;color:#95bff3;">, value </span><span style="font-weight:bold;color:#b7b7b7;">FROM</span><span style="font-weight:bold;color:#95bff3;"> harvest_data;
+</span><span style="font-weight:bold;color:#a0cfa1;">--</span><span style="font-weight:bold;color:#87ae86;"> datetime             value
+</span><span style="font-weight:bold;color:#a0cfa1;">--</span><span style="font-weight:bold;color:#87ae86;"> -------------------  ------------------
+</span><span style="font-weight:bold;color:#a0cfa1;">--</span><span style="font-weight:bold;color:#87ae86;"> 2022-12-03 16:17:10  {&quot;temperature&quot;:20}
+</span><span style="font-weight:bold;color:#a0cfa1;">--</span><span style="font-weight:bold;color:#87ae86;"> 2022-12-03 16:12:17  {&quot;value&quot;:&quot;hey&quot;}
 </span></code></pre>
 <p>UDP で送信した文字列 <code>hey</code> が <code>{&quot;value&quot;:&quot;hey&quot;}</code> となっている部分はポイントです。<a href="https://users.soracom.io/ja-jp/docs/harvest/send-data/">公式ドキュメント</a> に記載のとおり、TCP または UDP で Harvest Data にデータを送信すると、データが Base64 形式でエンコードされた上で <code>payload</code> プロパティに設定された JSON 形式で蓄積されます。<code>hey</code> という文字列を UDP で送信すると、<a href="https://github.com/soracom/soracom-cli/">SORACOM CLI</a> や <a href="https://users.soracom.io/ja-jp/tools/api/reference/">SORACOM API</a> では以下のように取得できます。</p>
-<pre data-lang="json" style="background-color:#0f1419;color:#bfbab0;" class="language-json "><code class="language-json" data-lang="json"><span>[
+<pre data-lang="json" style="background-color:#393939;color:#dedede;" class="language-json "><code class="language-json" data-lang="json"><span>[
 </span><span>  {
-</span><span>    </span><span style="color:#c2d94c;">&quot;content&quot;</span><span style="color:#bfbab0cc;">: </span><span style="color:#c2d94c;">&quot;{</span><span style="color:#95e6cb;">\&quot;</span><span style="color:#c2d94c;">payload</span><span style="color:#95e6cb;">\&quot;</span><span style="color:#c2d94c;">:</span><span style="color:#95e6cb;">\&quot;</span><span style="color:#c2d94c;">aGV5</span><span style="color:#95e6cb;">\&quot;</span><span style="color:#c2d94c;">}&quot;</span><span style="color:#bfbab0cc;">,
-</span><span>    </span><span style="color:#c2d94c;">&quot;contentType&quot;</span><span style="color:#bfbab0cc;">: </span><span style="color:#c2d94c;">&quot;application/json&quot;</span><span style="color:#bfbab0cc;">,
-</span><span>    </span><span style="color:#c2d94c;">&quot;time&quot;</span><span style="color:#bfbab0cc;">: </span><span style="color:#f29718;">1670047578752
+</span><span>    </span><span style="color:#d6d6d680;">&quot;</span><span style="color:#d68686;">content</span><span style="color:#d6d6d680;">&quot;</span><span>: </span><span style="color:#d6d6d680;">&quot;</span><span style="color:#d68686;">{</span><span style="font-weight:bold;color:#ff8080;">\&quot;</span><span style="color:#d68686;">payload</span><span style="font-weight:bold;color:#ff8080;">\&quot;</span><span style="color:#d68686;">:</span><span style="font-weight:bold;color:#ff8080;">\&quot;</span><span style="color:#d68686;">aGV5</span><span style="font-weight:bold;color:#ff8080;">\&quot;</span><span style="color:#d68686;">}</span><span style="color:#d6d6d680;">&quot;</span><span>,
+</span><span>    </span><span style="color:#d6d6d680;">&quot;</span><span style="color:#d68686;">contentType</span><span style="color:#d6d6d680;">&quot;</span><span>: </span><span style="color:#d6d6d680;">&quot;</span><span style="color:#d68686;">application/json</span><span style="color:#d6d6d680;">&quot;</span><span>,
+</span><span>    </span><span style="color:#d6d6d680;">&quot;</span><span style="color:#d68686;">time</span><span style="color:#d6d6d680;">&quot;</span><span>: </span><span style="font-weight:bold;color:#87d6d5;">1670047578752
 </span><span>  }
 </span><span>]
 </span></code></pre>
 <p>SORACOM ユーザーコンソールには、上記のデータ(<code>content</code> 部分)を「一次処理済みデータ」として自動的にデコードして表示してくれる気の利いた機能があります。今回作った拡張も同様の変換を実装しました。</p>
 <p>UDP でデータを送信すると、</p>
-<pre data-lang="shell" style="background-color:#0f1419;color:#bfbab0;" class="language-shell "><code class="language-shell" data-lang="shell"><span>$ cargo run -p soracom_harvest_client --quiet -- --udp hey
+<pre data-lang="shell" style="background-color:#393939;color:#dedede;" class="language-shell "><code class="language-shell" data-lang="shell"><span>$ cargo run -p soracom_harvest_client --quiet -- --udp hey
 </span><span>2022-12-03T15:11:15.373075+09:00 hey
 </span></code></pre>
 <p>SORACOM プラットフォームには以下のような形で蓄積され、</p>
-<pre data-lang="json" style="background-color:#0f1419;color:#bfbab0;" class="language-json "><code class="language-json" data-lang="json"><span>{ </span><span style="color:#c2d94c;">&quot;payload&quot;</span><span style="color:#bfbab0cc;">: </span><span style="color:#c2d94c;">&quot;aGV5&quot; </span><span>}
+<pre data-lang="json" style="background-color:#393939;color:#dedede;" class="language-json "><code class="language-json" data-lang="json"><span>{ </span><span style="color:#d6d6d680;">&quot;</span><span style="color:#d68686;">payload</span><span style="color:#d6d6d680;">&quot;</span><span>: </span><span style="color:#d6d6d680;">&quot;</span><span style="color:#d68686;">aGV5</span><span style="color:#d6d6d680;">&quot; </span><span>}
 </span></code></pre>
 <p>SORACOM ユーザーコンソールでは <strong>一次処理済みデータ</strong> として以下のように表示されます。</p>
-<pre data-lang="json" style="background-color:#0f1419;color:#bfbab0;" class="language-json "><code class="language-json" data-lang="json"><span>{ </span><span style="color:#c2d94c;">&quot;value&quot;</span><span style="color:#bfbab0cc;">: </span><span style="color:#c2d94c;">&quot;hey&quot; </span><span>}
+<pre data-lang="json" style="background-color:#393939;color:#dedede;" class="language-json "><code class="language-json" data-lang="json"><span>{ </span><span style="color:#d6d6d680;">&quot;</span><span style="color:#d68686;">value</span><span style="color:#d6d6d680;">&quot;</span><span>: </span><span style="color:#d6d6d680;">&quot;</span><span style="color:#d68686;">hey</span><span style="color:#d6d6d680;">&quot; </span><span>}
 </span></code></pre>
 <p>同様に SQLite でも以下のように変換されて表示されます。</p>
-<pre data-lang="sql" style="background-color:#0f1419;color:#bfbab0;" class="language-sql "><code class="language-sql" data-lang="sql"><span style="color:#ff7733;">SELECT </span><span style="font-style:italic;color:#39bae6;">* </span><span style="color:#ff7733;">FROM</span><span> harvest_data;
-</span><span style="font-style:italic;color:#5c6773;">-- time           content_type      value
-</span><span style="font-style:italic;color:#5c6773;">-- -------------  ----------------  ---------------
-</span><span style="font-style:italic;color:#5c6773;">-- 1670083937548  application/json  {&quot;value&quot;:&quot;hey&quot;}
+<pre data-lang="sql" style="background-color:#393939;color:#dedede;" class="language-sql "><code class="language-sql" data-lang="sql"><span style="font-weight:bold;color:#b7b7b7;">SELECT </span><span style="font-weight:bold;color:#95bff3;">* </span><span style="font-weight:bold;color:#b7b7b7;">FROM</span><span style="font-weight:bold;color:#95bff3;"> harvest_data;
+</span><span style="font-weight:bold;color:#a0cfa1;">--</span><span style="font-weight:bold;color:#87ae86;"> time           content_type      value
+</span><span style="font-weight:bold;color:#a0cfa1;">--</span><span style="font-weight:bold;color:#87ae86;"> -------------  ----------------  ---------------
+</span><span style="font-weight:bold;color:#a0cfa1;">--</span><span style="font-weight:bold;color:#87ae86;"> 1670083937548  application/json  {&quot;value&quot;:&quot;hey&quot;}
 </span></code></pre>
 <p><code>value</code> 列に <code>{&quot;value&quot;:&quot;...&quot;}</code> とあるのは冗長で少し気になりますが、整合性を考えてすべて JSON 形式にしました。SQLite は <a href="https://www.sqlite.org/json1.html">JSON 関数</a>がありますので、以下のように値だけ取り出せます。</p>
-<pre data-lang="sql" style="background-color:#0f1419;color:#bfbab0;" class="language-sql "><code class="language-sql" data-lang="sql"><span style="color:#ff7733;">SELECT datetime</span><span>(</span><span style="color:#ff7733;">time</span><span style="color:#f29668;">/</span><span style="color:#f29718;">1000</span><span>, </span><span style="color:#c2d94c;">&#39;unixepoch&#39;</span><span>) </span><span style="color:#f29668;">as </span><span style="color:#ff7733;">datetime</span><span>,
-</span><span>    value</span><span style="color:#f29668;">-&gt;&gt;</span><span style="color:#c2d94c;">&#39;$.value&#39; </span><span style="color:#f29668;">AS</span><span> value
-</span><span>    </span><span style="color:#ff7733;">FROM</span><span> harvest_data;
-</span><span style="font-style:italic;color:#5c6773;">-- datetime             value
-</span><span style="font-style:italic;color:#5c6773;">-- -------------------  -----
-</span><span style="font-style:italic;color:#5c6773;">-- 2022-12-03 16:12:17  hey
+<pre data-lang="sql" style="background-color:#393939;color:#dedede;" class="language-sql "><code class="language-sql" data-lang="sql"><span style="font-weight:bold;color:#b7b7b7;">SELECT </span><span style="font-weight:bold;color:#fffb9d;">datetime</span><span style="font-weight:bold;color:#95bff3;">(</span><span style="font-weight:bold;color:#fffb9d;">time</span><span style="font-weight:bold;color:#ececec;">/</span><span style="font-weight:bold;color:#87d6d5;">1000</span><span style="font-weight:bold;color:#95bff3;">, </span><span style="font-weight:bold;color:#d6d6d680;">&#39;</span><span style="font-weight:bold;color:#d68686;">unixepoch</span><span style="font-weight:bold;color:#d6d6d680;">&#39;</span><span style="font-weight:bold;color:#95bff3;">) </span><span style="font-weight:bold;color:#ececec;">as </span><span style="font-weight:bold;color:#fffb9d;">datetime</span><span style="font-weight:bold;color:#95bff3;">,
+</span><span style="font-weight:bold;color:#95bff3;">    value</span><span style="font-weight:bold;color:#ececec;">-&gt;&gt;</span><span style="font-weight:bold;color:#d6d6d680;">&#39;</span><span style="font-weight:bold;color:#d68686;">$.value</span><span style="font-weight:bold;color:#d6d6d680;">&#39; </span><span style="font-weight:bold;color:#ececec;">AS</span><span style="font-weight:bold;color:#95bff3;"> value
+</span><span style="font-weight:bold;color:#95bff3;">    </span><span style="font-weight:bold;color:#b7b7b7;">FROM</span><span style="font-weight:bold;color:#95bff3;"> harvest_data;
+</span><span style="font-weight:bold;color:#a0cfa1;">--</span><span style="font-weight:bold;color:#87ae86;"> datetime             value
+</span><span style="font-weight:bold;color:#a0cfa1;">--</span><span style="font-weight:bold;color:#87ae86;"> -------------------  -----
+</span><span style="font-weight:bold;color:#a0cfa1;">--</span><span style="font-weight:bold;color:#87ae86;"> 2022-12-03 16:12:17  hey
 </span></code></pre>
 <p>JSON 関数は <code>WHERE</code> 句にも使えて便利ですね。</p>
-<pre data-lang="sql" style="background-color:#0f1419;color:#bfbab0;" class="language-sql "><code class="language-sql" data-lang="sql"><span style="color:#ff7733;">SELECT datetime</span><span>(</span><span style="color:#ff7733;">time</span><span style="color:#f29668;">/</span><span style="color:#f29718;">1000</span><span>, </span><span style="color:#c2d94c;">&quot;unixepoch&quot;</span><span>) </span><span style="color:#f29668;">AS </span><span style="color:#ff7733;">datetime</span><span>,
-</span><span>    value</span><span style="color:#f29668;">-&gt;&gt;</span><span style="color:#c2d94c;">&#39;$.temperature&#39; </span><span style="color:#f29668;">AS</span><span> temperature
-</span><span>    </span><span style="color:#ff7733;">FROM</span><span> harvest_data
-</span><span>    </span><span style="color:#ff7733;">WHERE</span><span> temperature </span><span style="color:#f29668;">&gt; </span><span style="color:#f29718;">10</span><span>;
-</span><span style="font-style:italic;color:#5c6773;">-- datetime             temperature
-</span><span style="font-style:italic;color:#5c6773;">-- -------------------  -----------
-</span><span style="font-style:italic;color:#5c6773;">-- 2022-12-03 16:17:10  20
+<pre data-lang="sql" style="background-color:#393939;color:#dedede;" class="language-sql "><code class="language-sql" data-lang="sql"><span style="font-weight:bold;color:#b7b7b7;">SELECT </span><span style="font-weight:bold;color:#fffb9d;">datetime</span><span style="font-weight:bold;color:#95bff3;">(</span><span style="font-weight:bold;color:#fffb9d;">time</span><span style="font-weight:bold;color:#ececec;">/</span><span style="font-weight:bold;color:#87d6d5;">1000</span><span style="font-weight:bold;color:#95bff3;">, </span><span style="font-weight:bold;color:#d6d6d680;">&quot;</span><span style="font-weight:bold;color:#d68686;">unixepoch</span><span style="font-weight:bold;color:#d6d6d680;">&quot;</span><span style="font-weight:bold;color:#95bff3;">) </span><span style="font-weight:bold;color:#ececec;">AS </span><span style="font-weight:bold;color:#fffb9d;">datetime</span><span style="font-weight:bold;color:#95bff3;">,
+</span><span style="font-weight:bold;color:#95bff3;">    value</span><span style="font-weight:bold;color:#ececec;">-&gt;&gt;</span><span style="font-weight:bold;color:#d6d6d680;">&#39;</span><span style="font-weight:bold;color:#d68686;">$.temperature</span><span style="font-weight:bold;color:#d6d6d680;">&#39; </span><span style="font-weight:bold;color:#ececec;">AS</span><span style="font-weight:bold;color:#95bff3;"> temperature
+</span><span style="font-weight:bold;color:#95bff3;">    </span><span style="font-weight:bold;color:#b7b7b7;">FROM</span><span style="font-weight:bold;color:#95bff3;"> harvest_data
+</span><span style="font-weight:bold;color:#95bff3;">    </span><span style="font-weight:bold;color:#b7b7b7;">WHERE</span><span style="font-weight:bold;color:#95bff3;"> temperature </span><span style="font-weight:bold;color:#ececec;">&gt; </span><span style="font-weight:bold;color:#87d6d5;">10</span><span style="font-weight:bold;color:#95bff3;">;
+</span><span style="font-weight:bold;color:#a0cfa1;">--</span><span style="font-weight:bold;color:#87ae86;"> datetime             temperature
+</span><span style="font-weight:bold;color:#a0cfa1;">--</span><span style="font-weight:bold;color:#87ae86;"> -------------------  -----------
+</span><span style="font-weight:bold;color:#a0cfa1;">--</span><span style="font-weight:bold;color:#87ae86;"> 2022-12-03 16:17:10  20
 </span></code></pre>
 <p>SORACOM CLI と <a href="https://stedolan.github.io/jq/"><code>jq</code></a> コマンドを組み合わせ、base64 をデコードしつつ CSV に変換する場合は以下のような感じでしょうか。もう少しうまく書けそうですが jq 難しいです。</p>
-<pre data-lang="shell" style="background-color:#0f1419;color:#bfbab0;" class="language-shell "><code class="language-shell" data-lang="shell"><span>$ soracom subscribers get-data --imsi xxxxxxxxxxxxxxx | jq -r &#39;.[]
+<pre data-lang="shell" style="background-color:#393939;color:#dedede;" class="language-shell "><code class="language-shell" data-lang="shell"><span>$ soracom subscribers get-data --imsi xxxxxxxxxxxxxxx | jq -r &#39;.[]
 </span><span>    | {
 </span><span>        time: .time,
 </span><span>        contentType: .contentType,
@@ -325,7 +325,7 @@
 <li><a href="https://www.sqlite.org/loadext.html">Run-Time Loadable Extensions</a></li>
 </ul>
 <p>まずは手元の環境にあわせて <a href="https://github.com/rust-lang/rust-bindgen"><code>rust-bindgen</code></a> を使用して SQLite 拡張の FFI バインディングを生成しました。SQLite のバージョンに依存しない(後方互換性がある)はずですので上記リポジトリのバインディングをそのまま使用しても動くと思いましたが念のため。</p>
-<pre data-lang="shell" style="background-color:#0f1419;color:#bfbab0;" class="language-shell "><code class="language-shell" data-lang="shell"><span>$ bindgen --default-macro-constant-type signed sqlite3ext.h -o sqlite3ext.rs
+<pre data-lang="shell" style="background-color:#393939;color:#dedede;" class="language-shell "><code class="language-shell" data-lang="shell"><span>$ bindgen --default-macro-constant-type signed sqlite3ext.h -o sqlite3ext.rs
 </span></code></pre>
 <p>あとは既存の実装を参考に拡張の動作に必要な関数を実装していくだけです。ポイントは以下のとおりです。</p>
 <ul>
@@ -337,25 +337,25 @@
 </ul>
 <h3 id="rust-noyokatutatokoro">Rust のよかったところ</h3>
 <p>Option 型 (Rust における <a href="https://doc.rust-lang.org/std/option/enum.Option.html"><code>std::option::Option</code></a>) とパターンマッチをまともに使ったのは Rust が初めてだったのですが、エラーを含むすべてのパターンをコンパイラに矯正・強制されつつ自然な形でカバーできるので実装していて安心感がありました (これまでは JavaScript/TypeScript か Go が多かった)。TCP または UDP で送信されたデータをデコードする処理の実装のあたりです。</p>
-<pre data-lang="rust" style="background-color:#0f1419;color:#bfbab0;" class="language-rust "><code class="language-rust" data-lang="rust"><span style="color:#ff7733;">fn </span><span style="color:#ffb454;">try_decode</span><span>(</span><span style="color:#f29718;">content</span><span style="color:#bfbab0cc;">:</span><span> String) </span><span style="color:#bfbab0cc;">-&gt;</span><span> String {
-</span><span>    </span><span style="font-style:italic;color:#5c6773;">// API からゲットしたデータの content プロパティが {&quot;payload&quot;: &quot;value&quot;} の形になっている場合、
-</span><span>    </span><span style="font-style:italic;color:#5c6773;">// それはきっと base64 でエンコードされたデータのはず
-</span><span>    </span><span style="color:#ff7733;">if let </span><span style="font-style:italic;color:#39bae6;">Ok</span><span>(base64_encoded_payload) </span><span style="color:#f29668;">=
-</span><span>        serde_json</span><span style="color:#f29668;">::</span><span>from_str</span><span style="color:#f29668;">::</span><span>&lt;Base64EncodedPayload&gt;(content</span><span style="color:#f29668;">.</span><span style="color:#f07178;">as_str</span><span>())
+<pre data-lang="rust" style="background-color:#393939;color:#dedede;" class="language-rust "><code class="language-rust" data-lang="rust"><span style="color:#fffb9d;">fn </span><span style="color:#fffd87;">try_decode</span><span>(content: String) -&gt; String {
+</span><span>    </span><span style="color:#a0cfa1;">//</span><span style="color:#87ae86;"> API からゲットしたデータの content プロパティが {&quot;payload&quot;: &quot;value&quot;} の形になっている場合、
+</span><span>    </span><span style="color:#a0cfa1;">//</span><span style="color:#87ae86;"> それはきっと base64 でエンコードされたデータのはず
+</span><span>    </span><span style="color:#fed6af;">if </span><span style="color:#fffb9d;">let Ok</span><span>(base64_encoded_payload) </span><span style="color:#ececec;">=
+</span><span>        serde_json::from_str::&lt;Base64EncodedPayload&gt;(content.</span><span style="color:#fffd87;">as_str</span><span>())
 </span><span>    {
-</span><span>        </span><span style="font-style:italic;color:#5c6773;">// payload プロパティの中身が base64 でデコードできて、
-</span><span>        </span><span style="color:#ff7733;">if let </span><span style="font-style:italic;color:#39bae6;">Ok</span><span>(decoded) </span><span style="color:#f29668;">= </span><span>base64</span><span style="color:#f29668;">::</span><span>decode(base64_encoded_payload</span><span style="color:#f29668;">.</span><span>payload) {
-</span><span>            </span><span style="font-style:italic;color:#5c6773;">// かつ、UTF-8 としてデコードできて、
-</span><span>            </span><span style="color:#ff7733;">if let </span><span style="font-style:italic;color:#39bae6;">Ok</span><span>(</span><span style="color:#ff7733;">str</span><span>) </span><span style="color:#f29668;">= </span><span style="font-style:italic;color:#39bae6;">String</span><span style="color:#f29668;">::</span><span>from_utf8(decoded) {
-</span><span>                </span><span style="font-style:italic;color:#5c6773;">// かつ、ASCII で表示可能な文字のみであった場合は、
-</span><span>                </span><span style="color:#ff7733;">if str</span><span style="color:#f29668;">.</span><span style="color:#f07178;">chars</span><span>()</span><span style="color:#f29668;">.</span><span style="color:#f07178;">all</span><span>(|</span><span style="color:#f29718;">c</span><span>| </span><span style="color:#f07178;">matches!</span><span>(c </span><span style="color:#f29668;">as </span><span style="color:#ff7733;">u8</span><span style="color:#bfbab0cc;">, </span><span style="color:#f29718;">0x20</span><span style="color:#f29668;">..=</span><span style="color:#f29718;">0x7E</span><span>)) {
-</span><span>                    </span><span style="font-style:italic;color:#5c6773;">// {&quot;value&quot;: &quot;デコードした文字列&quot;} という形で返却する
-</span><span>                    </span><span style="color:#ff7733;">return </span><span style="color:#f07178;">format!</span><span>(</span><span style="color:#ff7733;">r</span><span style="color:#c2d94c;">#&quot;</span><span style="color:#95e6cb;">{{</span><span style="color:#c2d94c;">&quot;value&quot;:&quot;</span><span style="color:#f29718;">{str}</span><span style="color:#c2d94c;">&quot;</span><span style="color:#95e6cb;">}}</span><span style="color:#c2d94c;">&quot;#</span><span>)</span><span style="color:#bfbab0cc;">;
+</span><span>        </span><span style="color:#a0cfa1;">//</span><span style="color:#87ae86;"> payload プロパティの中身が base64 でデコードできて、
+</span><span>        </span><span style="color:#fed6af;">if </span><span style="color:#fffb9d;">let Ok</span><span>(decoded) </span><span style="color:#ececec;">= </span><span>base64::decode(base64_encoded_payload.payload) {
+</span><span>            </span><span style="color:#a0cfa1;">//</span><span style="color:#87ae86;"> かつ、UTF-8 としてデコードできて、
+</span><span>            </span><span style="color:#fed6af;">if </span><span style="color:#fffb9d;">let Ok</span><span>(</span><span style="color:#fffb9d;">str</span><span>) </span><span style="color:#ececec;">= </span><span style="color:#fffb9d;">String</span><span>::from_utf8(decoded) {
+</span><span>                </span><span style="color:#a0cfa1;">//</span><span style="color:#87ae86;"> かつ、ASCII で表示可能な文字のみであった場合は、
+</span><span>                </span><span style="color:#fed6af;">if </span><span style="color:#fffb9d;">str</span><span>.</span><span style="color:#fffd87;">chars</span><span>().</span><span style="color:#fffd87;">all</span><span>(|c| matches!(c </span><span style="color:#ececec;">as </span><span style="color:#fffb9d;">u8</span><span>, </span><span style="font-weight:bold;color:#87d6d5;">0x20</span><span style="color:#ececec;">..=</span><span style="font-weight:bold;color:#87d6d5;">0x7E</span><span>)) {
+</span><span>                    </span><span style="color:#a0cfa1;">//</span><span style="color:#87ae86;"> {&quot;value&quot;: &quot;デコードした文字列&quot;} という形で返却する
+</span><span>                    </span><span style="color:#fed6af;">return </span><span>format!(</span><span style="color:#fffb9d;">r</span><span style="color:#d6d6d680;">#</span><span style="color:#d68686;">&quot;</span><span style="font-weight:bold;color:#ff8080;">{{</span><span style="color:#d68686;">&quot;value&quot;:&quot;</span><span style="font-weight:bold;color:#cc9495;">{str}</span><span style="color:#d68686;">&quot;</span><span style="font-weight:bold;color:#ff8080;">}}</span><span style="color:#d6d6d680;">&quot;#</span><span>);
 </span><span>                }
 </span><span>            }
 </span><span>        }
 </span><span>    }
-</span><span>    </span><span style="font-style:italic;color:#5c6773;">// 上記の条件のどれにも引っかからなかった場合は、元の content をそのまま返す
+</span><span>    </span><span style="color:#a0cfa1;">//</span><span style="color:#87ae86;"> 上記の条件のどれにも引っかからなかった場合は、元の content をそのまま返す
 </span><span>    content
 </span><span>}
 </span></code></pre>
@@ -376,11 +376,9 @@
                 <div class="post-tags">
                     <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg>
                     
-                        <a href="https://0x6b.github.io/tags/soracom/">#soracom</a>
+                        <a href="https://0x6b.github.io/tags/soracom-harvest/">#SORACOM Harvest</a>
                     
-                        <a href="https://0x6b.github.io/tags/harvest/">#harvest</a>
-                    
-                        <a href="https://0x6b.github.io/tags/sqlite/">#sqlite</a>
+                        <a href="https://0x6b.github.io/tags/sqlite/">#SQLite</a>
                     
                         <a href="https://0x6b.github.io/tags/extension/">#extension</a>
                     

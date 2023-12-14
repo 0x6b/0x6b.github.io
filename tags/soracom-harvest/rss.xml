@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
     <channel>
-      <title>&#x2F;&#x2F;&#x2F; ----- -..- -.... -... - SQLite</title>
+      <title>&#x2F;&#x2F;&#x2F; ----- -..- -.... -... - SORACOM Harvest</title>
       <link>https://0x6b.github.io</link>
       <description></description>
       <generator>Zola</generator>
       <language>en</language>
-      <atom:link href="https://0x6b.github.io/tags/sqlite/rss.xml" rel="self" type="application/rss+xml"/>
+      <atom:link href="https://0x6b.github.io/tags/soracom-harvest/rss.xml" rel="self" type="application/rss+xml"/>
       <lastBuildDate>Wed, 07 Dec 2022 00:00:00 +0000</lastBuildDate>
       <item>
           <title>SORACOM Harvest Data 用の SQLite 拡張を作りました</title>

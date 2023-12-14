@@ -1,13 +1,232 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
     <channel>
-      <title>&#x2F;&#x2F;&#x2F; ----- -..- -.... -... - cli</title>
+      <title>&#x2F;&#x2F;&#x2F; ----- -..- -.... -... - CLI</title>
       <link>https://0x6b.github.io</link>
       <description></description>
       <generator>Zola</generator>
       <language>en</language>
       <atom:link href="https://0x6b.github.io/tags/cli/rss.xml" rel="self" type="application/rss+xml"/>
-      <lastBuildDate>Mon, 07 Dec 2020 00:00:00 +0000</lastBuildDate>
+      <lastBuildDate>Fri, 15 Dec 2023 00:00:00 +0000</lastBuildDate>
+      <item>
+          <title>いろいろなプログラミング言語から SORACOM Arc を使える libsoratun を作りました</title>
+          <pubDate>Fri, 15 Dec 2023 00:00:00 +0000</pubDate>
+          <author>Unknown</author>
+          <link>https://0x6b.github.io/libsoratun/</link>
+          <guid>https://0x6b.github.io/libsoratun/</guid>
+          <description>&lt;blockquote class=&quot;disclosure&quot;&gt;
+&lt;p&gt;&lt;a href=&quot;https:&#x2F;&#x2F;www.caa.go.jp&#x2F;policies&#x2F;policy&#x2F;representation&#x2F;fair_labeling&#x2F;guideline&#x2F;assets&#x2F;representation_cms216_230328_03.pdf&quot;&gt;「一般消費者が事業者の表示であることを判別することが困難である表示」の運用基準&lt;&#x2F;a&gt;に基づく開示: この記事は記載の日付時点で&lt;a href=&quot;https:&#x2F;&#x2F;soracom.jp&quot;&gt;株式会社ソラコム&lt;&#x2F;a&gt;のエンジニアリングチームに所属する社員が執筆しました。ただし、個人としての投稿であり、株式会社ソラコムとしての正式な発言や見解ではありません。&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;h2 id=&quot;hazimeni&quot;&gt;はじめに&lt;&#x2F;h2&gt;
+&lt;p&gt;&lt;a href=&quot;https:&#x2F;&#x2F;qiita.com&#x2F;advent-calendar&#x2F;2023&#x2F;soracom&quot;&gt;SORACOM Advent Calendar 2023&lt;&#x2F;a&gt; 15 日目です。&lt;&#x2F;p&gt;
+&lt;p&gt;昨日は &lt;a href=&quot;https:&#x2F;&#x2F;qiita.com&#x2F;n_mikuni&quot;&gt;@n_mikuni&lt;&#x2F;a&gt; による &lt;a href=&quot;https:&#x2F;&#x2F;qiita.com&#x2F;n_mikuni&#x2F;items&#x2F;abf99edc2f07f65339b5&quot;&gt;ソラカメで撮影した風景から GPT-4V で富士山を探す&lt;&#x2F;a&gt; でした。GPT-4V を活用した今時な内容でしたが、今回は &lt;a href=&quot;https:&#x2F;&#x2F;soracom.jp&#x2F;services&#x2F;arc&#x2F;&quot;&gt;SORACOM Arc&lt;&#x2F;a&gt; と古から存在するテクノロジー FFI (Foreign Function Interface) に関するお話です。&lt;a href=&quot;https:&#x2F;&#x2F;qiita.com&#x2F;advent-calendar&#x2F;2021&#x2F;soracom&quot;&gt;SORACOM Advent Calendar 2021&lt;&#x2F;a&gt; の &lt;a href=&quot;https:&#x2F;&#x2F;0x6b.github.io&#x2F;soracom-arc-and-aws-lambda-extension&#x2F;&quot;&gt;soratun を改造して AWS Lambda から簡単に SORACOM Arc を使ってみました&lt;&#x2F;a&gt; の続編になります。&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;soracom-arc-toha&quot;&gt;SORACOM Arc とは&lt;&#x2F;h3&gt;
+&lt;p&gt;&lt;a href=&quot;https:&#x2F;&#x2F;users.soracom.io&#x2F;ja-jp&#x2F;docs&#x2F;arc&#x2F;&quot;&gt;SORACOM Arc&lt;&#x2F;a&gt; はソラコムが 2021 年 6 月にリリースした、SIM カードがなくてもソラコムのプラットフォームサービスをセキュアに利用できるサービスです。伝送路の安全性を &lt;a href=&quot;https:&#x2F;&#x2F;www.wireguard.com&#x2F;&quot;&gt;WireGuard&lt;&#x2F;a&gt; を使って確保しており、WireGuard を使える機器であれば iPhone や Android のようなスマートフォンから、Raspberry Pi を含む Linux、そして M5Stack で利用されている ESP32 でも動作します (参照: &lt;a href=&quot;https:&#x2F;&#x2F;zenn.dev&#x2F;ciniml&#x2F;articles&#x2F;wireguard-esp32&quot;&gt;WireGuard for ESP32 の実装的なところ&lt;&#x2F;a&gt;)。&lt;&#x2F;p&gt;
+&lt;p&gt;物理的な SIM カードに代わってバーチャル SIM&#x2F;Subscriber を発行し、バーチャル SIM&#x2F;Subscriber に紐付いた WireGuard 認証情報を使って SORACOM プラットフォームと接続します。&lt;&#x2F;p&gt;
+&lt;p&gt;ここから WireGuard という新しめの技術と FFI という古の仕組みがどのように関係してくるのかを説明します。&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;libsoratun-toha&quot;&gt;&lt;code&gt;libsoratun&lt;&#x2F;code&gt; とは&lt;&#x2F;h2&gt;
+&lt;p&gt;今回はこんなことをやりました。&lt;&#x2F;p&gt;
+&lt;ol&gt;
+&lt;li&gt;WireGuard の Go 実装である &lt;a href=&quot;https:&#x2F;&#x2F;git.zx2c4.com&#x2F;wireguard-go&quot;&gt;wireguard-go&lt;&#x2F;a&gt; を利用し、バーチャル SIM&#x2F;Subscriber の認証情報を利用して &lt;a href=&quot;https:&#x2F;&#x2F;users.soracom.io&#x2F;ja-jp&#x2F;docs&#x2F;unified-endpoint&#x2F;&quot;&gt;Unified Endpoint&lt;&#x2F;a&gt; へデータを送るシンプルな関数を作りました。&lt;&#x2F;li&gt;
+&lt;li&gt;これを共有ライブラリ &lt;code&gt;.so&lt;&#x2F;code&gt; および静的ライブラリ &lt;code&gt;.a&lt;&#x2F;code&gt; として仕立てました。&lt;&#x2F;li&gt;
+&lt;li&gt;ソラコムが提供する SORACOM Arc のクライアントエージェントである &lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;soracom&#x2F;soratun&#x2F;&quot;&gt;soratun&lt;&#x2F;a&gt; のライブラリ風実装ということで &lt;code&gt;libsoratun&lt;&#x2F;code&gt; と命名しました。&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;p&gt;&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;0x6b&#x2F;libsoratun&quot;&gt;0x6b&#x2F;libsoratun: The C library allows you to embed Soracom Arc connectivity into your own program, entirely from userspace.&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;code&gt;libsoratun&lt;&#x2F;code&gt; には以下のような特徴があります。&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;Linux カーネルに実装されている WireGuard やネットワークインターフェース(tun デバイス)を作成・操作する soratun と異なり、root ユーザー権限 (正確には &lt;code&gt;NET_ADMIN&lt;&#x2F;code&gt; capability) を必要としません。&lt;&#x2F;li&gt;
+&lt;li&gt;C のライブラリですので Foreign Function Interface (FFI) を通してさまざまなプログラミング言語から利用できます。&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;ところで、冒頭から出てくる FFI とは何でしょうか。&lt;a href=&quot;https:&#x2F;&#x2F;ja.wikipedia.org&#x2F;wiki&#x2F;Foreign_function_interface&quot;&gt;Wikipedia&lt;&#x2F;a&gt; から引用します。&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Foreign function interface&lt;&#x2F;strong&gt;（フォーリン・ファンクション・インターフェイス、&lt;strong&gt;FFI&lt;&#x2F;strong&gt;）とは、あるプログラミング言語から他のプログラミング言語で定義された関数などを利用するための機構。主に高水準言語から C&#x2F;C++などの関数やメソッドを呼び出し、OS 固有の機能などを利用するために使用されることが多い。&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;一般的には「C 言語ではないプログラミング言語から C で実装された関数を呼び出す」技術として認知されているかもしれませんが、インターフェースの規定のみで実装言語は問いませんので以下のように使っています。&lt;&#x2F;p&gt;
+&lt;ol&gt;
+&lt;li&gt;Go 言語で実装した関数を共有・静的ライブラリとしてビルドし、外からは C の関数として見せる。&lt;&#x2F;li&gt;
+&lt;li&gt;いろいろなプログラミング言語が用意している C の関数を呼び出す機能 (= FFI) を使って 1 を呼び出す。&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;p&gt;ここからライブラリのビルド方法と、いくつかのプログラミング言語からの使い方を紹介します。&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;shi-ifang&quot;&gt;使い方&lt;&#x2F;h2&gt;
+&lt;p&gt;Linux と macOS での動作を確認しています。Windows でも同様と思いますが確認していません。&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;go-woinsutorusuru&quot;&gt;Go をインストールする&lt;&#x2F;h3&gt;
+&lt;p&gt;ライブラリ本体 (&lt;code&gt;.so&lt;&#x2F;code&gt; ファイルおよび &lt;code&gt;.a&lt;&#x2F;code&gt; ファイル) を GitHub から配布する準備がまにあわなかったため、お手元でビルドが必要です。そのため、だいぶ面倒ですが Go のインストールから。&lt;a href=&quot;https:&#x2F;&#x2F;go.dev&#x2F;doc&#x2F;install&quot;&gt;Download and install - The Go Programming Language&lt;&#x2F;a&gt; にしたがってください。&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;sosukodoworu-shou-si-libsoratun-wobirudosuru&quot;&gt;ソースコードを入手し &lt;code&gt;libsoratun&lt;&#x2F;code&gt; をビルドする&lt;&#x2F;h3&gt;
+&lt;p&gt;ソースコードを GitHub リポジトリから入手しビルドします。&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;console&quot; style=&quot;background-color:#393939;color:#dedede;&quot; class=&quot;language-console &quot;&gt;&lt;code class=&quot;language-console&quot; data-lang=&quot;console&quot;&gt;&lt;span&gt;$ git clone github.com&#x2F;0x6b&#x2F;libsoratun
+&lt;&#x2F;span&gt;&lt;span&gt;$ cd libsoratun
+&lt;&#x2F;span&gt;&lt;span&gt;$ make libs
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;&lt;code&gt;lib&#x2F;shared&lt;&#x2F;code&gt; ディレクトリに &lt;code&gt;libsoratun.so&lt;&#x2F;code&gt; (共有ライブラリ)、&lt;code&gt;lib&#x2F;archive&lt;&#x2F;code&gt; ディレクトリに &lt;code&gt;libsoratun.a&lt;&#x2F;code&gt; (静的ライブラリ)が生成されます。やや冗長なディレクトリ構成ですが、同じディレクトリに生成すると Rust のビルドスクリプトがうまく見つけてくれませんでした (詳細は調べていません)。&lt;&#x2F;p&gt;
+&lt;p&gt;それぞれのディレクトリにはヘッダファイル &lt;code&gt;libsoratun.h&lt;&#x2F;code&gt; が生成されており、Unified Endpoint へのデータを送信する &lt;code&gt;Send&lt;&#x2F;code&gt; 関数が以下のシグネチャで定義されています。前述のとおり C の関数に見えますね。&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;c&quot; style=&quot;background-color:#393939;color:#dedede;&quot; class=&quot;language-c &quot;&gt;&lt;code class=&quot;language-c&quot; data-lang=&quot;c&quot;&gt;&lt;span style=&quot;color:#fffb9d;&quot;&gt;extern char&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ececec;&quot;&gt;* &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fffd87;&quot;&gt;Send&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fffb9d;&quot;&gt;char&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ececec;&quot;&gt;* &lt;&#x2F;span&gt;&lt;span&gt;configJson, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fffb9d;&quot;&gt;char&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ececec;&quot;&gt;* &lt;&#x2F;span&gt;&lt;span&gt;method, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fffb9d;&quot;&gt;char&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ececec;&quot;&gt;* &lt;&#x2F;span&gt;&lt;span&gt;path, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fffb9d;&quot;&gt;char&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ececec;&quot;&gt;* &lt;&#x2F;span&gt;&lt;span&gt;body);
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h3 id=&quot;batiyaru-sim-subscriber-wosetutoatupusi-she-ding-huairuwozuo-cheng-suru&quot;&gt;バーチャル SIM&#x2F;Subscriber をセットアップし、設定ファイルを作成する&lt;&#x2F;h3&gt;
+&lt;p&gt;公式ドキュメント &lt;a href=&quot;https:&#x2F;&#x2F;users.soracom.io&#x2F;ja-jp&#x2F;docs&#x2F;arc&#x2F;create-virtual-sim-and-connect-with-soratun&#x2F;&quot;&gt;Getting Started: SORACOM ユーザーコンソールでバーチャル SIM&#x2F;Subscriber を作成して soratun で接続する&lt;&#x2F;a&gt; を参照し、&lt;strong&gt;ステップ 1&lt;&#x2F;strong&gt; (バーチャル SIM&#x2F;Subscriber の作成) と &lt;strong&gt;ステップ 3&lt;&#x2F;strong&gt; (soratun 設定ファイルの作成) を実施し、設定ファイル &lt;code&gt;arc.json&lt;&#x2F;code&gt; をゲットします。&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;iroironapuroguraminguyan-yu-karashi-u&quot;&gt;いろいろなプログラミング言語から使う&lt;&#x2F;h3&gt;
+&lt;p&gt;ここからは、それぞれのプログラミング言語が用意している C の関数を呼び出す機能 (= FFI) を使って、C の関数に見える Go の関数を呼び出し Unified Endpoint へデータを送っていきます。&lt;&#x2F;p&gt;
+&lt;p&gt;ソースコードは &lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;0x6b&#x2F;libsoratun&#x2F;tree&#x2F;main&#x2F;examples&quot;&gt;&lt;code&gt;examples&lt;&#x2F;code&gt;&lt;&#x2F;a&gt; ディレクトリにあります。&lt;&#x2F;p&gt;
+&lt;h4 id=&quot;python&quot;&gt;Python&lt;&#x2F;h4&gt;
+&lt;p&gt;Python では標準ライブラリに含まれる &lt;a href=&quot;https:&#x2F;&#x2F;docs.python.org&#x2F;3&#x2F;library&#x2F;ctypes.html&quot;&gt;ctypes&lt;&#x2F;a&gt; モジュールを使って C の共有ライブラリを呼び出せます。 &lt;a href=&quot;https:&#x2F;&#x2F;docs.python.org&#x2F;3&#x2F;library&#x2F;ctypes.html#loading-shared-libraries&quot;&gt;&lt;code&gt;ctypes.cdll.LoadLibrary&lt;&#x2F;code&gt;&lt;&#x2F;a&gt; を使って共有ライブラリをロードし、&lt;a href=&quot;https:&#x2F;&#x2F;docs.python.org&#x2F;3&#x2F;library&#x2F;ctypes.html#ctypes.c_char_p&quot;&gt;&lt;code&gt;ctypes.c_char_p&lt;&#x2F;code&gt;&lt;&#x2F;a&gt; で文字列を &lt;code&gt;char*&lt;&#x2F;code&gt; に変換して渡します。&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;python&quot; style=&quot;background-color:#393939;color:#dedede;&quot; class=&quot;language-python &quot;&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span style=&quot;color:#fed6af;&quot;&gt;import &lt;&#x2F;span&gt;&lt;span&gt;ctypes
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fed6af;&quot;&gt;import &lt;&#x2F;span&gt;&lt;span&gt;sys
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;soratun &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ececec;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span&gt;ctypes.cdll.LoadLibrary(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d68686;&quot;&gt;..&#x2F;..&#x2F;lib&#x2F;shared&#x2F;libsoratun.so&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;)
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fed6af;&quot;&gt;with &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fffd87;&quot;&gt;open&lt;&#x2F;span&gt;&lt;span&gt;(sys.argv[&lt;&#x2F;span&gt;&lt;span style=&quot;font-weight:bold;color:#87d6d5;&quot;&gt;1&lt;&#x2F;span&gt;&lt;span&gt;], &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d68686;&quot;&gt;r&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;) &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fed6af;&quot;&gt;as &lt;&#x2F;span&gt;&lt;span&gt;file:
+&lt;&#x2F;span&gt;&lt;span&gt;    config &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ececec;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span&gt;ctypes.c_char_p(file.read().encode(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d68686;&quot;&gt;utf-8&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;))
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;method &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ececec;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span&gt;ctypes.c_char_p(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fffb9d;&quot;&gt;b&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d68686;&quot;&gt;POST&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;)
+&lt;&#x2F;span&gt;&lt;span&gt;path &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ececec;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span&gt;ctypes.c_char_p(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fffb9d;&quot;&gt;b&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d68686;&quot;&gt;&#x2F;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;)
+&lt;&#x2F;span&gt;&lt;span&gt;body &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ececec;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span&gt;ctypes.c_char_p(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot; &amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;.join(sys.argv[&lt;&#x2F;span&gt;&lt;span style=&quot;font-weight:bold;color:#87d6d5;&quot;&gt;2&lt;&#x2F;span&gt;&lt;span&gt;:]).encode(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d68686;&quot;&gt;utf-8&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;))
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;soratun.Send(config, method, path, body)
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;以下のように実行できます。&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;console&quot; style=&quot;background-color:#393939;color:#dedede;&quot; class=&quot;language-console &quot;&gt;&lt;code class=&quot;language-console&quot; data-lang=&quot;console&quot;&gt;&lt;span&gt;$ cd examples&#x2F;python
+&lt;&#x2F;span&gt;&lt;span&gt;$ python3 main.py &#x2F;path&#x2F;to&#x2F;arc.json &amp;#39;{&amp;quot;message&amp;quot;: &amp;quot;hey&amp;quot;}&amp;#39;
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Python 3.12.0 で動作を確認しました。&lt;&#x2F;p&gt;
+&lt;h4 id=&quot;node-js&quot;&gt;Node.js&lt;&#x2F;h4&gt;
+&lt;p&gt;Node.js では &lt;a href=&quot;https:&#x2F;&#x2F;www.npmjs.com&#x2F;package&#x2F;ffi-napi&quot;&gt;ffi-napi&lt;&#x2F;a&gt; モジュールを使用しますので &lt;code&gt;npm&lt;&#x2F;code&gt; コマンドによるインストールが必要です。&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;console&quot; style=&quot;background-color:#393939;color:#dedede;&quot; class=&quot;language-console &quot;&gt;&lt;code class=&quot;language-console&quot; data-lang=&quot;console&quot;&gt;&lt;span&gt;$ cd examples&#x2F;nodejs
+&lt;&#x2F;span&gt;&lt;span&gt;$ npm install
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;&lt;code&gt;ffi.Library&lt;&#x2F;code&gt; で共有ライブラリのロードと &lt;code&gt;Send&lt;&#x2F;code&gt; 関数のシグネチャを定義します。Python と異なり &lt;code&gt;char*&lt;&#x2F;code&gt; への変換はよしなにやってくれました。&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;js&quot; style=&quot;background-color:#393939;color:#dedede;&quot; class=&quot;language-js &quot;&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span style=&quot;color:#fffb9d;&quot;&gt;const &lt;&#x2F;span&gt;&lt;span&gt;{ &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6ae;&quot;&gt;Library &lt;&#x2F;span&gt;&lt;span&gt;} &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ececec;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fffd87;&quot;&gt;require&lt;&#x2F;span&gt;&lt;span style=&quot;color:#78cecc80;&quot;&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d68686;&quot;&gt;ffi-napi&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#78cecc80;&quot;&gt;)&lt;&#x2F;span&gt;&lt;span&gt;;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fffb9d;&quot;&gt;const &lt;&#x2F;span&gt;&lt;span&gt;{ &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6ae;&quot;&gt;readFileSync &lt;&#x2F;span&gt;&lt;span&gt;} &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ececec;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fffd87;&quot;&gt;require&lt;&#x2F;span&gt;&lt;span style=&quot;color:#78cecc80;&quot;&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d68686;&quot;&gt;fs&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#78cecc80;&quot;&gt;)&lt;&#x2F;span&gt;&lt;span&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fffb9d;&quot;&gt;const &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6ae;&quot;&gt;soratun &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ececec;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fffd87;&quot;&gt;Library&lt;&#x2F;span&gt;&lt;span style=&quot;color:#78cecc80;&quot;&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d68686;&quot;&gt;..&#x2F;..&#x2F;lib&#x2F;shared&#x2F;libsoratun&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;, {
+&lt;&#x2F;span&gt;&lt;span&gt;  Send: &lt;&#x2F;span&gt;&lt;span style=&quot;color:#78cecc80;&quot;&gt;[&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d68686;&quot;&gt;string&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#78cecc80;&quot;&gt;[&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d68686;&quot;&gt;string&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d68686;&quot;&gt;string&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d68686;&quot;&gt;string&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d68686;&quot;&gt;string&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#78cecc80;&quot;&gt;]]
+&lt;&#x2F;span&gt;&lt;span&gt;}&lt;&#x2F;span&gt;&lt;span style=&quot;color:#78cecc80;&quot;&gt;)&lt;&#x2F;span&gt;&lt;span&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fffb9d;&quot;&gt;const &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6ae;&quot;&gt;config &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ececec;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fffd87;&quot;&gt;readFileSync&lt;&#x2F;span&gt;&lt;span style=&quot;color:#78cecc80;&quot;&gt;(&lt;&#x2F;span&gt;&lt;span&gt;process.argv&lt;&#x2F;span&gt;&lt;span style=&quot;color:#78cecc80;&quot;&gt;[&lt;&#x2F;span&gt;&lt;span style=&quot;font-weight:bold;color:#87d6d5;&quot;&gt;2&lt;&#x2F;span&gt;&lt;span style=&quot;color:#78cecc80;&quot;&gt;]&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d68686;&quot;&gt;utf8&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#78cecc80;&quot;&gt;)&lt;&#x2F;span&gt;&lt;span&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;soratun.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fffd87;&quot;&gt;Send&lt;&#x2F;span&gt;&lt;span style=&quot;color:#78cecc80;&quot;&gt;(&lt;&#x2F;span&gt;&lt;span&gt;config, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d68686;&quot;&gt;POST&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d68686;&quot;&gt;&#x2F;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;, process.argv&lt;&#x2F;span&gt;&lt;span style=&quot;color:#78cecc80;&quot;&gt;[&lt;&#x2F;span&gt;&lt;span style=&quot;font-weight:bold;color:#87d6d5;&quot;&gt;3&lt;&#x2F;span&gt;&lt;span style=&quot;color:#78cecc80;&quot;&gt;])&lt;&#x2F;span&gt;&lt;span&gt;;
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;以下のように実行できます。&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;console&quot; style=&quot;background-color:#393939;color:#dedede;&quot; class=&quot;language-console &quot;&gt;&lt;code class=&quot;language-console&quot; data-lang=&quot;console&quot;&gt;&lt;span&gt;$ node src&#x2F;index.js &#x2F;path&#x2F;to&#x2F;arc.json &amp;#39;{&amp;quot;message&amp;quot;: &amp;quot;hey&amp;quot;}&amp;#39;
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Node.js v18.19.0 で動作を確認しました。&lt;&#x2F;p&gt;
+&lt;h4 id=&quot;rust&quot;&gt;Rust&lt;&#x2F;h4&gt;
+&lt;p&gt;Rust も Python と同様標準ライブラリに &lt;a href=&quot;https:&#x2F;&#x2F;doc.rust-lang.org&#x2F;std&#x2F;ffi&#x2F;index.html&quot;&gt;std::ffi&lt;&#x2F;a&gt; として FFI をサポートするモジュールが用意されています。ライブラリはビルド時にリンクされ (&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;0x6b&#x2F;libsoratun&#x2F;blob&#x2F;main&#x2F;examples&#x2F;rust&#x2F;build.rs&quot;&gt;&lt;code&gt;build.rs&lt;&#x2F;code&gt;&lt;&#x2F;a&gt; 参照)、&lt;a href=&quot;https:&#x2F;&#x2F;doc.rust-lang.org&#x2F;std&#x2F;ffi&#x2F;struct.CStr.html&quot;&gt;&lt;code&gt;std::ffi::CStr&lt;&#x2F;code&gt;&lt;&#x2F;a&gt; や &lt;a href=&quot;https:&#x2F;&#x2F;doc.rust-lang.org&#x2F;std&#x2F;ffi&#x2F;struct.CString.html&quot;&gt;&lt;code&gt;std::ffi::CString&lt;&#x2F;code&gt;&lt;&#x2F;a&gt; を通して C の関数とやりとりします。リポジトリ上のサンプルからコマンドライン引数の処理等の部分を除くエッセンスは以下のようなかたちになります。言語の違いはあれいずれも似たような流れですね。&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;rust&quot; style=&quot;background-color:#393939;color:#dedede;&quot; class=&quot;language-rust &quot;&gt;&lt;code class=&quot;language-rust&quot; data-lang=&quot;rust&quot;&gt;&lt;span style=&quot;color:#fed6af;&quot;&gt;use &lt;&#x2F;span&gt;&lt;span&gt;std::ffi::CStr;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fed6af;&quot;&gt;use &lt;&#x2F;span&gt;&lt;span&gt;std::ffi::CString;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a0cfa1;&quot;&gt;&#x2F;&#x2F;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#87ae86;&quot;&gt; ...
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fed6af;&quot;&gt;use crate&lt;&#x2F;span&gt;&lt;span&gt;::soratun::Send;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a0cfa1;&quot;&gt;&#x2F;&#x2F;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#87ae86;&quot;&gt; ...
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fffb9d;&quot;&gt;mod &lt;&#x2F;span&gt;&lt;span style=&quot;font-weight:bold;color:#ff8000;&quot;&gt;soratun&lt;&#x2F;span&gt;&lt;span&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fffb9d;&quot;&gt;fn &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fffd87;&quot;&gt;main&lt;&#x2F;span&gt;&lt;span&gt;() -&amp;gt; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fffb9d;&quot;&gt;Result&lt;&#x2F;span&gt;&lt;span&gt;&amp;lt;(), &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fffb9d;&quot;&gt;Box&lt;&#x2F;span&gt;&lt;span&gt;&amp;lt;dyn Error&amp;gt;&amp;gt; {
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a0cfa1;&quot;&gt;&#x2F;&#x2F;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#87ae86;&quot;&gt; ...
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fffb9d;&quot;&gt;let&lt;&#x2F;span&gt;&lt;span&gt; config &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ececec;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span&gt;CString::new(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fffd87;&quot;&gt;read_to_string&lt;&#x2F;span&gt;&lt;span&gt;(config)&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ececec;&quot;&gt;?&lt;&#x2F;span&gt;&lt;span&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ececec;&quot;&gt;?&lt;&#x2F;span&gt;&lt;span&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fffd87;&quot;&gt;into_raw&lt;&#x2F;span&gt;&lt;span&gt;();
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fffb9d;&quot;&gt;let&lt;&#x2F;span&gt;&lt;span&gt; method &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ececec;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span&gt;CString::new(method)&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ececec;&quot;&gt;?&lt;&#x2F;span&gt;&lt;span&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fffd87;&quot;&gt;into_raw&lt;&#x2F;span&gt;&lt;span&gt;();
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fffb9d;&quot;&gt;let&lt;&#x2F;span&gt;&lt;span&gt; path &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ececec;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span&gt;CString::new(path)&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ececec;&quot;&gt;?&lt;&#x2F;span&gt;&lt;span&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fffd87;&quot;&gt;into_raw&lt;&#x2F;span&gt;&lt;span&gt;();
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fffb9d;&quot;&gt;let&lt;&#x2F;span&gt;&lt;span&gt; body &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ececec;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span&gt;CString::new(body)&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ececec;&quot;&gt;?&lt;&#x2F;span&gt;&lt;span&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fffd87;&quot;&gt;into_raw&lt;&#x2F;span&gt;&lt;span&gt;();
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fffb9d;&quot;&gt;let&lt;&#x2F;span&gt;&lt;span&gt; result &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ececec;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fffb9d;&quot;&gt;unsafe &lt;&#x2F;span&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fffb9d;&quot;&gt;let&lt;&#x2F;span&gt;&lt;span&gt; r &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ececec;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fffb9d;&quot;&gt;Send&lt;&#x2F;span&gt;&lt;span&gt;(config, method, path, body);
+&lt;&#x2F;span&gt;&lt;span&gt;        CStr::from_ptr(r).&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fffd87;&quot;&gt;to_str&lt;&#x2F;span&gt;&lt;span&gt;()&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ececec;&quot;&gt;?
+&lt;&#x2F;span&gt;&lt;span&gt;    };
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a0cfa1;&quot;&gt;&#x2F;&#x2F;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#87ae86;&quot;&gt; ...
+&lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;実行は &lt;code&gt;cargo run&lt;&#x2F;code&gt; です。&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;console&quot; style=&quot;background-color:#393939;color:#dedede;&quot; class=&quot;language-console &quot;&gt;&lt;code class=&quot;language-console&quot; data-lang=&quot;console&quot;&gt;&lt;span&gt;$ cd examples&#x2F;rust
+&lt;&#x2F;span&gt;&lt;span&gt;$ cargo run -- --config &#x2F;path&#x2F;to&#x2F;arc.json &amp;#39;{&amp;quot;message&amp;quot;: &amp;quot;hey&amp;quot;}&amp;#39;
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Rust 1.74.1 で動作を確認しました。&lt;&#x2F;p&gt;
+&lt;h4 id=&quot;aws-lambda&quot;&gt;AWS Lambda&lt;&#x2F;h4&gt;
+&lt;p&gt;さて、ようやく冒頭に紹介した &lt;a href=&quot;https:&#x2F;&#x2F;0x6b.github.io&#x2F;soracom-arc-and-aws-lambda-extension&#x2F;&quot;&gt;soratun を改造して AWS Lambda から簡単に SORACOM Arc を使ってみました&lt;&#x2F;a&gt; の続きのお話です。2021 年には Lambda 関数から SORACOM プラットフォームへデータを送信するために結構な手間をかけました。&lt;&#x2F;p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;code&gt;soratun&lt;&#x2F;code&gt; を SORACOM プラットフォームへのプロキシサーバーとして動作するよう改造 (&lt;code&gt;soraproxy&lt;&#x2F;code&gt; と命名)&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;soraproxy&lt;&#x2F;code&gt; を Lambda extension として動作するよう AWS のサンプルを元にラッパースクリプトを作成し、Lambda レイヤーとして定義&lt;&#x2F;li&gt;
+&lt;li&gt;Lambda extension を経由して Lambda 関数から SORACOM プラットフォームへデータを送信&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;p&gt;今回紹介した &lt;code&gt;libsoratun&lt;&#x2F;code&gt; を使うと 2 と 3 のパッケージと Lambda 関数の実装が簡単になります。&lt;&#x2F;p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;以下のような Lambda 関数を作成します。上の Python と同じ要領です。&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;python&quot; style=&quot;background-color:#393939;color:#dedede;&quot; class=&quot;language-python &quot;&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span style=&quot;color:#fed6af;&quot;&gt;import &lt;&#x2F;span&gt;&lt;span&gt;ctypes
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fed6af;&quot;&gt;import &lt;&#x2F;span&gt;&lt;span&gt;json
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fed6af;&quot;&gt;import &lt;&#x2F;span&gt;&lt;span&gt;sys
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;soratun &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ececec;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span&gt;ctypes.cdll.LoadLibrary(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d68686;&quot;&gt;libsoratun.so&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;)
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fed6af;&quot;&gt;with &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fffd87;&quot;&gt;open&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d68686;&quot;&gt;arc.json&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d68686;&quot;&gt;r&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;) &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fed6af;&quot;&gt;as &lt;&#x2F;span&gt;&lt;span&gt;file:
+&lt;&#x2F;span&gt;&lt;span&gt;    config &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ececec;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span&gt;ctypes.c_char_p(file.read().encode(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d68686;&quot;&gt;utf-8&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;))
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fed6af;&quot;&gt;def &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fffd87;&quot;&gt;lambda_handler&lt;&#x2F;span&gt;&lt;span&gt;(event, context):
+&lt;&#x2F;span&gt;&lt;span&gt;    method &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ececec;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span&gt;ctypes.c_char_p(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fffb9d;&quot;&gt;b&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d68686;&quot;&gt;POST&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;)
+&lt;&#x2F;span&gt;&lt;span&gt;    path &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ececec;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span&gt;ctypes.c_char_p(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#fffb9d;&quot;&gt;b&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d68686;&quot;&gt;&#x2F;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;)
+&lt;&#x2F;span&gt;&lt;span&gt;    body &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ececec;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span&gt;ctypes.c_char_p(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d68686;&quot;&gt;hello from lambda&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;.encode(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d68686;&quot;&gt;utf-8&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;))
+&lt;&#x2F;span&gt;&lt;span&gt;    soratun.Send(config, method, path, body)
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#fed6af;&quot;&gt;return &lt;&#x2F;span&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d68686;&quot;&gt;statusCode&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;#39;&lt;&#x2F;span&gt;&lt;span&gt;: &lt;&#x2F;span&gt;&lt;span style=&quot;font-weight:bold;color:#87d6d5;&quot;&gt;200&lt;&#x2F;span&gt;&lt;span&gt;,
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d68686;&quot;&gt;body&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;#39;&lt;&#x2F;span&gt;&lt;span&gt;: &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d68686;&quot;&gt;Successfully sent to the unified endpoint&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;
+&lt;&#x2F;span&gt;&lt;span&gt;    }
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;libsoratun.so&lt;&#x2F;code&gt; と &lt;code&gt;arc.json&lt;&#x2F;code&gt; を上記のファイルと同じディレクトリに配置し ZIP アーカイブにまとめます。&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;Lambda 関数としてアップロードします。&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;p&gt;Lambda 関数を実行すると以下のようなログが出力されます。&lt;&#x2F;p&gt;
+&lt;pre style=&quot;background-color:#393939;color:#dedede;&quot;&gt;&lt;code&gt;&lt;span&gt;START RequestId: a932c113-3e88-4bea-adb1-6b58adee2040 Version: $LATEST
+&lt;&#x2F;span&gt;&lt;span&gt;DEBUG: (libsoratun&#x2F;tunnel) 2023&#x2F;12&#x2F;14 13:38:09 Soracom Arc connection configuration:
+&lt;&#x2F;span&gt;&lt;span&gt;[Interface]
+&lt;&#x2F;span&gt;&lt;span&gt;Address = 10.180.169.243&#x2F;32
+&lt;&#x2F;span&gt;&lt;span&gt;PrivateKey = &amp;lt;secret&amp;gt;
+&lt;&#x2F;span&gt;&lt;span&gt;[Peer]
+&lt;&#x2F;span&gt;&lt;span&gt;PublicKey = bea25b2e59cc6f9ee4f55aecde3a9dc0d6982864358d45065324f67b1f05f167
+&lt;&#x2F;span&gt;&lt;span&gt;AllowedIPs = 100.127.0.0&#x2F;16, 192.168.2.0&#x2F;24
+&lt;&#x2F;span&gt;&lt;span&gt;Endpoint = 35.75.26.187:11010
+&lt;&#x2F;span&gt;&lt;span&gt;DEBUG: (libsoratun&#x2F;tunnel) 2023&#x2F;12&#x2F;14 13:38:09 UAPI: Updating private key
+&lt;&#x2F;span&gt;&lt;span&gt;DEBUG: (libsoratun&#x2F;tunnel) 2023&#x2F;12&#x2F;14 13:38:09 Routine: decryption worker 1 - started
+&lt;&#x2F;span&gt;&lt;span&gt;DEBUG: (libsoratun&#x2F;tunnel) 2023&#x2F;12&#x2F;14 13:38:09 Routine: encryption worker 1 - started
+&lt;&#x2F;span&gt;&lt;span&gt;DEBUG: (libsoratun&#x2F;tunnel) 2023&#x2F;12&#x2F;14 13:38:09 Routine: decryption worker 2 - started
+&lt;&#x2F;span&gt;&lt;span&gt;DEBUG: (libsoratun&#x2F;tunnel) 2023&#x2F;12&#x2F;14 13:38:09 Routine: handshake worker 1 - started
+&lt;&#x2F;span&gt;&lt;span&gt;DEBUG: (libsoratun&#x2F;tunnel) 2023&#x2F;12&#x2F;14 13:38:09 Routine: encryption worker 2 - started
+&lt;&#x2F;span&gt;&lt;span&gt;DEBUG: (libsoratun&#x2F;tunnel) 2023&#x2F;12&#x2F;14 13:38:09 Routine: handshake worker 2 - started
+&lt;&#x2F;span&gt;&lt;span&gt;DEBUG: (libsoratun&#x2F;tunnel) 2023&#x2F;12&#x2F;14 13:38:09 Routine: TUN reader - started
+&lt;&#x2F;span&gt;&lt;span&gt;DEBUG: (libsoratun&#x2F;tunnel) 2023&#x2F;12&#x2F;14 13:38:09 peer(vqJb…F8Wc) - UAPI: Created
+&lt;&#x2F;span&gt;&lt;span&gt;DEBUG: (libsoratun&#x2F;tunnel) 2023&#x2F;12&#x2F;14 13:38:09 peer(vqJb…F8Wc) - UAPI: Updating endpoint
+&lt;&#x2F;span&gt;&lt;span&gt;DEBUG: (libsoratun&#x2F;tunnel) 2023&#x2F;12&#x2F;14 13:38:09 peer(vqJb…F8Wc) - UAPI: Adding allowedip
+&lt;&#x2F;span&gt;&lt;span&gt;DEBUG: (libsoratun&#x2F;tunnel) 2023&#x2F;12&#x2F;14 13:38:09 peer(vqJb…F8Wc) - UAPI: Adding allowedip
+&lt;&#x2F;span&gt;&lt;span&gt;DEBUG: (libsoratun&#x2F;tunnel) 2023&#x2F;12&#x2F;14 13:38:09 UDP bind has been updated
+&lt;&#x2F;span&gt;&lt;span&gt;DEBUG: (libsoratun&#x2F;tunnel) 2023&#x2F;12&#x2F;14 13:38:09 peer(vqJb…F8Wc) - Starting
+&lt;&#x2F;span&gt;&lt;span&gt;DEBUG: (libsoratun&#x2F;tunnel) 2023&#x2F;12&#x2F;14 13:38:09 Interface state was Down, requested Up, now Up
+&lt;&#x2F;span&gt;&lt;span&gt;DEBUG: (libsoratun&#x2F;client) 2023&#x2F;12&#x2F;14 13:38:09 Soracom Unified Endpoint URL: http:&#x2F;&#x2F;100.127.69.42:80
+&lt;&#x2F;span&gt;&lt;span&gt;DEBUG: (libsoratun&#x2F;client) 2023&#x2F;12&#x2F;14 13:38:09 User-Agent: libsoratun&#x2F;0c04f39
+&lt;&#x2F;span&gt;&lt;span&gt;DEBUG: (libsoratun&#x2F;client) 2023&#x2F;12&#x2F;14 13:38:09 Sent HTTP request:
+&lt;&#x2F;span&gt;&lt;span&gt;POST &#x2F; HTTP&#x2F;1.1
+&lt;&#x2F;span&gt;&lt;span&gt;Host: 100.127.69.42:80
+&lt;&#x2F;span&gt;&lt;span&gt;hello from lambda
+&lt;&#x2F;span&gt;&lt;span&gt;DEBUG: (libsoratun&#x2F;tunnel) 2023&#x2F;12&#x2F;14 13:38:09 Routine: event worker - started
+&lt;&#x2F;span&gt;&lt;span&gt;DEBUG: (libsoratun&#x2F;tunnel) 2023&#x2F;12&#x2F;14 13:38:09 Interface up requested
+&lt;&#x2F;span&gt;&lt;span&gt;DEBUG: (libsoratun&#x2F;tunnel) 2023&#x2F;12&#x2F;14 13:38:09 Routine: receive incoming v4 - started
+&lt;&#x2F;span&gt;&lt;span&gt;DEBUG: (libsoratun&#x2F;tunnel) 2023&#x2F;12&#x2F;14 13:38:09 peer(vqJb…F8Wc) - Sending handshake initiation
+&lt;&#x2F;span&gt;&lt;span&gt;DEBUG: (libsoratun&#x2F;tunnel) 2023&#x2F;12&#x2F;14 13:38:09 peer(vqJb…F8Wc) - Routine: sequential sender - started
+&lt;&#x2F;span&gt;&lt;span&gt;DEBUG: (libsoratun&#x2F;tunnel) 2023&#x2F;12&#x2F;14 13:38:09 peer(vqJb…F8Wc) - Routine: sequential receiver - started
+&lt;&#x2F;span&gt;&lt;span&gt;DEBUG: (libsoratun&#x2F;tunnel) 2023&#x2F;12&#x2F;14 13:38:09 peer(vqJb…F8Wc) - Received handshake response
+&lt;&#x2F;span&gt;&lt;span&gt;DEBUG: (libsoratun&#x2F;client) 2023&#x2F;12&#x2F;14 13:38:09 Received HTTP response:
+&lt;&#x2F;span&gt;&lt;span&gt;HTTP&#x2F;1.1 201 Created
+&lt;&#x2F;span&gt;&lt;span&gt;Connection: close
+&lt;&#x2F;span&gt;&lt;span&gt;Content-Length: 0
+&lt;&#x2F;span&gt;&lt;span&gt;Date: Thu, 14 Dec 2023 13:38:09 GMT
+&lt;&#x2F;span&gt;&lt;span&gt;END RequestId: a932c113-3e88-4bea-adb1-6b58adee2040
+&lt;&#x2F;span&gt;&lt;span&gt;REPORT RequestId: a932c113-3e88-4bea-adb1-6b58adee2040	Duration: 150.61 ms	Billed Duration: 151 ms	Memory Size: 128 MB	Max Memory Used: 55 MB
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;AWS Lambda の Python 3.11 ランタイムで動作を確認しました。&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;code&gt;libsoratun.so&lt;&#x2F;code&gt; は 8.5 MB と大きめのため、&lt;a href=&quot;https:&#x2F;&#x2F;docs.aws.amazon.com&#x2F;ja_jp&#x2F;lambda&#x2F;latest&#x2F;dg&#x2F;chapter-layers.html&quot;&gt;Lambda レイヤー&lt;&#x2F;a&gt; としてもいいかもしれません。また、&lt;code&gt;arc.json&lt;&#x2F;code&gt; を ZIP アーカイブに含めず、&lt;a href=&quot;https:&#x2F;&#x2F;docs.aws.amazon.com&#x2F;ja_jp&#x2F;secretsmanager&#x2F;latest&#x2F;userguide&#x2F;intro.html&quot;&gt;AWS Secrets Manager&lt;&#x2F;a&gt; に認証情報を保管し設定ファイルを実行時に生成する方法もよさそうです。今回は説明のためにわかりやすさを優先しました。&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;matome&quot;&gt;まとめ&lt;&#x2F;h2&gt;
+&lt;p&gt;今回は SORACOM Arc への接続を C のライブラリとしてパッケージした &lt;code&gt;libsoratun&lt;&#x2F;code&gt; を紹介しました。&lt;&#x2F;p&gt;
+&lt;p&gt;今回は試していませんが、Ruby には &lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;ffi&#x2F;ffi&quot;&gt;Ruby-FFI&lt;&#x2F;a&gt; gem があり、Perl には &lt;a href=&quot;https:&#x2F;&#x2F;metacpan.org&#x2F;pod&#x2F;FFI::Platypus&quot;&gt;FFI::Platypus&lt;&#x2F;a&gt; モジュール、PHP は標準で &lt;a href=&quot;https:&#x2F;&#x2F;www.php.net&#x2F;ffi&quot;&gt;FFI&lt;&#x2F;a&gt; をサポートしています。プラットフォーム毎にビルドしなければならないという手間はあるものの、一度作ってしまえば使い慣れたスクリプト言語から root 権限不要で SORACOM プラットフォームへデータが送信できますのでテストなどの際に便利にお使いいただけると思います。&lt;&#x2F;p&gt;
+&lt;p&gt;2023 年 12 月現在、SORACOM Arc は 1 アカウントあたりバーチャル SIM&#x2F;Subscriber 1 契約分の基本使用料 (月額)、1 GB 分のデータ通信が無料で利用できます。また、1 アカウントあたり 1 回に限り初期費用が無料です。ぜひお試しください。&lt;&#x2F;p&gt;
+</description>
+      </item>
       <item>
           <title>SORACOM Napter で簡単に SSH できる nssh を作りました</title>
           <pubDate>Mon, 07 Dec 2020 00:00:00 +0000</pubDate>
@@ -48,15 +267,15 @@
 &lt;li&gt;作成したユーザー名をクリック&lt;&#x2F;li&gt;
 &lt;li&gt;&lt;strong&gt;権限設定&lt;&#x2F;strong&gt; タブで以下の設定を入力し &lt;strong&gt;保存&lt;&#x2F;strong&gt; ボタンをクリック&lt;&#x2F;li&gt;
 &lt;&#x2F;ol&gt;
-&lt;pre data-lang=&quot;json&quot; style=&quot;background-color:#0f1419;color:#bfbab0;&quot; class=&quot;language-json &quot;&gt;&lt;code class=&quot;language-json&quot; data-lang=&quot;json&quot;&gt;&lt;span&gt;{
-&lt;&#x2F;span&gt;&lt;span&gt;  &lt;&#x2F;span&gt;&lt;span style=&quot;color:#c2d94c;&quot;&gt;&amp;quot;statements&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0cc;&quot;&gt;: &lt;&#x2F;span&gt;&lt;span&gt;[
+&lt;pre data-lang=&quot;json&quot; style=&quot;background-color:#393939;color:#dedede;&quot; class=&quot;language-json &quot;&gt;&lt;code class=&quot;language-json&quot; data-lang=&quot;json&quot;&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;  &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d68686;&quot;&gt;statements&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;: [
 &lt;&#x2F;span&gt;&lt;span&gt;    {
-&lt;&#x2F;span&gt;&lt;span&gt;      &lt;&#x2F;span&gt;&lt;span style=&quot;color:#c2d94c;&quot;&gt;&amp;quot;api&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0cc;&quot;&gt;: &lt;&#x2F;span&gt;&lt;span&gt;[
-&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#c2d94c;&quot;&gt;&amp;quot;Subscriber:listSubscribers&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0cc;&quot;&gt;,
-&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#c2d94c;&quot;&gt;&amp;quot;PortMapping:listPortMappingsForSubscriber&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0cc;&quot;&gt;,
-&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#c2d94c;&quot;&gt;&amp;quot;PortMapping:createPortMapping&amp;quot;
-&lt;&#x2F;span&gt;&lt;span&gt;      ]&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0cc;&quot;&gt;,
-&lt;&#x2F;span&gt;&lt;span&gt;      &lt;&#x2F;span&gt;&lt;span style=&quot;color:#c2d94c;&quot;&gt;&amp;quot;effect&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0cc;&quot;&gt;: &lt;&#x2F;span&gt;&lt;span style=&quot;color:#c2d94c;&quot;&gt;&amp;quot;allow&amp;quot;
+&lt;&#x2F;span&gt;&lt;span&gt;      &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d68686;&quot;&gt;api&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;: [
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d68686;&quot;&gt;Subscriber:listSubscribers&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;,
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d68686;&quot;&gt;PortMapping:listPortMappingsForSubscriber&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;,
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d68686;&quot;&gt;PortMapping:createPortMapping&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;
+&lt;&#x2F;span&gt;&lt;span&gt;      ],
+&lt;&#x2F;span&gt;&lt;span&gt;      &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d68686;&quot;&gt;effect&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;: &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d68686;&quot;&gt;allow&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;
 &lt;&#x2F;span&gt;&lt;span&gt;    }
 &lt;&#x2F;span&gt;&lt;span&gt;  ]
 &lt;&#x2F;span&gt;&lt;span&gt;}
@@ -65,10 +284,10 @@
 &lt;li&gt;&lt;strong&gt;認証設定&lt;&#x2F;strong&gt; タブの &lt;strong&gt;認証キーを生成&lt;&#x2F;strong&gt; ボタンをクリックし表示された &lt;strong&gt;認証キー ID&lt;&#x2F;strong&gt; と &lt;strong&gt;認証キーシークレット&lt;&#x2F;strong&gt; をコピー&lt;&#x2F;li&gt;
 &lt;li&gt;&lt;code&gt;$HOME&#x2F;.soracom&#x2F;nssh.json&lt;&#x2F;code&gt; として以下の内容を保存&lt;&#x2F;li&gt;
 &lt;&#x2F;ol&gt;
-&lt;pre data-lang=&quot;json&quot; style=&quot;background-color:#0f1419;color:#bfbab0;&quot; class=&quot;language-json &quot;&gt;&lt;code class=&quot;language-json&quot; data-lang=&quot;json&quot;&gt;&lt;span&gt;{
-&lt;&#x2F;span&gt;&lt;span&gt;  &lt;&#x2F;span&gt;&lt;span style=&quot;color:#c2d94c;&quot;&gt;&amp;quot;coverageType&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0cc;&quot;&gt;: &lt;&#x2F;span&gt;&lt;span style=&quot;color:#c2d94c;&quot;&gt;&amp;quot;jp&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0cc;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#5c6773;&quot;&gt;&#x2F;&#x2F; デフォルトのカバレッジ
-&lt;&#x2F;span&gt;&lt;span&gt;  &lt;&#x2F;span&gt;&lt;span style=&quot;color:#c2d94c;&quot;&gt;&amp;quot;authKeyId&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0cc;&quot;&gt;: &lt;&#x2F;span&gt;&lt;span style=&quot;color:#c2d94c;&quot;&gt;&amp;quot;keyId-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0cc;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#5c6773;&quot;&gt;&#x2F;&#x2F; 認証キー ID
-&lt;&#x2F;span&gt;&lt;span&gt;  &lt;&#x2F;span&gt;&lt;span style=&quot;color:#c2d94c;&quot;&gt;&amp;quot;authKey&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0cc;&quot;&gt;: &lt;&#x2F;span&gt;&lt;span style=&quot;color:#c2d94c;&quot;&gt;&amp;quot;secret-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&amp;quot; &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#5c6773;&quot;&gt;&#x2F;&#x2F; 認証キーシークレット
+&lt;pre data-lang=&quot;json&quot; style=&quot;background-color:#393939;color:#dedede;&quot; class=&quot;language-json &quot;&gt;&lt;code class=&quot;language-json&quot; data-lang=&quot;json&quot;&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;  &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d68686;&quot;&gt;coverageType&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;: &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d68686;&quot;&gt;jp&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a0cfa1;&quot;&gt;&#x2F;&#x2F;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#87ae86;&quot;&gt; デフォルトのカバレッジ
+&lt;&#x2F;span&gt;&lt;span&gt;  &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d68686;&quot;&gt;authKeyId&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;: &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d68686;&quot;&gt;keyId-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a0cfa1;&quot;&gt;&#x2F;&#x2F;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#87ae86;&quot;&gt; 認証キー ID
+&lt;&#x2F;span&gt;&lt;span&gt;  &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d68686;&quot;&gt;authKey&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;: &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d68686;&quot;&gt;secret-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a0cfa1;&quot;&gt;&#x2F;&#x2F;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#87ae86;&quot;&gt; 認証キーシークレット
 &lt;&#x2F;span&gt;&lt;span&gt;}
 &lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
 &lt;p&gt;用語や詳細なガイドは &lt;a href=&quot;https:&#x2F;&#x2F;dev.soracom.io&#x2F;jp&#x2F;docs&#x2F;api_guide&#x2F;&quot;&gt;SORACOM API 利用ガイド&lt;&#x2F;a&gt; を、権限設定の詳細は &lt;a href=&quot;https:&#x2F;&#x2F;dev.soracom.io&#x2F;jp&#x2F;start&#x2F;sam&#x2F;#sam01&quot;&gt;SORACOM Access Management を使用して操作権限を管理する&lt;&#x2F;a&gt; も参照してみてください。&lt;&#x2F;p&gt;
@@ -184,13 +403,13 @@
 &lt;p&gt;今のところは Go のインストールとリポジトリのクローン、ビルドが必要です。GitHub Actions などでビルドとリリースを自動化しようと思っていますが、アドベントカレンダーに間に合いませんでした (リポジトリには試行錯誤の残骸あり)。&lt;&#x2F;p&gt;
 &lt;ol&gt;
 &lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;golang.org&#x2F;dl&#x2F;&quot;&gt;Go&lt;&#x2F;a&gt; の導入&lt;&#x2F;li&gt;
-&lt;li&gt;&lt;code&gt;rakyll&#x2F;static&lt;&#x2F;code&gt; の導入&lt;pre data-lang=&quot;console&quot; style=&quot;background-color:#0f1419;color:#bfbab0;&quot; class=&quot;language-console &quot;&gt;&lt;code class=&quot;language-console&quot; data-lang=&quot;console&quot;&gt;&lt;span&gt;$ go get github.com&#x2F;rakyll&#x2F;statik # install rakyll&#x2F;statik, asset embedder
+&lt;li&gt;&lt;code&gt;rakyll&#x2F;static&lt;&#x2F;code&gt; の導入&lt;pre data-lang=&quot;console&quot; style=&quot;background-color:#393939;color:#dedede;&quot; class=&quot;language-console &quot;&gt;&lt;code class=&quot;language-console&quot; data-lang=&quot;console&quot;&gt;&lt;span&gt;$ go get github.com&#x2F;rakyll&#x2F;statik # install rakyll&#x2F;statik, asset embedder
 &lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
 &lt;&#x2F;li&gt;
-&lt;li&gt;リポジトリのクローン&lt;pre data-lang=&quot;console&quot; style=&quot;background-color:#0f1419;color:#bfbab0;&quot; class=&quot;language-console &quot;&gt;&lt;code class=&quot;language-console&quot; data-lang=&quot;console&quot;&gt;&lt;span&gt;$ git clone https:&#x2F;&#x2F;github.com&#x2F;0x6b&#x2F;sorashell
+&lt;li&gt;リポジトリのクローン&lt;pre data-lang=&quot;console&quot; style=&quot;background-color:#393939;color:#dedede;&quot; class=&quot;language-console &quot;&gt;&lt;code class=&quot;language-console&quot; data-lang=&quot;console&quot;&gt;&lt;span&gt;$ git clone https:&#x2F;&#x2F;github.com&#x2F;0x6b&#x2F;sorashell
 &lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
 &lt;&#x2F;li&gt;
-&lt;li&gt;ビルド&lt;pre data-lang=&quot;console&quot; style=&quot;background-color:#0f1419;color:#bfbab0;&quot; class=&quot;language-console &quot;&gt;&lt;code class=&quot;language-console&quot; data-lang=&quot;console&quot;&gt;&lt;span&gt;$ cd sorashell
+&lt;li&gt;ビルド&lt;pre data-lang=&quot;console&quot; style=&quot;background-color:#393939;color:#dedede;&quot; class=&quot;language-console &quot;&gt;&lt;code class=&quot;language-console&quot; data-lang=&quot;console&quot;&gt;&lt;span&gt;$ cd sorashell
 &lt;&#x2F;span&gt;&lt;span&gt;$ make
 &lt;&#x2F;span&gt;&lt;span&gt;$ cp .&#x2F;sorashell &#x2F;path&#x2F;to&#x2F;your&#x2F;bin&#x2F;directory
 &lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
@@ -198,7 +417,7 @@
 &lt;&#x2F;ol&gt;
 &lt;h2 id=&quot;shi-ifang&quot;&gt;使い方&lt;&#x2F;h2&gt;
 &lt;ol&gt;
-&lt;li&gt;&lt;code&gt;sorashell&lt;&#x2F;code&gt; コマンドを実行するとシェルが立ち上がります。 SORACOM CLI と同じグローバルフラグを使えます。&lt;pre style=&quot;background-color:#0f1419;color:#bfbab0;&quot;&gt;&lt;code&gt;&lt;span&gt;    --api-key string         Specify API key otherwise soracom-cli performs authentication on behalf of you
+&lt;li&gt;&lt;code&gt;sorashell&lt;&#x2F;code&gt; コマンドを実行するとシェルが立ち上がります。 SORACOM CLI と同じグローバルフラグを使えます。&lt;pre style=&quot;background-color:#393939;color:#dedede;&quot;&gt;&lt;code&gt;&lt;span&gt;    --api-key string         Specify API key otherwise soracom-cli performs authentication on behalf of you
 &lt;&#x2F;span&gt;&lt;span&gt;    --api-token string       Specify API token otherwise soracom-cli performs authentication on behalf of you
 &lt;&#x2F;span&gt;&lt;span&gt;    --coverage-type string   Specify coverage type, &amp;#39;g&amp;#39; for Global, &amp;#39;jp&amp;#39; for Japan
 &lt;&#x2F;span&gt;&lt;span&gt;-h, --help                   help for soracom

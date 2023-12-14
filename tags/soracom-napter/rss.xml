@@ -1,13 +1,136 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
     <channel>
-      <title>&#x2F;&#x2F;&#x2F; ----- -..- -.... -... - vscode</title>
+      <title>&#x2F;&#x2F;&#x2F; ----- -..- -.... -... - SORACOM Napter</title>
       <link>https://0x6b.github.io</link>
       <description></description>
       <generator>Zola</generator>
       <language>en</language>
-      <atom:link href="https://0x6b.github.io/tags/vscode/rss.xml" rel="self" type="application/rss+xml"/>
-      <lastBuildDate>Fri, 13 Dec 2019 00:00:00 +0000</lastBuildDate>
+      <atom:link href="https://0x6b.github.io/tags/soracom-napter/rss.xml" rel="self" type="application/rss+xml"/>
+      <lastBuildDate>Mon, 07 Dec 2020 00:00:00 +0000</lastBuildDate>
+      <item>
+          <title>SORACOM Napter で簡単に SSH できる nssh を作りました</title>
+          <pubDate>Mon, 07 Dec 2020 00:00:00 +0000</pubDate>
+          <author>Unknown</author>
+          <link>https://0x6b.github.io/nssh/</link>
+          <guid>https://0x6b.github.io/nssh/</guid>
+          <description>&lt;blockquote class=&quot;disclosure&quot;&gt;
+&lt;p&gt;&lt;a href=&quot;https:&#x2F;&#x2F;www.caa.go.jp&#x2F;policies&#x2F;policy&#x2F;representation&#x2F;fair_labeling&#x2F;guideline&#x2F;assets&#x2F;representation_cms216_230328_03.pdf&quot;&gt;「一般消費者が事業者の表示であることを判別することが困難である表示」の運用基準&lt;&#x2F;a&gt;に基づく開示: この記事は記載の日付時点で&lt;a href=&quot;https:&#x2F;&#x2F;soracom.jp&quot;&gt;株式会社ソラコム&lt;&#x2F;a&gt;のエンジニアリングチームに所属する社員が執筆しました。ただし、個人としての投稿であり、株式会社ソラコムとしての正式な発言や見解ではありません。&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;h2 id=&quot;hazimeni&quot;&gt;はじめに&lt;&#x2F;h2&gt;
+&lt;p&gt;&lt;a href=&quot;https:&#x2F;&#x2F;qiita.com&#x2F;advent-calendar&#x2F;2020&#x2F;soracom&quot;&gt;SORACOM Advent Calendar 2020&lt;&#x2F;a&gt; 7 日目の記事です。今日は昨年の &lt;a href=&quot;https:&#x2F;&#x2F;0x6b.github.io&#x2F;nssh&#x2F;&quot;&gt;SORACOM Napter 用の Visual Studio Code 拡張を作りました&lt;&#x2F;a&gt; に続いて &lt;a href=&quot;https:&#x2F;&#x2F;soracom.jp&#x2F;services&#x2F;napter&#x2F;&quot;&gt;SORACOM Napter&lt;&#x2F;a&gt; (以下 Napter) に関する話題です。&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;soracom-napter-toha&quot;&gt;SORACOM Napter とは&lt;&#x2F;h2&gt;
+&lt;p&gt;Napter は、SORACOM の SIM を使用したデバイスへ簡単にセキュアにリモートアクセスできるサービスです。SORACOM IoT SIM の刺さっているデバイスであれば、グローバル IP アドレスを割り当てたり、踏み台サーバーを用意したり、デバイスにエージェントをインストールしたりせずリモートからアクセスできます。必要な時にさっとアクセスできるためちょっとした作業やメンテナンス時にとても便利に使っています。&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;nssh-toha&quot;&gt;&lt;code&gt;nssh&lt;&#x2F;code&gt; とは&lt;&#x2F;h2&gt;
+&lt;p&gt;&lt;code&gt;nssh&lt;&#x2F;code&gt; (&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;0x6b&#x2F;nssh&quot;&gt;GitHub repository&lt;&#x2F;a&gt;) は、SIM に付けた名前を利用して簡単に SSH できる CLI アプリケーションです。&lt;&#x2F;p&gt;
+&lt;img src=&quot;nssh.gif&quot; width=&quot;100%&quot; alt=&quot;How nssh works&quot; title=&quot;How nssh works&quot;&#x2F;&gt;
+&lt;blockquote&gt;
+&lt;p&gt;残念ながら現時点では macOS のみで動作します。Linux と Windows で実行すると &lt;code&gt;x&#x2F;crypto&#x2F;ssh.readVersion&lt;&#x2F;code&gt; の途中でハングアップしてしまい SSH 接続が確立できません。手元では &lt;a href=&quot;https:&#x2F;&#x2F;mattn.kaoriya.net&#x2F;software&#x2F;lang&#x2F;go&#x2F;20170111165324.htm&quot;&gt;Big Sky :: Windows からも ssh でリモートコマンド実行したい、それ golang で出来るよ&lt;&#x2F;a&gt; のサンプルも動作しなかったので環境起因の問題かなと思われますが、アドベントカレンダーの期日までに調査できませんでした。&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;昨年作った Visual Studio Code 用の拡張 &lt;a href=&quot;https:&#x2F;&#x2F;marketplace.visualstudio.com&#x2F;items?itemName=0x6b.nssh&quot;&gt;SORACOM Napter Tools&lt;&#x2F;a&gt; は今も便利に使っています。しかしながらどんどんものぐさになっていくもので、簡単な作業 — ログを見る、SORACOM Harvest にテスト的にデータを送ってみるなど — のたびに vscode の新規ウィンドウが立ち上がってくるのが面倒だなーと思うようになってきました。&lt;&#x2F;p&gt;
+&lt;p&gt;シェルスクリプトで &lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;soracom&#x2F;soracom-cli&#x2F;&quot;&gt;SORACOM CLI&lt;&#x2F;a&gt; のラッパーを作ってもよかったのですが、&lt;a href=&quot;https:&#x2F;&#x2F;pkg.go.dev&#x2F;golang.org&#x2F;x&#x2F;crypto&#x2F;ssh&quot;&gt;&lt;code&gt;x&#x2F;crypto&#x2F;ssh&lt;&#x2F;code&gt;&lt;&#x2F;a&gt; という Go の標準パッケージが簡単に使えそうだったため勉強を兼ねて作成しました。勉強なので &lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;soracom&#x2F;soracom-sdk-go&quot;&gt;soracom&#x2F;soracom-sdk-go&lt;&#x2F;a&gt; は使用せずすべて自前で実装しています。&lt;&#x2F;p&gt;
+&lt;p&gt;ここから事前準備と使い方を説明します。&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;shi-qian-zhun-bei&quot;&gt;事前準備&lt;&#x2F;h2&gt;
+&lt;p&gt;一度だけの事前準備として以下の 4 ステップが必要です。公式ドキュメントを紹介しつつ、簡単に手順を説明します。SORACOM Advent Calendar ということでアカウントの作成などは省いていますが、まだの方はぜひ &lt;a href=&quot;https:&#x2F;&#x2F;soracom.jp&#x2F;start&#x2F;&quot;&gt;SORACOM Air for セルラーの利用方法: 今すぐ始めよう&lt;&#x2F;a&gt; から。&lt;&#x2F;p&gt;
+&lt;ol&gt;
+&lt;li&gt;(SORACOM ユーザーコンソールの作業) SAM ユーザーを作成し、認証キー ID と認証キーシークレットを生成する&lt;&#x2F;li&gt;
+&lt;li&gt;(SORACOM ユーザーコンソールの作業) SSH でアクセスしたい SIM カードに名前をつける&lt;&#x2F;li&gt;
+&lt;li&gt;(アクセス元マシンでの作業) &lt;code&gt;nssh&lt;&#x2F;code&gt; をインストールする&lt;&#x2F;li&gt;
+&lt;li&gt;(アクセス先マシンでの作業) Raspberry Pi などに USB ドングル + SORACOM IoT SIM を装着する&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;h3 id=&quot;sam-yuzawozuo-cheng-si-ren-zheng-ki-id-toren-zheng-kisikuretutowosheng-cheng-suru&quot;&gt;SAM ユーザーを作成し、認証キー ID と認証キーシークレットを生成する&lt;&#x2F;h3&gt;
+&lt;p&gt;この拡張は SORACOM API を使用していますので、呼び出しのために認証キー ID と認証キーシークレットが必要です。まずはこれらをゲットしましょう。&lt;&#x2F;p&gt;
+&lt;p&gt;セキュリティの観点から専用の SORACOM Access Managament (SAM) ユーザーを作成することをおすすめしますが、すでに SORACOM CLI などを利用中で、必要な権限を持っている &lt;code&gt;default.json&lt;&#x2F;code&gt; がある場合はコピーして &lt;code&gt;nssh.json&lt;&#x2F;code&gt; を作っても OK です。SAM は、管理ユーザー毎にアクセス権限を設定できるアクセス管理機能で、不要なアクセスや操作ミスを未然に防げます。&lt;&#x2F;p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;console.soracom.io&#x2F;&quot;&gt;SORACOM ユーザーコンソール&lt;&#x2F;a&gt; へログイン&lt;&#x2F;li&gt;
+&lt;li&gt;右上のユーザー名のボタンから &lt;strong&gt;セキュリティ&lt;&#x2F;strong&gt; をクリック&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;ユーザー作成&lt;&#x2F;strong&gt; ボタンをクリックし、適当な名前と説明を入力して &lt;strong&gt;作成&lt;&#x2F;strong&gt; ボタンをクリック&lt;&#x2F;li&gt;
+&lt;li&gt;作成したユーザー名をクリック&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;権限設定&lt;&#x2F;strong&gt; タブで以下の設定を入力し &lt;strong&gt;保存&lt;&#x2F;strong&gt; ボタンをクリック&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;pre data-lang=&quot;json&quot; style=&quot;background-color:#393939;color:#dedede;&quot; class=&quot;language-json &quot;&gt;&lt;code class=&quot;language-json&quot; data-lang=&quot;json&quot;&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;  &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d68686;&quot;&gt;statements&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;: [
+&lt;&#x2F;span&gt;&lt;span&gt;    {
+&lt;&#x2F;span&gt;&lt;span&gt;      &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d68686;&quot;&gt;api&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;: [
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d68686;&quot;&gt;Subscriber:listSubscribers&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;,
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d68686;&quot;&gt;PortMapping:listPortMappingsForSubscriber&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;,
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d68686;&quot;&gt;PortMapping:createPortMapping&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;
+&lt;&#x2F;span&gt;&lt;span&gt;      ],
+&lt;&#x2F;span&gt;&lt;span&gt;      &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d68686;&quot;&gt;effect&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;: &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d68686;&quot;&gt;allow&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;
+&lt;&#x2F;span&gt;&lt;span&gt;    }
+&lt;&#x2F;span&gt;&lt;span&gt;  ]
+&lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;ol start=&quot;6&quot;&gt;
+&lt;li&gt;&lt;strong&gt;認証設定&lt;&#x2F;strong&gt; タブの &lt;strong&gt;認証キーを生成&lt;&#x2F;strong&gt; ボタンをクリックし表示された &lt;strong&gt;認証キー ID&lt;&#x2F;strong&gt; と &lt;strong&gt;認証キーシークレット&lt;&#x2F;strong&gt; をコピー&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;$HOME&#x2F;.soracom&#x2F;nssh.json&lt;&#x2F;code&gt; として以下の内容を保存&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;pre data-lang=&quot;json&quot; style=&quot;background-color:#393939;color:#dedede;&quot; class=&quot;language-json &quot;&gt;&lt;code class=&quot;language-json&quot; data-lang=&quot;json&quot;&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;  &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d68686;&quot;&gt;coverageType&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;: &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d68686;&quot;&gt;jp&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a0cfa1;&quot;&gt;&#x2F;&#x2F;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#87ae86;&quot;&gt; デフォルトのカバレッジ
+&lt;&#x2F;span&gt;&lt;span&gt;  &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d68686;&quot;&gt;authKeyId&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;: &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d68686;&quot;&gt;keyId-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a0cfa1;&quot;&gt;&#x2F;&#x2F;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#87ae86;&quot;&gt; 認証キー ID
+&lt;&#x2F;span&gt;&lt;span&gt;  &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d68686;&quot;&gt;authKey&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;: &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d68686;&quot;&gt;secret-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d6d6d680;&quot;&gt;&amp;quot; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a0cfa1;&quot;&gt;&#x2F;&#x2F;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#87ae86;&quot;&gt; 認証キーシークレット
+&lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;用語や詳細なガイドは &lt;a href=&quot;https:&#x2F;&#x2F;dev.soracom.io&#x2F;jp&#x2F;docs&#x2F;api_guide&#x2F;&quot;&gt;SORACOM API 利用ガイド&lt;&#x2F;a&gt; を、権限設定の詳細は &lt;a href=&quot;https:&#x2F;&#x2F;dev.soracom.io&#x2F;jp&#x2F;start&#x2F;sam&#x2F;#sam01&quot;&gt;SORACOM Access Management を使用して操作権限を管理する&lt;&#x2F;a&gt; も参照してみてください。&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;ssh-deakusesusitai-sim-kadoniming-qian-wotukeru&quot;&gt;SSH でアクセスしたい SIM カードに名前をつける&lt;&#x2F;h3&gt;
+&lt;p&gt;&lt;a href=&quot;https:&#x2F;&#x2F;dev.soracom.io&#x2F;jp&#x2F;start&#x2F;console&#x2F;#sim_detail&quot;&gt;ユーザーコンソールの使い方&lt;&#x2F;a&gt; などを参照し名前をつけておいてください。&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;nssh-woinsutorusuru&quot;&gt;&lt;code&gt;nssh&lt;&#x2F;code&gt; をインストールする&lt;&#x2F;h3&gt;
+&lt;p&gt;&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;0x6b&#x2F;nssh&#x2F;releases&quot;&gt;Releases&lt;&#x2F;a&gt; セクションからバイナリをダウンロードし、展開した実行ファイルを &lt;code&gt;PATH&lt;&#x2F;code&gt; の通ったディレクトリへ置いてください。&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;raspberry-pi-nadoni-usb-donguru-soracom-iot-sim-wozhuang-zhao-suru&quot;&gt;Raspberry Pi などに USB ドングル + SORACOM IoT SIM を装着する&lt;&#x2F;h3&gt;
+&lt;p&gt;&lt;a href=&quot;https:&#x2F;&#x2F;soracom.jp&#x2F;products&#x2F;module&#x2F;ak-020&#x2F;&quot;&gt;3G 対応データ通信端末 AK-020&lt;&#x2F;a&gt; や &lt;a href=&quot;https:&#x2F;&#x2F;soracom.jp&#x2F;products&#x2F;module&#x2F;ms2372h_607&#x2F;&quot;&gt;LTE 対応データ通信端末 Huawei MS2372h-607&lt;&#x2F;a&gt; などに SORACOM の SIM をセットし Raspberry Pi に装着、 &lt;a href=&quot;https:&#x2F;&#x2F;soracom-files.s3.amazonaws.com&#x2F;setup_air.sh&quot;&gt;&lt;code&gt;setup_air.sh&lt;&#x2F;code&gt;&lt;&#x2F;a&gt; を実行してセルラー通信ができるようにしてください。詳細な手順は &lt;a href=&quot;https:&#x2F;&#x2F;dev.soracom.io&#x2F;jp&#x2F;start&#x2F;device_setting&#x2F;&quot;&gt;各種デバイスで SORACOM Air を使用する&lt;&#x2F;a&gt; にあります。&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;shi-ifang&quot;&gt;使い方&lt;&#x2F;h2&gt;
+&lt;p&gt;さて、ここまで来たら SSH はあっという間です。&lt;&#x2F;p&gt;
+&lt;ol&gt;
+&lt;li&gt;お好みのターミナルを開きます&lt;&#x2F;li&gt;
+&lt;li&gt;SIM の名前を指定して &lt;code&gt;nssh&lt;&#x2F;code&gt; を実行します: &lt;code&gt;nssh connect ユーザー名@SIMの名前&lt;&#x2F;code&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;Enjoy!&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;p&gt;SIM の名前に空白やシェルが特別に解釈しそうな文字列を含む場合はクオートするなり &lt;code&gt;&#x27;&lt;&#x2F;code&gt; や &lt;code&gt;&amp;quot;&lt;&#x2F;code&gt; で囲んでみてください。以下のように気が利いている(と思う)ので便利に使えます。&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;SIM がオフラインの場合はポートマッピングを作成しません。&lt;&#x2F;li&gt;
+&lt;li&gt;アクセス元の CIDR が許可されているポートマッピングがすでに存在する場合は再利用します。&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;ユーザー名@&lt;&#x2F;code&gt; を省略した場合は &lt;code&gt;pi&lt;&#x2F;code&gt; を使用します。&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;そのほかにもいくつかオプションがありますので &lt;code&gt;--help&lt;&#x2F;code&gt; や &lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;0x6b&#x2F;nssh&quot;&gt;README&lt;&#x2F;a&gt; をご覧ください。&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;--duration&lt;&#x2F;code&gt;: アクセス可能時間(デフォルト 60 分)を指定&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;--port&lt;&#x2F;code&gt;: 宛先ポート(デフォルト &lt;code&gt;22&lt;&#x2F;code&gt;)を指定&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;--identity&lt;&#x2F;code&gt;: 公開鍵認証に使用するファイルを指定&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;--coverage-type&lt;&#x2F;code&gt;: カバレッジを指定&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;--profile-name&lt;&#x2F;code&gt;: 使用するプロファイル(デフォルト &lt;code&gt;nssh&lt;&#x2F;code&gt;) を指定&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;バグ報告やご質問は &lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;0x6b&#x2F;nssh&#x2F;issues&quot;&gt;GitHub Issues&lt;&#x2F;a&gt; までどうぞ。&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;matome&quot;&gt;まとめ&lt;&#x2F;h2&gt;
+&lt;p&gt;雑に計測したところ SSH ログインまでの所要時間を大きく短縮できました。45 秒も充分にお手軽ですが、6 秒でアクセスできると便利さのレベルが変わりますね。2020 年 12 月現在、SORACOM Napter は 1 アカウントあたり 1 SIM 分を無料で利用できますのでぜひお試しください。&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;ユーザーコンソールを使う方法: &lt;strong&gt;45 秒&lt;&#x2F;strong&gt;
+&lt;ol&gt;
+&lt;li&gt;ブラウザを開く&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;console.soracom.io&quot;&gt;ユーザーコンソール&lt;&#x2F;a&gt; へログインする (+ MFA 認証)&lt;&#x2F;li&gt;
+&lt;li&gt;SIM 一覧画面から自分の SIM を探して選択する&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;操作&lt;&#x2F;strong&gt; メニューから &lt;strong&gt;オンデマンドリモートアクセス&lt;&#x2F;strong&gt; を選択する&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;OK&lt;&#x2F;strong&gt; をクリックする&lt;&#x2F;li&gt;
+&lt;li&gt;払い出された IP アドレスとポート番号をターミナルへコピペして SSH アクセスする&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;Visual Studio Code 拡張を使う方法: &lt;strong&gt;18 秒&lt;&#x2F;strong&gt;
+&lt;ol&gt;
+&lt;li&gt;vscode を開く&lt;&#x2F;li&gt;
+&lt;li&gt;コマンドパレット(&lt;kbd&gt;⇧⌘P&lt;&#x2F;kbd&gt;)から &lt;code&gt;Create New Port Mapping&lt;&#x2F;code&gt; を選ぶ&lt;&#x2F;li&gt;
+&lt;li&gt;対象の SIM を選択する&lt;&#x2F;li&gt;
+&lt;li&gt;vscode がなぜか毎回聞いてくるので OS の種類として &lt;code&gt;Linux&lt;&#x2F;code&gt; を選択する&lt;&#x2F;li&gt;
+&lt;li&gt;vscode が上がってくるのを待ち統合ターミナルでアクセスする&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;nssh&lt;&#x2F;code&gt; を使う方法: &lt;strong&gt;6 秒&lt;&#x2F;strong&gt; (ただし、シェルの履歴機能を使用)
+&lt;ol&gt;
+&lt;li&gt;ターミナルを開く&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;nssh connect ユーザー名@SIMの名前&lt;&#x2F;code&gt; で SSH を開始する&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+</description>
+      </item>
       <item>
           <title>SORACOM Napter 用の Visual Studio Code 拡張を作りました</title>
           <pubDate>Fri, 13 Dec 2019 00:00:00 +0000</pubDate>

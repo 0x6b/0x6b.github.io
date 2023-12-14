@@ -164,15 +164,15 @@
 <li>作成したユーザー名をクリック</li>
 <li><strong>権限設定</strong> タブで以下の設定を入力し <strong>保存</strong> ボタンをクリック</li>
 </ol>
-<pre data-lang="json" style="background-color:#0f1419;color:#bfbab0;" class="language-json "><code class="language-json" data-lang="json"><span>{
-</span><span>  </span><span style="color:#c2d94c;">&quot;statements&quot;</span><span style="color:#bfbab0cc;">: </span><span>[
+<pre data-lang="json" style="background-color:#393939;color:#dedede;" class="language-json "><code class="language-json" data-lang="json"><span>{
+</span><span>  </span><span style="color:#d6d6d680;">&quot;</span><span style="color:#d68686;">statements</span><span style="color:#d6d6d680;">&quot;</span><span>: [
 </span><span>    {
-</span><span>      </span><span style="color:#c2d94c;">&quot;api&quot;</span><span style="color:#bfbab0cc;">: </span><span>[
-</span><span>        </span><span style="color:#c2d94c;">&quot;Subscriber:listSubscribers&quot;</span><span style="color:#bfbab0cc;">,
-</span><span>        </span><span style="color:#c2d94c;">&quot;PortMapping:listPortMappingsForSubscriber&quot;</span><span style="color:#bfbab0cc;">,
-</span><span>        </span><span style="color:#c2d94c;">&quot;PortMapping:createPortMapping&quot;
-</span><span>      ]</span><span style="color:#bfbab0cc;">,
-</span><span>      </span><span style="color:#c2d94c;">&quot;effect&quot;</span><span style="color:#bfbab0cc;">: </span><span style="color:#c2d94c;">&quot;allow&quot;
+</span><span>      </span><span style="color:#d6d6d680;">&quot;</span><span style="color:#d68686;">api</span><span style="color:#d6d6d680;">&quot;</span><span>: [
+</span><span>        </span><span style="color:#d6d6d680;">&quot;</span><span style="color:#d68686;">Subscriber:listSubscribers</span><span style="color:#d6d6d680;">&quot;</span><span>,
+</span><span>        </span><span style="color:#d6d6d680;">&quot;</span><span style="color:#d68686;">PortMapping:listPortMappingsForSubscriber</span><span style="color:#d6d6d680;">&quot;</span><span>,
+</span><span>        </span><span style="color:#d6d6d680;">&quot;</span><span style="color:#d68686;">PortMapping:createPortMapping</span><span style="color:#d6d6d680;">&quot;
+</span><span>      ],
+</span><span>      </span><span style="color:#d6d6d680;">&quot;</span><span style="color:#d68686;">effect</span><span style="color:#d6d6d680;">&quot;</span><span>: </span><span style="color:#d6d6d680;">&quot;</span><span style="color:#d68686;">allow</span><span style="color:#d6d6d680;">&quot;
 </span><span>    }
 </span><span>  ]
 </span><span>}
@@ -181,10 +181,10 @@
 <li><strong>認証設定</strong> タブの <strong>認証キーを生成</strong> ボタンをクリックし表示された <strong>認証キー ID</strong> と <strong>認証キーシークレット</strong> をコピー</li>
 <li><code>$HOME/.soracom/nssh.json</code> として以下の内容を保存</li>
 </ol>
-<pre data-lang="json" style="background-color:#0f1419;color:#bfbab0;" class="language-json "><code class="language-json" data-lang="json"><span>{
-</span><span>  </span><span style="color:#c2d94c;">&quot;coverageType&quot;</span><span style="color:#bfbab0cc;">: </span><span style="color:#c2d94c;">&quot;jp&quot;</span><span style="color:#bfbab0cc;">, </span><span style="font-style:italic;color:#5c6773;">// デフォルトのカバレッジ
-</span><span>  </span><span style="color:#c2d94c;">&quot;authKeyId&quot;</span><span style="color:#bfbab0cc;">: </span><span style="color:#c2d94c;">&quot;keyId-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span><span style="color:#bfbab0cc;">, </span><span style="font-style:italic;color:#5c6773;">// 認証キー ID
-</span><span>  </span><span style="color:#c2d94c;">&quot;authKey&quot;</span><span style="color:#bfbab0cc;">: </span><span style="color:#c2d94c;">&quot;secret-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot; </span><span style="font-style:italic;color:#5c6773;">// 認証キーシークレット
+<pre data-lang="json" style="background-color:#393939;color:#dedede;" class="language-json "><code class="language-json" data-lang="json"><span>{
+</span><span>  </span><span style="color:#d6d6d680;">&quot;</span><span style="color:#d68686;">coverageType</span><span style="color:#d6d6d680;">&quot;</span><span>: </span><span style="color:#d6d6d680;">&quot;</span><span style="color:#d68686;">jp</span><span style="color:#d6d6d680;">&quot;</span><span>, </span><span style="color:#a0cfa1;">//</span><span style="color:#87ae86;"> デフォルトのカバレッジ
+</span><span>  </span><span style="color:#d6d6d680;">&quot;</span><span style="color:#d68686;">authKeyId</span><span style="color:#d6d6d680;">&quot;</span><span>: </span><span style="color:#d6d6d680;">&quot;</span><span style="color:#d68686;">keyId-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</span><span style="color:#d6d6d680;">&quot;</span><span>, </span><span style="color:#a0cfa1;">//</span><span style="color:#87ae86;"> 認証キー ID
+</span><span>  </span><span style="color:#d6d6d680;">&quot;</span><span style="color:#d68686;">authKey</span><span style="color:#d6d6d680;">&quot;</span><span>: </span><span style="color:#d6d6d680;">&quot;</span><span style="color:#d68686;">secret-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</span><span style="color:#d6d6d680;">&quot; </span><span style="color:#a0cfa1;">//</span><span style="color:#87ae86;"> 認証キーシークレット
 </span><span>}
 </span></code></pre>
 <p>用語や詳細なガイドは <a href="https://dev.soracom.io/jp/docs/api_guide/">SORACOM API 利用ガイド</a> を、権限設定の詳細は <a href="https://dev.soracom.io/jp/start/sam/#sam01">SORACOM Access Management を使用して操作権限を管理する</a> も参照してみてください。</p>
@@ -257,13 +257,11 @@
                 <div class="post-tags">
                     <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg>
                     
-                        <a href="https://0x6b.github.io/tags/soracom/">#soracom</a>
+                        <a href="https://0x6b.github.io/tags/soracom-napter/">#SORACOM Napter</a>
                     
-                        <a href="https://0x6b.github.io/tags/napter/">#napter</a>
+                        <a href="https://0x6b.github.io/tags/ssh/">#SSH</a>
                     
-                        <a href="https://0x6b.github.io/tags/ssh/">#ssh</a>
-                    
-                        <a href="https://0x6b.github.io/tags/cli/">#cli</a>
+                        <a href="https://0x6b.github.io/tags/cli/">#CLI</a>
                     
                 </div>
             
